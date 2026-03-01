@@ -438,6 +438,9 @@
     }
   ],
   "assets_manifest": {
+    "home-page": [
+      "og-preview.jpg"
+    ],
     "home-page/logos": [
       "NYFW_SHOWS_LOCKUP_HORIZONTAL_black (1).png",
       "ahemdabad-mirror.png",
