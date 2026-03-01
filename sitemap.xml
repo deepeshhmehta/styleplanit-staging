@@ -6,12 +6,12 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://styleplanit.com/services.html</loc>
+    <loc>https://styleplanit.com/services</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://styleplanit.com/meet-the-team.html</loc>
+    <loc>https://styleplanit.com/meet-the-team</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

@@ -30,9 +30,9 @@ cleanup() {
 
 echo "--- Core Health Checks ---"
 test_endpoint ""
-test_endpoint "index.html"
-test_endpoint "services.html"
-test_endpoint "meet-the-team.html"
+test_endpoint "index"
+test_endpoint "services"
+test_endpoint "meet-the-team"
 test_endpoint "styles/styles.css"
 
 echo "--- Data & Scripts ---"
