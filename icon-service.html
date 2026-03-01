@@ -39,13 +39,5 @@
     <script src="js/utils.js"></script>
     <script src="js/app.js"></script>
     <script src="js/loader.js"></script>
-    <script>
-        // Force refresh of site data to ensure access list is available
-        $(document).on('appReady', async function() {
-            console.log("App ready, forcing data refresh for Icon Service...");
-            await Data.refreshMasterData();
-            App.initIconService();
-        });
-    </script>
 </body>
 </html>
