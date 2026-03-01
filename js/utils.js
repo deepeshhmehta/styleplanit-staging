@@ -72,6 +72,11 @@ const Utils = {
             if (config[key] !== undefined) element.src = config[key];
         });
 
+        document.querySelectorAll('[property-config-key]').forEach(element => {
+            const key = element.getAttribute('property-config-key');
+            if (config[key] !== undefined) element.setAttribute('content', config[key]);
+        });
+
         document.querySelectorAll('[style-bg-config-key]').forEach(element => {
             const key = element.getAttribute('style-bg-config-key');
             if (config[key] !== undefined) {
