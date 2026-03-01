@@ -1,5 +1,5 @@
 /**
- * loader.js - Handles dynamic loading of HTML components and app initialization
+ * loader.js - Handles recursive loading of HTML components and app initialization
  */
 async function loadComponents() {
     // 0. Prevent scrolling while loading
@@ -10,24 +10,36 @@ async function loadComponents() {
         await Data.checkVersion();
     }
 
-    const components = document.querySelectorAll('[data-component]');
-    
-    const loadPromises = Array.from(components).map(async (element) => {
-        const componentName = element.getAttribute('data-component');
-        // Skip the static loader if it was accidentally tagged
-        if (componentName === 'loader') return;
+    // Recursive Loader function
+    async function processComponents() {
+        const components = document.querySelectorAll('[data-component]:not([data-loaded])');
+        if (components.length === 0) return;
 
-        try {
-            const response = await fetch(`components/${componentName}.html`);
-            if (!response.ok) throw new Error(`Failed to load ${componentName}`);
-            const html = await response.text();
-            element.innerHTML = html;
-        } catch (error) {
-            console.error(`Error loading component ${componentName}:`, error);
-        }
-    });
+        const loadPromises = Array.from(components).map(async (element) => {
+            const componentName = element.getAttribute('data-component');
+            if (componentName === 'loader') return;
 
-    await Promise.all(loadPromises);
+            // Mark as loaded immediately to prevent infinite loops
+            element.setAttribute('data-loaded', 'true');
+
+            try {
+                const response = await fetch(`components/${componentName}.html`);
+                if (!response.ok) throw new Error(`Status ${response.status}`);
+                const html = await response.text();
+                element.innerHTML = html;
+                
+                // After injecting, check if there are nested components inside this one
+                await processComponents(); 
+            } catch (error) {
+                console.warn(`[Loader] Failed to load component: ${componentName} (${error.message})`);
+                element.style.display = 'none'; 
+            }
+        });
+
+        await Promise.all(loadPromises);
+    }
+
+    await processComponents();
 
     // 2. Dynamic Feature Loading
     const features = [];
@@ -40,21 +52,15 @@ async function loadComponents() {
     if ($("#team-container").length > 0) features.push('team');
     if ($("#subscribe-container").length > 0 || $(".subscribe-form").length > 0) features.push('subscribe');
     if ($("#icon-service-container").length > 0) features.push('auth');
-    features.push('dialogs'); // Always load dialog system if possible
+    features.push('dialogs'); 
 
     const featurePromises = features.map((feature) => {
         return new Promise((resolve) => {
             const script = document.createElement('script');
             script.src = `js/features/${feature}.js?v=${new Date().getTime()}`;
             script.async = false;
-            script.onload = () => {
-                console.log(`Loaded feature: ${feature}`);
-                resolve();
-            };
-            script.onerror = () => {
-                console.error(`Failed to load feature: ${feature}`);
-                resolve();
-            };
+            script.onload = () => resolve();
+            script.onerror = () => resolve();
             document.body.appendChild(script);
         });
     });
@@ -66,35 +72,12 @@ async function loadComponents() {
     let config = {};
     if (configArray.length > 0) {
         configArray.forEach(item => {
-            if (!item.key) return; // Skip if key is empty
-            
-            // Clean mapping for critical keys that might be malformed in source or are Mailchimp related
-            if (item.key.includes('SUBSCRIBE_FORM_ACTION')) {
-                config['SUBSCRIBE_FORM_ACTION'] = item.value.trim().replace(/│$/, '').trim();
-            } else if (item.key.includes('SUBSCRIBE_FORM_ENTRY_ID')) {
-                config['SUBSCRIBE_FORM_ENTRY_ID'] = item.value.trim();
-            } else if (item.key.includes('MAILCHIMP_FORM_ACTION')) {
-                config['MAILCHIMP_FORM_ACTION'] = item.value;
-            } else if (item.key.includes('MAILCHIMP_EMAIL_FIELD_NAME')) {
-                config['MAILCHIMP_EMAIL_FIELD_NAME'] = item.value;
-            } else if (item.key.includes('MAILCHIMP_HIDDEN_FIELD_NAME')) {
-                config['MAILCHIMP_HIDDEN_FIELD_NAME'] = item.value;
-            } else if (item.key.includes('MAILCHIMP_HIDDEN_FIELD_VALUE')) {
-                config['MAILCHIMP_HIDDEN_FIELD_VALUE'] = item.value;
-            } else if (item.key.includes('MAILCHIMP_NAME_FIELD_NAME')) {
-                config['MAILCHIMP_NAME_FIELD_NAME'] = item.value;
-            } else if (item.key.includes('MAILCHIMP_NAME_PLACEHOLDER')) {
-                config['MAILCHIMP_NAME_PLACEHOLDER'] = item.value;
-            } else if (item.key.includes('LEGAL_COMPLIANCE_TEXT')) {
-                config['LEGAL_COMPLIANCE_TEXT'] = item.value;
-            } else {
-                // Default handling for other keys
-                config[item.key] = item.value;
-            }
+            if (!item.key) return;
+            config[item.key] = item.value;
         });
         Utils.applyConfig(config);
 
-        // 3b. Inject Google Analytics if ID is provided
+        // 3b. Inject Google Analytics
         if (config['GOOGLE_ANALYTICS_ID']) {
             const gaId = config['GOOGLE_ANALYTICS_ID'];
             const gaScript = document.createElement('script');
@@ -110,26 +93,25 @@ async function loadComponents() {
                 gtag('config', '${gaId}');
             `;
             document.head.appendChild(gaInitScript);
-            console.log('Google Analytics initialized.');
         }
     }
 
-    // 4. Initialize UI interactions (Menu, Hero, etc.)
+    // 4. Initialize UI interactions
     if (typeof App !== 'undefined') {
         App.init(config);
     }
 
-    // 5. Signal that everything is ready
+    // 5. Signal ready
     document.dispatchEvent(new CustomEvent('appReady'));
 
-    // 6. Hide loader and restore scrolling (with 200ms delay to ensure rendering is stable)
+    // 6. Hide loader
     setTimeout(() => {
         const loader = document.getElementById('site-loader');
         if (loader) {
             loader.classList.add('fade-out');
             setTimeout(() => {
                 document.body.style.overflow = '';
-            }, 800); // Match transition duration in CSS
+            }, 800);
         }
     }, 200);
 }

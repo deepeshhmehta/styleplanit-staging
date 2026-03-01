@@ -5,27 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title text-config-key="PAGE_TITLE">Style Plan(it) | Discover Your Style</title>
     <meta name="description" content="Premium personal styling consultancy in Toronto for ambitious newcomers and high-net-worth individuals. Discover your professional image with Style Plan(it).">
-    <meta name="keywords" content="personal stylist toronto, image consultant toronto, professional styling for newcomers, executive styling toronto">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="Style Plan(it) | Discover Your Style">
-    <meta property="og:description" content="Premium personal styling consultancy in Toronto.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://styleplanit.com">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?q=80&w=2070">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&family=Sirivennela&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <link rel="stylesheet" href="styles/common.css">
     <link rel="stylesheet" href="styles/desktop.css">
     <link rel="stylesheet" href="styles/mobile.css">
-    <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/d3996d16165f3bbbc8e8ae321/0b34a389b05d7d824686ee842.js");</script>
 </head>
 <body>
     <div id="site-loader" class="loader-overlay">
@@ -34,67 +22,16 @@
             <div class="loader-spinner"></div>
         </div>
     </div>
+
     <nav data-component="header"></nav>
 
-    <header class="hero">
-        <div class="hero-bg-container">
-            <div class="hero-bg active" style-bg-config-key="HERO_IMAGE_1" style="opacity: 1;"></div>
-            <div class="hero-bg" style-bg-config-key="HERO_IMAGE_2"></div>
-            <div class="hero-bg" style-bg-config-key="HERO_IMAGE_3"></div>
-        </div>
-        <div class="hero-content-box">
-            <h1 text-config-key="HERO_TITLE">[HERO_TITLE]</h1>
-            <a href-config-key="HERO_BUTTON_HREF" href="#" target="_blank" rel="noopener noreferrer" class="btn" text-config-key="HERO_BUTTON_TEXT">[HERO_BTN]</a>
-        </div>
-    </header>
-
     <main>
-        <section id="programs" class="section-padding">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-title" text-config-key="HOW_IT_WORKS_TITLE">[PROGRAMS_TITLE]</h2>
-                </div>
-                <div class="services-category-grid" id="home-categories-container">
-                    <!-- Category cards will be dynamically inserted here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio Image Band -->
-        <section id="portfolio" class="portfolio-band">
-            <div class="portfolio-container" id="portfolio-carousel">
-                <!-- Portfolio images will be dynamically inserted here -->
-            </div>
-        </section>
-        
-        <!-- Logo Band -->
-        <div class="logo-band">
-            <p text-config-key="LOGO_BAND_TEXT">[LOGO_BAND_TEXT]</p>
-            <div class="logos" id="logos-container">
-                <!-- Logos will be dynamically inserted here -->
-            </div>
-        </div>
-
-        <section id="be-an-icon" class="hni-section section-padding">
-             <div class="container">
-                <span class="section-subtitle" text-config-key="ICON_SUBTITLE">[ICON_SUBTITLE]</span>
-                <h2 text-config-key="ICON_TITLE">[ICON_TITLE]</h2>
-                <p text-config-key="ICON_TEXT">[ICON_TEXT]</p>
-                <a href="#" class="btn btn-primary-accent" text-config-key="ICON_BUTTON_TEXT">[ICON_BTN]</a>
-            </div>
-        </section>
-
-        <section id="reviews" class="section-padding" style="background-color: var(--white);">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-title"><a href-config-key="NAV_LINK_2_HREF" href="#" text-config-key="REVIEWS_TITLE" style="text-decoration: none; color: inherit;">[REVIEWS_TITLE]</a></h2>
-                </div>
-                <div class="reviews-grid" id="reviews-container">
-                    <!-- Reviews will be dynamically inserted here -->
-                </div>
-            </div>
-        </section>
-
+        <div data-component="hero-section"></div>
+        <div data-component="programs-section"></div>
+        <div data-component="portfolio-section"></div>
+        <div data-component="logo-band"></div>
+        <div data-component="icon-section"></div>
+        <div data-component="reviews-section"></div>
         <section id="subscribe" class="section-padding" data-component="subscribe"></section>
     </main>
 

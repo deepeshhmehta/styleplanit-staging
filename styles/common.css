@@ -127,6 +127,15 @@ h1, h2, h3, h4 {
     margin-bottom: 30px;
 }
 
+.hero-footer {
+    margin-top: 30px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--charcoal);
+    opacity: 0.8;
+}
+
 /* How It Works Base */
 .customer-layers {
     display: grid;
