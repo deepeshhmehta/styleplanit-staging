@@ -92,6 +92,6 @@ This document provides a summary of the StylePlanIt website project for context 
 *   **Status:** Production-ready with version 4.0.0 and modular component architecture.
 *   **Recent Wins:** Recursive component loader, luxury progress bar with critical image preloading, and Before/After portfolio pairing.
 *   **Next Priorities:**
-    1.  **Automation:** Implement script-based write-back to Google Sheets to replace manual CSV pasting.
-    2.  **Refactor:** Centralize shared HTML boilerplate.
-    3.  **Performance:** Audit image sizes in the portfolio band.
+    1.  **Architecture:** Decouple config into a dedicated `style-planit-config` repository (Asana: `1213485094305648`).
+    2.  **Automation:** Implement script-based write-back to Google Sheets to replace manual CSV pasting.
+    3.  **Refactor:** Centralize shared HTML boilerplate.
