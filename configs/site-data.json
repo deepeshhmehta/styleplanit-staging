@@ -31,6 +31,10 @@
       "value": "tel:+1-647-967-8953"
     },
     {
+      "key": "FOOTER_PHONE_TEXT",
+      "value": "647-96 (style)"
+    },
+    {
       "key": "GOOGLE_ANALYTICS_ID",
       "value": "G-19XDQLSNT7"
     },
