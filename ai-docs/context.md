@@ -15,7 +15,7 @@ This document provides a summary of the StylePlanIt website project for context 
 *   **Aesthetic & Design System:**
     *   **Images:** Managed via a hybrid model. Static assets are discovered via `assets_manifest`. Page-specific content uses relative paths from Google Sheets.
     *   **Folder Structure:** Assets are organized by logical function (e.g., `assets/images/services-by-category/`, `assets/images/portfolio/`).
-    *   **Standardized Assets:** Brand logos use the `.brand-logo-item` class (`180x80px`, `object-fit: contain`).
+    *   **Standardized Assets:** Brand logos use the `.brand-logo-item` class (`180x80px` desktop / `120x50px` mobile, `object-fit: contain`).
     *   **Overall Aesthetic:** "Luxury Minimalist," "Old Money," "Editorial." Clean lines, sharp edges, and generous whitespace.
     *   **Color Palette:**
         *   **Primary Accent:** `#0c4524`
@@ -38,34 +38,36 @@ This document provides a summary of the StylePlanIt website project for context 
 *   **Frameworks:** jQuery.
 *   **Core Logic:**
     *   **`js/loader.js` (System Orchestrator):** 
-        *   **Recursive Loading:** Automatically fetches and injects HTML components from the `components/` directory. Supports deep nesting.
-        *   **Professional Fallback:** Missing components are hidden (`display: none`) to maintain UI integrity.
-        *   **Visual Stability:** Preloads all critical images (detected via `style-bg-config-key`) before fading out the site loader.
+        *   **Recursive Loading:** Automatically fetches and injects HTML components from the `components/` directory.
+        *   **Visual Stability:** Preloads all critical images before fading out the site loader.
     *   **`js/app.js`:** Global feature initialization and navigation coordinate.
 *   **Plugin Features (`js/features/`):**
-    *   `home-services.js`: Renders category-based program cards.
-    *   `portfolio.js`: Handles side-by-side "Before/After" transformation pairing with `object-position: top center` prioritization.
-    *   `reviews.js`: Smart rendering with shuffle/limit support.
+    *   `services.js`: Powers the guided Experience journey with parallel data fetching.
+    *   `portfolio.js`: Handles side-by-side "Before/After" transformation pairing.
+    *   `reviews.js`: Randomized 3-review preview with horizontal scroll indicators.
+    *   `icon-service.js`: Premium gated collection management.
 *   **Tooling:**
-    *   **`scripts/dev_server.py`:** Custom local server with clean URL support.
-    *   **`scripts/diff_site_data.py`:** Interactive 3-way sync engine with upfront summary and bulk resolution (`All Local`, `All Sheets`, `Individual`).
-    *   **`scripts/sync_engine.py`:** Assets manifest generator and Sheets-to-JSON aggregator.
+    *   **`scripts/dev_server.py`:** Multi-threaded local server with clean URL support and interactive port handling.
+    *   **`scripts/diff_site_data.py`:** Interactive 3-way sync engine.
+    *   **`scripts/sync_engine.py`:** Assets manifest generator and Sheets aggregator.
 
 ## 4. Data & Configuration Layer
 
 *   **Atomic Source:** `configs/site-data.json` is the single source of truth.
 *   **Data Audit Workflow:**
     1.  Run `scripts/diff_site_data.py` to compare local vs. remote.
-    2.  Use the `~~` delimiter CSVs in `scripts/diff_outputs/` to update Google Sheets (avoids comma-splitting errors).
-    3.  Bump the major version (e.g., `4.0.0`) in `site-data.json` to force-flush client-side caches upon major updates.
+    2.  Update Google Sheets using generated CSVs.
+    3.  Bump the major version (e.g., `4.5.0`) in `site-data.json` to force-flush client-side caches.
 *   **Caching:** Stale-While-Revalidate pattern with 24-hour TTL and active version enforcement.
 
-## 5. Component Features
+## 5. Component Features & Design Patterns
 
-*   **Site Loader:** Branded overlay featuring a luxury progress bar and shuffling "Style Phrases" (driven by the `LOADER_PHRASES` pipe-separated config key).
-*   **Portfolio Band:** Editorial-style slider featuring "Before/After" transformation pairs (black background, discreet labels).
-*   **Smart Reviews:** Randomized 3-review preview on the homepage; full list on the dedicated `/reviews` page.
-*   **Icon Service:** Premium, invitation-only section with a fixed background image and dark overlay for high visual impact.
+*   **Guided Services Experience:** A multi-stage journey (Category Pillars → Filtered Grid → Detached Details Box).
+*   **Brand Pillars:** Replaced literal imagery in service deep-dives with solid primary-accent blocks featuring subtle brand watermarks to emphasize identity.
+*   **Secondary Actions:** Unified minimalist link style (`.btn-secondary`) for low-friction actions like "Change Journey" or "Read More Reviews."
+*   **Expandable CTAs:** Global floating buttons (Book Now, WhatsApp) that use a "Collapse & Expand" pattern to minimize screen footprint.
+*   **Horizontal Affordance:** Space-saving horizontal scrollers for Logo Bands and Reviews on mobile/tablets, featuring dynamic scroll-dot indicators.
+*   **Icon Service:** Premium, invitation-only section featuring full-page immersive background and focused collection view.
 
 ## 6. Development & Safety
 
@@ -73,26 +75,20 @@ This document provides a summary of the StylePlanIt website project for context 
     *   Every feature, bug fix, or documentation update must have a corresponding Asana task.
     *   AI assistants must move tasks to `Doing` at the start of a task and `Done` upon successful verification/push.
     *   Project: "Style Plan-It Launch Plan" (`1212636326772928`).
-    *   **Token Protection:** AI assistants must NEVER output the contents of `.env.asana`.
-    *   **Token Extraction:** Use `grep` and `cut` in a subshell to extract the token: `TOKEN=$(grep "ASANA_PAT" .env.asana | cut -d'=' -f2 | tr -d '\"' | tr -d "'" | tr -d '[:space:]')`.
-    *   **API Usage:** Always use this `$TOKEN` in the `Authorization: Bearer` header for Asana API calls.
+    *   **Token Extraction:** Use `grep` and `cut` in a subshell: `TOKEN=$(grep "ASANA_PAT" .env.asana | cut -d'=' -f2 | tr -d '\"' | tr -d "'" | tr -d '[:space:]')`.
 *   **Source Control (Strict):**
-    *   **No Auto-Push:** AI assistants must NEVER execute `git push` autonomously or as part of a commit proposal. 
-    *   **Explicit Instruction Only:** `git push` can ONLY be executed if the user provides a direct, standalone "push" instruction after a commit.
-*   **Feature Branching & Merging (Strict):** 
-    *   **Always Branch Out:** AI assistants must NEVER commit directly to `main`. Every task, feature, or bug fix must occur on a dedicated `feature/` or `fix/` branch.
-    *   **Incremental Commits:** Commit often on the feature branch as progress is made.
-    *   **Branch-Specific Docs:** Detailed implementation plans for a feature (e.g., `ai-docs/feature-plan.md`) must live ONLY on that feature's branch. Keep `main` clean of future-dated or in-progress design docs.
-    *   **Stability First:** Only merge to `main` once the feature is stable, fully verified on a local server, and all health checks (`test.sh`) pass.
-    *   **Clean Up:** Delete the feature branch locally and on remote after a successful merge to `main`.
-*   **User Verification (Mandatory):** AI assistants must NEVER commit changes without presenting a specific code diff to the user and receiving explicit confirmation.
-*   **Data Integrity:** All fetch operations default to safe empty arrays `[]` to prevent crashes.
+    *   **No Auto-Push:** AI assistants must NEVER execute `git push` autonomously on `main`.
+    *   **Feature Branching:** Every task occurs on a dedicated `feature/` or `fix/` branch. Only merge to `main` once stable and verified.
+*   **Verification (Mandatory):** AI assistants must NEVER claim verification without running `test.sh`, `diff_site_data.py`, and responsive audits.
 
 ## 7. Current Project State (March 2026)
 
-*   **Status:** Production-ready with version 4.0.0 and modular component architecture.
-*   **Recent Wins:** Recursive component loader, luxury progress bar with critical image preloading, and Before/After portfolio pairing.
+*   **Status:** Production-ready (Version 4.5.0).
+*   **Recent Wins:**
+    *   **Experience Refactor:** Staged services journey with detached details box.
+    *   **Mobile Suite:** Multi-threaded dev server, horizontal scrollers, and consolidated media query architecture.
+    *   **Infrastructure:** Parallel data fetching and 100% config-mapping for all UI elements.
 *   **Next Priorities:**
     1.  **Architecture:** Decouple config into a dedicated `style-planit-config` repository (Asana: `1213485094305648`).
-    2.  **Automation:** Implement script-based write-back to Google Sheets to replace manual CSV pasting.
-    3.  **Refactor:** Centralize shared HTML boilerplate.
+    2.  **Automation:** Implement script-based write-back to Google Sheets.
+    3.  **Refactor:** Explore build-time static site generation (Vite/11ty).

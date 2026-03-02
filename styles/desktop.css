@@ -10,37 +10,12 @@
         grid-template-columns: 1fr 1fr;
     }
 
-    /* Reviews Desktop Layout */
-    #reviews {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    #reviews .reviews-grid {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
-
     /* HNI Desktop */
     .hni-section h2 { font-size: 4rem; }
 
-    /* Services Page Desktop Overrides */
+    /* Services Page Desktop Overrides - Disabled shifting logic */
     .service-card.active {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 60px;
-        order: -1;
-        grid-column: 1 / -1;
-    }
-
-    .service-card.active .service-card-image {
-        flex: 1;
-        max-width: 40%;
-    }
-
-    .service-card.active .service-card-content {
-        flex: 1.5;
+        /* No longer forcing order -1 or full width */
     }
 
     /* Team Page Desktop Layout */

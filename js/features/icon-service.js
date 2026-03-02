@@ -1,28 +1,24 @@
 /**
- * icon-service.js - Icon Service gated collection logic
+ * icon-service.js - Icon Service gated collection logic (Component-based)
  */
 const IconServiceFeature = {
   init: async function () {
+    console.log("🔍 [IconService] Init started...");
     const container = $("#icon-service-container");
     if (container.length === 0) return;
 
     const isAuthenticated = sessionStorage.getItem("icon_service_auth") === "true";
+    console.log("🔍 [IconService] Authenticated:", isAuthenticated);
+    
     if (!isAuthenticated) {
-        const configArray = await Data.fetch('config');
-        const config = {};
-        configArray.forEach(item => config[item.key] = item.value);
-        this.renderGate(container, config);
+        await this.renderGate(container);
         return;
     }
 
-    container.html(`
-        <section class="section-padding" style="padding-top: 140px;">
-            <div class="container text-center">
-                <span class="section-subtitle" text-config-key="ICON_SUBTITLE"></span>
-                <div class="service-content" style="margin-top: 40px;"></div>
-            </div>
-        </section>
-    `);
+    console.log("🔍 [IconService] User authorized, loading layout component...");
+    document.body.classList.add("icon-service-page");
+    
+    await this.loadView(container, 'components/icon-service-layout.html');
     
     // Refresh master data specifically here since access state might have changed data access needs
     const configArray = await Data.fetch('config');
@@ -31,25 +27,31 @@ const IconServiceFeature = {
     Utils.applyConfig(config);
 
     if (typeof ServicesFeature !== 'undefined') {
+        console.log("🔍 [IconService] Initializing Services Grid...");
         await ServicesFeature.init({ filter: "Icon Service", mode: "include", autoExpand: true, noScroll: true });
     }
   },
 
-  renderGate: function (container, config) {
-    container.html(`
-        <section class="section-padding hni-section" style="min-height: 80vh; display: flex; align-items: center;">
-            <div class="container text-center">
-                <span class="section-subtitle">Invitation Only</span>
-                <h2 class="section-title">Exclusive Access</h2>
-                <p>${config.ICON_AUTH_TEXT || "Please enter your registered email to unlock."}</p>
-                <form id="icon-gate-form" class="subscribe-form" style="max-width: 400px; margin: 40px auto;">
-                    <input type="email" id="icon-gate-email" placeholder="Email Address" required style="border-color: var(--white); color: var(--white);">
-                    <button type="submit" class="btn" style="border-color: var(--white); color: var(--white); width: 100%;">Unlock Collection</button>
-                    <p id="icon-gate-error" style="color: #ff6b6b; margin-top: 20px; display: none;"></p>
-                </form>
-            </div>
-        </section>
-    `);
+  loadView: async function (container, componentPath) {
+    try {
+        const response = await fetch(componentPath);
+        if (!response.ok) throw new Error(`Failed to load component: ${componentPath}`);
+        const html = await response.text();
+        container.html(html);
+    } catch (error) {
+        console.error("❌ [IconService] Component load error:", error);
+        container.html('<p class="text-center section-padding">Service temporarily unavailable. Please refresh.</p>');
+    }
+  },
+
+  renderGate: async function (container) {
+    await this.loadView(container, 'components/icon-auth-gate.html');
+    
+    // Apply config to the newly loaded gate
+    const configArray = await Data.fetch('config');
+    const config = {};
+    configArray.forEach(item => config[item.key] = item.value);
+    Utils.applyConfig(config);
 
     $("#icon-gate-form").on("submit", async (e) => {
         e.preventDefault();
@@ -62,13 +64,9 @@ const IconServiceFeature = {
             const spreadsheetId = config.ACCESS_SPREADSHEET_ID;
             const gid = config.ACCESS_GID;
 
-            if (!spreadsheetId || !gid) {
-                console.error("Access config missing", config);
-                throw new Error("Access configuration missing");
-            }
+            if (!spreadsheetId || !gid) throw new Error("Access configuration missing");
 
             const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/pub?gid=${gid}&output=csv&t=${new Date().getTime()}`;
-            
             const response = await fetch(url);
             if (!response.ok) throw new Error("Failed to fetch live access list");
             
@@ -82,7 +80,6 @@ const IconServiceFeature = {
                 sessionStorage.setItem("icon_service_auth", "true");
                 this.init();
             } else {
-                // If user is not in list, show message and redirect to cal.com
                 errorEl.text("Access denied. Opening request access form...").fadeIn();
                 setTimeout(() => {
                     window.open(config.ICON_CAL_HREF || "https://cal.com/styleplanit/the-icon-service", "_blank");

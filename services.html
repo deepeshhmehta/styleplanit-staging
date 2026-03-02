@@ -38,26 +38,41 @@
     <nav data-component="header"></nav>
 
     <main>
-        <section id="services" class="section-padding" style="padding-top: 140px;">
+        <!-- Phase 1: The Pillars (Entry Gate) -->
+        <section id="experience-intro" class="section-padding" style="padding-top: 140px;">
             <div class="container">
                 <div class="text-center">
-                    <span class="section-subtitle">Curated Experiences</span>
-                    <h2 class="section-title">The Collection</h2>
+                    <span class="section-subtitle" text-config-key="EXPERIENCE_SUBTITLE">[EXPERIENCE_SUBTITLE]</span>
+                    <h2 class="section-title" text-config-key="EXPERIENCE_JOURNEY_TITLE">[EXPERIENCE_JOURNEY_TITLE]</h2>
                 </div>
+                <div class="services-category-grid" id="services-category-selector">
+                    <!-- Category cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
 
-                <div class="elegant-tabs">
-                    <div class="tabs-scroll-container">
-                        <ul>
-                            <!-- Tabs will be dynamically inserted here -->
-                        </ul>
-                    </div>
+        <!-- Phase 2: The Deep Dive -->
+        <section id="services" class="section-padding">
+            <div class="container">
+                <div class="text-center">
+                    <span class="section-subtitle" text-config-key="EXPERIENCE_MENUS_SUBTITLE">[EXPERIENCE_MENUS_SUBTITLE]</span>
+                    <h2 class="section-title" id="active-category-title">The Collection</h2>
+                    <button class="btn-secondary" id="btn-return-to-categories" text-config-key="EXPERIENCE_CHANGE_BTN" style="margin-bottom: 40px;">[EXPERIENCE_CHANGE_BTN]</button>
                 </div>
 
                 <div class="service-content">
                     <!-- Service cards will be dynamically inserted here -->
                 </div>
+
+                <!-- NEW: Service Details Box (Below all services) -->
+                <div id="service-details-container" class="service-details-container" style="display: none;">
+                    <!-- Active service details will be injected here -->
+                </div>
             </div>
         </section>
+
+        <!-- Social Proof -->
+        <div data-component="reviews-section"></div>
     </main>
 
     <footer data-component="footer"></footer>

@@ -28,6 +28,32 @@ const ReviewsFeature = {
             `);
     });
     this.bindReviewToggle();
+    this.setupScrollIndicator(reviews.length);
+  },
+
+  setupScrollIndicator: function(count) {
+    const hintContainer = $(".scroll-hint");
+    if (hintContainer.length === 0) return;
+
+    hintContainer.empty();
+    // Only show up to 5 dots to keep it clean
+    const dotCount = Math.min(count, 5);
+    for (let i = 0; i < dotCount; i++) {
+        hintContainer.append(`<div class="scroll-dot ${i === 0 ? 'active' : ''}"></div>`);
+    }
+
+    const grid = $("#reviews-container");
+    const dots = $(".scroll-dot");
+
+    grid.on("scroll", () => {
+        const scrollLeft = grid.scrollLeft();
+        const maxScroll = grid[0].scrollWidth - grid.width();
+        const progress = scrollLeft / maxScroll;
+        const activeIndex = Math.min(Math.floor(progress * dotCount), dotCount - 1);
+        
+        dots.removeClass("active");
+        dots.eq(activeIndex).addClass("active");
+    });
   },
 
   bindReviewToggle: function() {

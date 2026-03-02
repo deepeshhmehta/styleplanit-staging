@@ -2,7 +2,7 @@
   "version": [
     {
       "key": "VERSION",
-      "value": "4.0.0"
+      "value": "4.5.0"
     }
   ],
   "config": [
@@ -119,10 +119,6 @@
       "value": "b_d3996d16165f3bbbc8e8ae321_62ce8ea2f1"
     },
     {
-      "key": "MAILCHIMP_HIDDEN_FIELD_VALUE",
-      "value": ""
-    },
-    {
       "key": "MAILCHIMP_NAME_FIELD_NAME",
       "value": "NAME"
     },
@@ -131,20 +127,8 @@
       "value": "What should we call you?"
     },
     {
-      "key": "NAV_LINK_1_HREF",
-      "value": "/#programs"
-    },
-    {
-      "key": "NAV_LINK_1_TEXT",
-      "value": "Our Programs"
-    },
-    {
       "key": "NAV_LINK_2_HREF",
       "value": "reviews"
-    },
-    {
-      "key": "NAV_LINK_2_TEXT",
-      "value": "Reviews"
     },
     {
       "key": "NAV_LINK_3_HREF",
@@ -152,7 +136,7 @@
     },
     {
       "key": "NAV_LINK_3_TEXT",
-      "value": "Services"
+      "value": "Experience"
     },
     {
       "key": "NAV_LINK_4_HREF",
@@ -168,19 +152,7 @@
     },
     {
       "key": "NAV_LINK_TEAM_TEXT",
-      "value": "Meet the Team"
-    },
-    {
-      "key": "NEWCOMERS_CARD_BUTTON_HREF",
-      "value": "services#establish"
-    },
-    {
-      "key": "NEWCOMERS_CARD_BUTTON_TEXT",
-      "value": "View Services"
-    },
-    {
-      "key": "NEWCOMERS_CARD_TEXT",
-      "value": "Styling for those ready to establish thier presence"
+      "value": "The Team"
     },
     {
       "key": "NEWCOMERS_CARD_TITLE",
@@ -199,20 +171,36 @@
       "value": "Style Plan(it) | Discover Your Style"
     },
     {
-      "key": "PROFESSIONALS_CARD_BUTTON_HREF",
-      "value": "services#elevate"
-    },
-    {
-      "key": "PROFESSIONALS_CARD_BUTTON_TEXT",
-      "value": "View Services"
-    },
-    {
       "key": "PROFESSIONALS_CARD_TEXT",
       "value": "Styling for those who are ready to elevate thier image and influence."
     },
     {
       "key": "PROFESSIONALS_CARD_TITLE",
       "value": "Elevate"
+    },
+    {
+      "key": "EXPERIENCE_CHANGE_BTN",
+      "value": "Change Journey"
+    },
+    {
+      "key": "EXPERIENCE_CLOSE_BTN",
+      "value": "Close & Return to List"
+    },
+    {
+      "key": "EXPERIENCE_JOURNEY_TITLE",
+      "value": "Pick a Journey"
+    },
+    {
+      "key": "EXPERIENCE_MENUS_SUBTITLE",
+      "value": "Our Menus"
+    },
+    {
+      "key": "EXPERIENCE_SUBTITLE",
+      "value": "The StylePlan(it) Experience"
+    },
+    {
+      "key": "REVIEWS_CTA",
+      "value": "Read More Reviews"
     },
     {
       "key": "REVIEWS_PAGE_DESCRIPTION",
@@ -231,8 +219,8 @@
       "value": "Our Services | Style Plan(it)"
     },
     {
-      "key": "STEP_1_TEXT",
-      "value": "1- Checkout our Programs"
+      "key": "SERVICE_INCLUSIONS_TITLE",
+      "value": "What's Included?"
     },
     {
       "key": "STEP_2_BUTTON_HREF",
@@ -243,12 +231,12 @@
       "value": "Book Now"
     },
     {
-      "key": "STEP_2_TEXT",
-      "value": "2. Book a call with us"
+      "key": "WHATSAPP_NUMBER",
+      "value": "16479678953"
     },
     {
-      "key": "STEP_3_TEXT",
-      "value": "3. Start your journey"
+      "key": "WHATSAPP_TEXT",
+      "value": "WhatsApp Now"
     },
     {
       "key": "SUBSCRIBE_BUTTON_TEXT",

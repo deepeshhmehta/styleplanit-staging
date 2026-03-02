@@ -54,8 +54,8 @@ const App = {
         TeamFeature.init();
     }
 
-    // 4. Services (Exclude Icon Service by default)
-    if (typeof ServicesFeature !== 'undefined' && $("#services").length > 0) {
+    // 4. Services
+    if (typeof ServicesFeature !== 'undefined' && ($("#services").length > 0 || $("#experience-intro").length > 0)) {
         ServicesFeature.init({ filter: "Icon Service", mode: "exclude" });
     }
 

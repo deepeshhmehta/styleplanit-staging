@@ -59,7 +59,14 @@ const Utils = {
 
         document.querySelectorAll('[href-config-key]').forEach(element => {
             const key = element.getAttribute('href-config-key');
-            if (config[key] !== undefined) element.href = config[key];
+            if (config[key] !== undefined) {
+                let value = config[key];
+                // Smart handling for WhatsApp numbers
+                if (key === 'WHATSAPP_NUMBER' && !value.startsWith('http')) {
+                    value = `https://wa.me/${value.replace(/\D/g, '')}`;
+                }
+                element.href = value;
+            }
         });
 
         document.querySelectorAll('[placeholder-config-key]').forEach(element => {
