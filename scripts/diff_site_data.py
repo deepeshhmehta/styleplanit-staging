@@ -35,6 +35,23 @@ def get_local_data():
     with open(JSON_PATH, "r") as f:
         return json.load(f, object_pairs_hook=OrderedDict)
 
+def generate_assets_manifest():
+    """Scan assets/images and return a structured manifest dictionary."""
+    manifest = {}
+    assets_root = os.path.join(PROJECT_ROOT, "assets", "images")
+    if os.path.exists(assets_root):
+        for root, dirs, files in os.walk(assets_root):
+            rel_path = os.path.relpath(root, assets_root)
+            if rel_path == ".":
+                folder_key = "root"
+            else:
+                folder_key = rel_path.replace(os.sep, "/")
+            
+            image_files = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif'))]
+            if image_files:
+                manifest[folder_key] = sorted(image_files)
+    return manifest
+
 def get_key_string(item, key_fields):
     if not item: return "None"
     return " | ".join(str(item.get(f, "N/A")) for f in key_fields)
@@ -50,6 +67,11 @@ def manual_input_entry(headers, current_item):
 def main():
     local_full_data = get_local_data()
     updated_local_data = local_full_data.copy()
+    
+    # Auto-generate manifest
+    current_manifest = generate_assets_manifest()
+    manifest_changed = current_manifest != local_full_data.get("assets_manifest")
+    updated_local_data["assets_manifest"] = current_manifest
     
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     # Clear previous reports
@@ -247,6 +269,10 @@ def main():
                 f.write(content)
             print(f"  ✅ {os.path.basename(out_file)}")
     
+    if manifest_changed:
+        print("\n📸 Assets manifest updated (local images changed).")
+        changes_to_local = True
+
     if changes_to_local:
         if input("\n💾 Save updates to site-data.json? (y/n): ").strip().lower() == 'y':
             with open(JSON_PATH, "w") as f:
