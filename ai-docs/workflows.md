@@ -1,36 +1,40 @@
 # StylePlanIt Business Workflows
 
-This document details the step-by-step procedures for managing site content and synchronization.
+This document details the procedures for managing site content and environments.
 
-## 1. Article Publication (Doc-to-Wiki)
+## 1. Environment Synchronization (CD)
 
-To add a new article to the Style Wiki (`/learn`):
+The site uses a tiered deployment model:
+1.  **Develop:** Features are merged here via PR.
+2.  **Staging:** Merged from `develop`. Triggers a **GitHub Action** to push code to `styleplanit-staging` repo.
+3.  **Main:** Merged from `staging` only after visual sign-off.
 
-1.  **Draft:** Create the article in Google Docs.
-2.  **Conversion:** Paste the text into the Gemini CLI with the prompt: *"Follow Style Wiki guidelines to convert this text into a new article entry. Use semantic HTML and include a Style Tip box."*
-3.  **Local Integration:**
-    *   AI appends the new entry to `site-data.json`.
-    *   AI increments the `VERSION` in `site-data.json`.
-4.  **Sheets Sync (Crucial):**
-    *   Run `python3 scripts/diff_site_data.py`.
-    *   Select `1` (Winner: Local).
-    *   Paste the generated CSV from `scripts/diff_outputs/articles_to_paste_in_sheets.csv` into the **articles** tab of the Google Sheet.
+## 2. Service Bundle Updates (Pick A Journey)
 
-## 2. Dynamic Content Updates (Sheets-to-Site)
+To update the main packages (Establish, Reclaim, Elevate):
+1.  Edit `categories` array in `configs/site-data.json`.
+2.  **Price Formatting:** Use raw strings (e.g., "$330") as the code automatically handles prefix stripping.
+3.  **Inclusions:** Use `|` to separate items (e.g., "Item 1|Item 2").
+4.  **Sync:** Run `python3 scripts/diff_site_data.py` to push changes to the Google Sheet.
 
-To update prices, reviews, or existing service descriptions:
+## 3. Article Publication (Style Wiki)
 
-1.  **Edit:** Modify the data in the relevant Google Sheet tab.
-2.  **Deploy:**
-    *   **Automated:** Run `scripts/sync-styleplanit.command`.
-    *   **Manual:** Run `python3 scripts/sync_engine.py --no-push`.
-3.  **Verify:** View the local site to confirm changes.
-4.  **Version Bump:** If changes are not visible due to caching, manually increment the `VERSION` in `configs/site-data.json`.
+1.  **Conversion:** Paste draft text into Gemini CLI: *"Convert this to a Style Wiki article. Use semantic HTML."*
+2.  **Local Integration:** Append entry to `site-data.json` and increment `VERSION`.
+3.  **Sheets Sync:** Run `python3 scripts/diff_site_data.py`, select Local Winner, and paste CSV into the **articles** tab.
 
-## 3. Image Asset Pipeline
+## 4. Image Asset Pipeline
 
-1.  **Add:** Drop new images into the correct subfolder in `assets/images/`.
-2.  **Manifest Update:**
-    *   Run `python3 scripts/diff_site_data.py`.
-    *   The script automatically scans folders and updates the `assets_manifest` in `site-data.json`.
-3.  **Commit:** Stage and commit the new images and the updated JSON.
+1.  **Add:** Drop new images into subfolders (e.g., `assets/images/services-by-category/Reclaim/`).
+2.  **Manifest Update:** Run `python3 scripts/diff_site_data.py`. The script scans and updates `assets_manifest` in `site-data.json`.
+3.  **Config:** Update the `image_url` field in `site-data.json` to point to the new path.
+
+## 5. Agent Review Protocol (Principal Engineer Mode)
+
+Before concluding any major refactor or feature, the agent must perform a **Surgical Scrutiny** across these categories:
+
+1.  **High Risk:** Scan for race conditions in `loader.js` and `app.js`. Ensure async operations (fetching JSON) don't block UI renders.
+2.  **Blockers:** Verify DOM IDs match between HTML and JS (e.g., `#packages-grid-container`).
+3.  **Security Check:** Run `grep -rn "target=\"_blank\""` and ensure every match has `rel="noopener noreferrer"`.
+4.  **Design Tokens:** Verify no hardcoded colors (`#FFF`) or spacing (`20px`) exist where `var(--white)` or `var(--standard-radius)` should be used.
+5.  **State Cleanup:** Ensure `.has-active` or `.active` classes are correctly toggled and removed during resets.

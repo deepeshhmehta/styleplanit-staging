@@ -35,6 +35,9 @@ const App = {
     if (typeof HomeServicesFeature !== 'undefined') {
         HomeServicesFeature.init();
     }
+    if (typeof PersonasFeature !== 'undefined') {
+        PersonasFeature.init();
+    }
     if (typeof PortfolioFeature !== 'undefined') {
         PortfolioFeature.init();
     }
@@ -87,5 +90,18 @@ const App = {
     $(document).on("click", ".btn-ga-book", function() {
         Analytics.trackLead('schedule_consultation_floating', 'appointment_booking');
     });
+
+    // 9. Handle deep links/hash scroll after dynamic components settle
+    if (window.location.hash) {
+        setTimeout(() => {
+            const target = $(window.location.hash);
+            if (target.length) {
+                const navHeight = $("nav").outerHeight() || 0;
+                $('html, body').animate({
+                    scrollTop: target.offset().top - navHeight
+                }, 800);
+            }
+        }, 500); // Give dynamic grids time to paint
+    }
   }
 };

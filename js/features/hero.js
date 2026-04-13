@@ -28,26 +28,15 @@ const HeroFeature = {
     });
 
     const heroBgs = $(".hero-bg");
-    // Detect screen size
-    const isMobile = window.innerWidth <= 768;
+    if (heroBgs.length <= 1) return;
 
-    if (isMobile) {
-      if (heroBgs.length <= 1) return;
-
-      let current = 0;
-      // Start the mobile-only slideshow
-      setInterval(() => {
+    let current = 0;
+    // Start global crossfade slideshow (for both web and mobile)
+    setInterval(() => {
         heroBgs.eq(current).removeClass("active").css("opacity", 0);
         current = (current + 1) % heroBgs.length;
         heroBgs.eq(current).addClass("active").css("opacity", 1);
-      }, 4000);
-    } else {
-      // On desktop, ensure all are visible and tiled
-      heroBgs.css({
-        opacity: 1,
-        transition: "none",
-      }).addClass("active");
-    }
+    }, 4000);
 
     // Hero CTA Tracking
     $(document).on("click", ".btn-ga-hero", function() {

@@ -37,7 +37,7 @@ const DialogsFeature = {
                 <span class="section-subtitle" style="font-size: 0.6rem; letter-spacing: 2px;">Style Plan(it) Alert</span>
                 <h3>${config.title}</h3>
                 <p>${config.description}</p>
-                <a href="${config.action}" target="_blank" class="btn btn-primary-accent" style="width: 100%; text-align: center; margin-top: 10px;">${config.cta}</a>
+                <a href="${config.action}" target="_blank" rel="noopener noreferrer" class="btn btn-primary-accent" style="width: 100%; text-align: center; margin-top: 10px;">${config.cta}</a>
             </div>
         </div>
     `;

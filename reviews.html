@@ -32,24 +32,26 @@
         </div>
     </div>
 
-    <nav data-component="header"></nav>
+    <div class="site-wrapper">
+        <nav data-component="header"></nav>
 
-    <main>
-        <section id="reviews" class="section-padding" style="background-color: var(--white); padding-top: 140px;">
-            <div class="container">
-                <div class="text-center">
-                    <span class="section-subtitle">Kind Words</span>
-                    <h2 class="section-title" text-config-key="REVIEWS_TITLE">[REVIEWS_TITLE]</h2>
+        <main>
+            <section id="reviews" class="section-padding" style="background-color: var(--white); padding-top: 140px;">
+                <div class="container">
+                    <div class="text-center">
+                        <span class="section-subtitle">Kind Words</span>
+                        <h2 class="section-title" text-config-key="REVIEWS_TITLE">[REVIEWS_TITLE]</h2>
+                    </div>
+
+                    <div class="reviews-grid" id="reviews-container">
+                        <!-- Reviews will be dynamically inserted here -->
+                    </div>
                 </div>
+            </section>
+        </main>
 
-                <div class="reviews-grid" id="reviews-container">
-                    <!-- Reviews will be dynamically inserted here -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer data-component="footer"></footer>
+        <footer data-component="footer"></footer>
+    </div>
     <div data-component="book-now-floating"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>

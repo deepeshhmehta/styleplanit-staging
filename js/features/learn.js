@@ -77,7 +77,7 @@ const LearnFeature = {
                     <hr>
                     <div class="article-cta">
                         <h4>Ready to apply this to your own brand?</h4>
-                        <a href="https://cal.com/styleplanit/15min" target="_blank" class="btn btn-primary-accent">Book a Discovery Call</a>
+                        <a href="https://cal.com/styleplanit/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary-accent">Book a Discovery Call</a>
                     </div>
                 </div>
             </div>

@@ -58,29 +58,76 @@
       "homepage_hero.jpg",
       "newcomer_essentials.jpeg",
       "refine_and_align.jpg"
+    ],
+    "services-by-category/Reclaim": [
+      "reclaim_hero.jpg"
     ]
   },
   "categories": [
     {
-      "description": "Foundational styling for newcomers and those ready to define their presence in a new environment.",
-      "href": "services#establish",
+      "booking_link": "https://cal.com/styleplanit/15min",
+      "description": "Land with confidence using a personal styling service designed specifically for newcomers to Canada. We build your foundational arrival capsule wardrobe—a curated set of versatile, high-quality essentials tailored to the local climate and lifestyle.",
+      "href": "",
       "image_url": "assets/images/services-by-category/Establish/homepage_hero.jpg",
+      "inclusions": "Body Shape Analysis|Personal Style Analysis|Lookbook Curation|Shopping List|Virtual Shopping",
       "name": "Establish",
+      "price": "$330",
+      "short_description": "Foundational arrival capsule for newcomers.",
       "showOnHomePage": "TRUE"
     },
     {
-      "description": "Strategic image enhancement for professionals and individuals ready to amplify their influence.",
-      "href": "services#elevate",
+      "booking_link": "https://cal.com/styleplanit/15min",
+      "description": "Life shifts, and your wardrobe should evolve with you. Whether you are navigating postpartum life, stepping back into the workforce after a hiatus, or entering a new personal chapter, this service is designed to help you rediscover your confidence.",
+      "href": "",
+      "image_url": "assets/images/services-by-category/Reclaim/reclaim_hero.jpg",
+      "inclusions": "Body Shape Analysis|Lifestyle Analysis|Personal Style Analysis|Color Analysis|Lookbook Curation|Shopping List|Wardrobing|Virtual Shopping|Moodboard curation",
+      "name": "Reclaim",
+      "price": "$501",
+      "short_description": "Rediscover yourself during life transitions.",
+      "showOnHomePage": "TRUE"
+    },
+    {
+      "booking_link": "https://cal.com/styleplanit/15min",
+      "description": "Step into your power era. We curate a master-level wardrobe of exceptional quality, refined silhouettes, and strategic statement pieces that speak before you do. Elevate your presence from simply successful to truly iconic.",
+      "href": "",
       "image_url": "assets/images/services-by-category/Elevate/homepage_hero.jpg",
+      "inclusions": "Body Shape Analysis|Lifestyle Analysis|Personal Style Analysis|Color Analysis|Lookbook Curation|Shopping List|In-Person Shopping|Wardrobing|Moodboard curation|Event Styling",
       "name": "Elevate",
+      "price": "$627",
+      "short_description": "Strategic image architecture for high-performers.",
       "showOnHomePage": "TRUE"
+    }
+  ],
+  "personas": [
+    {
+      "label": "Establish · New arrival",
+      "quote": "I'm brilliant at what I do. Nobody in this room knows it yet.",
+      "tags": "New to Canada|Corporate entry|Visibility",
+      "title": "The Pioneer"
     },
     {
-      "description": "Bespoke, white-glove image management for high-profile executives and individuals.",
-      "href": "icon-service",
-      "image_url": "assets/images/services-by-category/Elevate/icon_service.png",
-      "name": "Icon Service",
-      "showOnHomePage": "FALSE"
+      "label": "Reclaim · Returning mom",
+      "quote": "I forgot I could look like this. I want her back — but for who I am now.",
+      "tags": "Back to work|Identity shift|Confidence",
+      "title": "The Lioness"
+    },
+    {
+      "label": "Elevate · The reinventer",
+      "quote": "Everything in my life has changed. My wardrobe hasn't caught up yet.",
+      "tags": "New chapter|After divorce|Reinvention",
+      "title": "The Phoenix"
+    },
+    {
+      "label": "Elevate · Sudden CEO",
+      "quote": "The title changed overnight. The wardrobe didn't get the memo.",
+      "tags": "Executive|360 upgrade|Authority",
+      "title": "The Godfather"
+    },
+    {
+      "label": "Establish · The over-buyer",
+      "quote": "I have everything. I wear nothing. Help me make sense of it.",
+      "tags": "Full wardrobe|No system|Edit needed",
+      "title": "The Maximalist"
     }
   ],
   "config": [
@@ -218,7 +265,7 @@
     },
     {
       "key": "NAV_LINK_3_HREF",
-      "value": "services"
+      "value": "/#services"
     },
     {
       "key": "NAV_LINK_3_TEXT",
@@ -354,7 +401,7 @@
     },
     {
       "key": "VALUE_TITLE",
-      "value": "BUILT FOR THE INTENTIONAL"
+      "value": "WHY STYLING MATTERS."
     },
     {
       "key": "VALUE_SUBTITLE",
@@ -366,7 +413,7 @@
     },
     {
       "key": "VALUE_LEAD",
-      "value": "When you know who you are, you move differently. We architect the strategy behind your style so you can focus on what matters; your only job is to show up."
+      "value": "When you know who you are, you move differently. We architect the strategy behind your style so you can focus on what matters — your only job is to show up."
     },
     {
       "key": "VALUE_PILLAR_1_TITLE",
@@ -374,7 +421,7 @@
     },
     {
       "key": "VALUE_PILLAR_1_TEXT",
-      "value": "Designed for those who understand that style isn't just for big events; it’s for the slow, everyday moments. It’s moving with an instinctual confidence from your morning coffee to your night routine."
+      "value": "Style isn't just for big events — it's for the slow, everyday moments. Moving with instinctual confidence from your morning coffee to your night routine."
     },
     {
       "key": "VALUE_PILLAR_2_TITLE",
@@ -382,7 +429,7 @@
     },
     {
       "key": "VALUE_PILLAR_2_TEXT",
-      "value": "An average person spends over 100 hours a year just deciding what to wear. We are built for those ready to outsource that analysis—reclaiming that space so you can focus on your legacy."
+      "value": "The average person spends 100+ hours a year deciding what to wear. We reclaim that time so you can focus on your legacy."
     },
     {
       "key": "VALUE_PILLAR_3_TITLE",
@@ -390,7 +437,7 @@
     },
     {
       "key": "VALUE_PILLAR_3_TEXT",
-      "value": "For the professional who knows that in a world of split-second judgments, your image is your silent negotiator. We master the physics of the first impression, ensuring you command respect before you even say a word."
+      "value": "In a world of split-second judgments, your image is your silent negotiator. We master the physics of first impressions so you command respect before you say a word."
     },
     {
       "key": "VALUE_CTA_TEXT",
@@ -581,7 +628,7 @@
   "version": [
     {
       "key": "VERSION",
-      "value": "4.6"
+      "value": "5.0"
     }
   ]
 }

@@ -4,16 +4,26 @@
     --primary-accent-dark: #547c65;
     --black: #0F0F0F;
     --charcoal: #2A2A2A;
+    --charcoal-rgb: 42, 42, 42;
     --cream: rgb(240 238 230 / 90%);
     --white: #ffffff;
     --border-color: rgba(0,0,0,0.08);
     --font-primary: 'Bebas Neue', sans-serif;
     --font-secondary: 'DM Sans', sans-serif;
     --border-radius-pill: 200px;
+    --standard-radius: 40px;
     --primary-accent-rgb: 12, 69, 36;
     --cream-rgb: 230, 240, 231;
     --grey: #aaa;
+    --grey-rgb: 170, 170, 170;
     --logo-band-bg: #abc5ae;
+    
+    /* Z-Index Scale */
+    --z-ui: 10;
+    --z-sticky: 100;
+    --z-overlay: 500;
+    --z-modal: 1000;
+    --z-loader: 9999;
     
     /* Anchors */
     --anchor-color: #24301B;

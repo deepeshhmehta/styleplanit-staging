@@ -5,45 +5,35 @@
 ## 1. Schema Overview
 
 ### `version` (Array)
-Contains a single object with the `VERSION` key.
-*   **Usage:** Used for cache busting. Incrementing this value forces clients to flush `localStorage` and fetch fresh data.
+*   Used for cache busting. Incrementing this value forces clients to fetch fresh data.
 
 ### `config` (Array)
-Key-Value pairs for global site settings and text.
-*   **Naming Convention:** ALL_CAPS_SNAKE_CASE.
-*   **Special Keys:**
-    *   `LOGO_TEXT`: The main brand display name.
-    *   `GOOGLE_ANALYTICS_ID`: GA4 measurement ID.
-    *   `VALUE_*`: Controls the Home Page "Why Styling" section.
-    *   `NAV_LINK_*`: Dynamic URLs and labels for the header.
-
-### `articles` (Array)
-Dynamic content for the Style Wiki (`/learn`).
-*   **Fields:**
-    *   `title`: Used as the H1 and for URL slug generation.
-    *   `category`: Displayed as a subtitle (e.g., "Foundations").
-    *   `read_time`: Manual string (e.g., "5 min").
-    *   `content`: Raw HTML string. Use standard semantic tags.
+Key-Value pairs for global site settings.
+*   `VALUE_*`: Storytelling copy for the "Why Styling" section.
+*   `NAV_LINK_*`: Anchor-based URLs (e.g., `/#services`).
+*   `PILL_TAG`: The floating hero badge text.
 
 ### `categories` (Array)
-Top-level service groupings (e.g., "Establish", "Elevate").
-*   **Fields:**
-    *   `name`: The display name and filter key.
-    *   `description`: The card body text.
-    *   `showOnHomePage`: "TRUE" or "FALSE" string.
+Defines the **Service Bundles** shown in "Pick A Journey."
+*   `name`: Display title (Establish, Reclaim, Elevate).
+*   `short_description`: Displayed in minimized card state.
+*   `description`: Displayed in expanded card state.
+*   `price`: Formatted string (e.g., "$330").
+*   `inclusions`: Pipe-separated string (`|`) for list generation.
+*   `booking_link`: Direct link to scheduling (Cal.com).
+*   `image_url`: Path to background image.
 
 ### `services` (Array)
-Individual service offerings.
-*   **Fields:**
-    *   `category`: Must match a name in the `categories` array.
-    *   `title`, `short_description`, `long_description`: Content levels.
-    *   `image_url`: Path to service visual.
-    *   `footer`: Comma-separated list of inclusions.
+Individual **À La Carte** offerings shown on the Experiences page.
+*   **Note:** Categorized as "Bespoke" but filtered to exclude "Icon Service."
+*   `footer`: Comma-separated tags for icon-chip generation.
 
-### `assets_manifest` (Object)
-Automatically generated mapping of image folders.
-*   **Structure:** `{ "folder/path": ["image1.jpg", "image2.png"] }`.
-*   **Generation:** Updated via `scripts/diff_site_data.py`.
+### `team` (Array)
+Profiles for "The Collective."
+*   `bio`: Long-form text. Displayed with `text-align: justify`.
+
+### `articles` (Array)
+Style Wiki content. Managed via the **Article Publication Workflow**.
 
 ## 2. Synchronization Logic
 Data flow: **Google Sheets** → **CSV** → **site-data.json** → **Website UI**.

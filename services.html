@@ -37,34 +37,22 @@
     </div>
     <nav data-component="header"></nav>
 
+    <div class="site-wrapper">
     <main>
-        <!-- Phase 1: The Pillars (Entry Gate) -->
-        <section id="experience-intro" class="section-padding" style="padding-top: 140px;">
+        <!-- The Menu -->
+        <section id="services" class="section-padding" style="padding-top: 140px;">
             <div class="container">
                 <div class="text-center">
-                    <span class="section-subtitle" text-config-key="EXPERIENCE_SUBTITLE">[EXPERIENCE_SUBTITLE]</span>
-                    <h2 class="section-title" text-config-key="EXPERIENCE_JOURNEY_TITLE">[EXPERIENCE_JOURNEY_TITLE]</h2>
-                </div>
-                <div class="services-category-grid" id="services-category-selector">
-                    <!-- Category cards will be dynamically inserted here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Phase 2: The Deep Dive -->
-        <section id="services" class="section-padding">
-            <div class="container">
-                <div class="text-center">
-                    <span class="section-subtitle" text-config-key="EXPERIENCE_MENUS_SUBTITLE">[EXPERIENCE_MENUS_SUBTITLE]</span>
-                    <h2 class="section-title" id="active-category-title">The Collection</h2>
-                    <button class="btn-secondary" id="btn-return-to-categories" text-config-key="EXPERIENCE_CHANGE_BTN" style="margin-bottom: 40px;">[EXPERIENCE_CHANGE_BTN]</button>
+                    <span class="section-subtitle">À La Carte</span>
+                    <h2 class="section-title">The Styling Menu</h2>
+                    <p class="lead-text" style="max-width: 800px; margin: 0 auto 60px;">Build your own experience. Choose from our curated selection of individual services to target your specific needs.</p>
                 </div>
 
                 <div class="service-content">
-                    <!-- Service cards will be dynamically inserted here -->
+                    <!-- ALL services will be dynamically inserted here in one grid -->
                 </div>
 
-                <!-- NEW: Service Details Box (Below all services) -->
+                <!-- Service Details Box -->
                 <div id="service-details-container" class="service-details-container" style="display: none;">
                     <!-- Active service details will be injected here -->
                 </div>
@@ -73,9 +61,10 @@
 
         <!-- Social Proof -->
         <div data-component="reviews-section"></div>
-    </main>
+    </main>    
 
     <footer data-component="footer"></footer>
+    </div>
     <div data-component="book-now-floating"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
