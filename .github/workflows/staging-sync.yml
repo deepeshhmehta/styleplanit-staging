@@ -14,7 +14,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Configure CNAME for Staging
+        run: echo "staging.styleplanit.com" > CNAME
+
       - name: Push to Staging Repository
         run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add CNAME
+          git commit -m "chore: update CNAME for staging environment" || echo "No CNAME change needed"
           git remote add staging https://x-access-token:${{ secrets.STAGING_SYNC_TOKEN }}@github.com/deepeshhmehta/styleplanit-staging.git
           git push staging staging:main --force
