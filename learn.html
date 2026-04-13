@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/styles/desktop.css">
     <link rel="stylesheet" href="/styles/mobile.css">
 </head>
-<body class="bg-cream">
+<body>
     <div id="site-loader" class="loader-overlay">
         <div class="loader-content">
             <div class="loader-banner">Style Plan(it)</div>
@@ -26,47 +26,49 @@
         </div>
     </div>
 
-    <nav data-component="header"></nav>
+    <div class="site-wrapper">
+        <nav data-component="header"></nav>
 
-    <!-- Wiki Layout Wrapper -->
-    <div class="wiki-layout-wrapper">
-        <button id="wiki-sidebar-toggle" class="wiki-toggle-btn" aria-label="Toggle Index">
-            <i class="fas fa-list-ul"></i>
-        </button>
+        <!-- Wiki Layout Wrapper -->
+        <div class="wiki-layout-wrapper">
+            <button id="wiki-sidebar-toggle" class="wiki-toggle-btn" aria-label="Toggle Index">
+                <i class="fas fa-list-ul"></i>
+            </button>
 
-        <aside class="wiki-sidebar" id="wiki-sidebar">
-            <div class="sidebar-header">
-                <h4 class="sidebar-title">The Style Wiki</h4>
-                <button id="wiki-sidebar-close" class="wiki-close-btn"><i class="fas fa-times"></i></button>
-            </div>
-            <ul id="wiki-article-list" class="article-links">
-                <!-- Articles populated via JS -->
-            </ul>
-        </aside>
-        
-        <main class="wiki-main-content">
-            <div class="wiki-reader-container">
-                <div class="wiki-reader-header">
-                    <div class="reader-controls">
-                        <button id="dark-mode-toggle" class="reader-btn" title="Toggle Dark Mode">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                    </div>
+            <aside class="wiki-sidebar" id="wiki-sidebar">
+                <div class="sidebar-header">
+                    <h4 class="sidebar-title">The Style Wiki</h4>
+                    <button id="wiki-sidebar-close" class="wiki-close-btn"><i class="fas fa-times"></i></button>
                 </div>
-                
-                <article class="wiki-content" id="wiki-article-container">
-                    <div class="wiki-placeholder">
-                        <span class="section-subtitle">Loading Knowledge...</span>
-                        <div class="shimmer-line title"></div>
-                        <div class="shimmer-line text"></div>
-                        <div class="shimmer-line text"></div>
+                <ul id="wiki-article-list" class="article-links">
+                    <!-- Articles populated via JS -->
+                </ul>
+            </aside>
+            
+            <main class="wiki-main-content">
+                <div class="wiki-reader-container">
+                    <div class="wiki-reader-header">
+                        <div class="reader-controls">
+                            <button id="dark-mode-toggle" class="reader-btn" title="Toggle Dark Mode">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
                     </div>
-                </article>
-            </div>
-        </main>
-    </div>
+                    
+                    <article class="wiki-content" id="wiki-article-container">
+                        <div class="wiki-placeholder">
+                            <span class="section-subtitle">Loading Knowledge...</span>
+                            <div class="shimmer-line title"></div>
+                            <div class="shimmer-line text"></div>
+                            <div class="shimmer-line text"></div>
+                        </div>
+                    </article>
+                </div>
+            </main>
+        </div>
 
-    <footer data-component="footer"></footer>
+        <footer data-component="footer"></footer>
+    </div>
     <div data-component="book-now-floating"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>

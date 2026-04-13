@@ -2,7 +2,7 @@
 @media (min-width: 769px) {
     /* Hero Section Desktop */
     .hero-bg {
-        width: 33.33%;
+        width: 100%;
     }
 
     /* How It Works Desktop Layout */
@@ -42,6 +42,7 @@
         height: 500px;
         object-fit: cover;
         object-position: top center;
+        border-radius: var(--standard-radius);
     }
 
     .profile-text { flex: 1; }

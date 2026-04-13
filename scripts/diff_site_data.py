@@ -21,7 +21,8 @@ GIDS = {
     "reviews": "1697858749",
     "team": "1489131428",
     "dialogs": "49430965",
-    "articles": "582124820"
+    "articles": "582124820",
+    "personas": "58397189"
 }
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -92,7 +93,8 @@ def main():
         "reviews": {"key_fields": ["author", "text"]}, 
         "dialogs": {"key_fields": ["title"]}, 
         "team": {"key_fields": ["name"]},
-        "articles": {"key_fields": ["title"]}
+        "articles": {"key_fields": ["title"]},
+        "personas": {"key_fields": ["title"]}
     }
 
     all_discrepancies = []

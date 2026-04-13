@@ -84,7 +84,8 @@ async function loadComponents() {
     const features = [];
     if ($(".hero-bg").length > 0) features.push('hero');
     if ($("#logos-container").length > 0) features.push('logos');
-    if ($("#home-categories-container").length > 0) features.push('home-services');
+    if ($("#packages-grid-container").length > 0 || $("#home-categories-container").length > 0) features.push('home-services');
+    if ($("#personas-grid").length > 0) features.push('personas');
     if ($("#portfolio-carousel").length > 0) features.push('portfolio');
     if ($("#reviews-container").length > 0) features.push('reviews');
     if ($("#team-container").length > 0) features.push('team');
@@ -138,8 +139,8 @@ async function loadComponents() {
     // 5. Signal ready
     document.dispatchEvent(new CustomEvent('appReady'));
 
-    // 5b. Wait for critical hero images
-    const criticalElements = document.querySelectorAll('[style-bg-config-key]');
+    // 5b. Wait for critical hero images and journey cards
+    const criticalElements = document.querySelectorAll('[style-bg-config-key], .package-card-bg');
     let loadedCount = 0;
     const totalToLoad = criticalElements.length;
 
