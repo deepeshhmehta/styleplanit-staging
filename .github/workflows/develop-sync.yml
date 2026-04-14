@@ -1,0 +1,29 @@
+name: Sync to Develop Repo
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  sync-to-develop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false # Important: allow manual push with PAT
+
+      - name: Configure CNAME for Develop
+        run: echo "develop.styleplanit.com" > CNAME
+
+      - name: Push to Develop Repository
+        env:
+          SYNC_TOKEN: ${{ secrets.STAGING_SYNC_TOKEN }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add CNAME
+          git commit -m "chore: update CNAME for develop environment" || echo "No CNAME change needed"
+          git push https://x-access-token:${SYNC_TOKEN}@github.com/deepeshhmehta/styleplanit-develop.git develop:main --force
