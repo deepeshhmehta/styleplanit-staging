@@ -70,9 +70,16 @@ const HomeServicesFeature = {
         const indicator = $("#packages-scroll-indicator");
         const resetButton = $("#btn-packages-reset");
 
-        // 1. Card Click - Expand
+        // 1. Card Click - Expand or Contract
         $(document).on("click", ".package-card", function(e) {
-            if ($(this).hasClass("active") || $(e.target).closest('.package-details-expanded').length > 0) return;
+            // If clicking inside the details (like the button), do nothing special
+            if ($(e.target).closest('.package-details-expanded').length > 0) return;
+
+            // If already active, contract it (same as reset)
+            if ($(this).hasClass("active")) {
+                $("#btn-packages-reset").trigger("click");
+                return;
+            }
 
             const tier = $(this).data("tier");
             

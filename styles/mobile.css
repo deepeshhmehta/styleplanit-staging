@@ -19,13 +19,14 @@
         position: absolute;
         top: 80px;
         right: 4vw;
+        width: auto; /* Use auto width as verified in browser */
         background: rgba(255, 255, 255, 0.85); /* Translucent background */
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         flex-direction: column;
         align-items: flex-end; /* Align items to the right */
-        gap: 15px;
-        padding: 25px 40px;
+        gap: 12px; /* Tighter gap */
+        padding: 30px 40px;
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         z-index: 1001;
@@ -36,8 +37,9 @@
         color: var(--black); 
         font-weight: 700;
         font-family: var(--font-primary);
-        font-size: 1.2rem;
+        font-size: 1.1rem; /* Slightly smaller to fit */
         text-align: right;
+        white-space: nowrap; /* Prevent wrapping */
     }
 
     .nav-divider { display: none; }
@@ -75,21 +77,12 @@
     .hero-sub-mantra { font-size: 0.9rem; letter-spacing: 3px; }
 
     .dribbble-pills {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-        overflow-x: auto;
-        white-space: nowrap;
-        width: 100%;
-        padding-bottom: 10px;
-        scrollbar-width: none; /* Hide scrollbar Firefox */
+        display: none !important; /* Hide pills on mobile to save space */
     }
-    .dribbble-pills::-webkit-scrollbar {
-        display: none; /* Hide scrollbar Chrome/Safari */
-    }
-    .floating-pill {
-        flex: 0 0 auto; /* Don't shrink */
-        padding: 8px 20px;
+
+    .dribbble-cta-btn {
+        padding: 12px 30px;
+        font-size: 0.85rem;
     }
 
     /* How It Works Mobile Layout */

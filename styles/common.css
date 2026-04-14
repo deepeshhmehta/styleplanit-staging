@@ -348,7 +348,7 @@ nav {
 
 .logo {
     font-family: var(--font-primary);
-    font-size: clamp(3rem, 8vw, 5.5rem); /* Responsive logo sizing */
+    font-size: clamp(1.8rem, 6vw, 5.5rem); /* Reduced minimum and preferred size */
     color: var(--white);
     text-decoration: none;
     letter-spacing: 2px;
@@ -1641,6 +1641,8 @@ footer {
 
 @media (max-width: 768px) {
     .bio { text-align: left; }
+    .pillar { padding-left: 0; }
+    .pillar-num { display: none; }
 }
 @media (max-width: 768px) {
     .active-service-details .details-brand-pillar {
@@ -1764,6 +1766,7 @@ footer {
 .packages-section {
     padding: 100px 0;
     position: relative;
+    scroll-margin-top: -10vh; /* Negative offset to scroll deeper */
 }
 
 .packages-section .container {
@@ -1774,7 +1777,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 60px;
+    margin-bottom: 0;
     width: 100%;
 }
 
@@ -2142,7 +2145,7 @@ footer {
     font-weight: 500;
 }
 
-.mt-xl { margin-top: 80px; }
+.mt-xl { margin-top: 4vh; }
 
 .discovery-callout {
     padding: 40px;
