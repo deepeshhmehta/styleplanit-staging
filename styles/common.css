@@ -292,11 +292,24 @@ h1, h2, h3, h4 {
 
 .logo-band .logos {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     gap: 30px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    overflow-x: auto; /* Enable scroll */
     padding: 0 40px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.logo-band .logos::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+@media (max-width: 1024px) {
+    .logo-band .logos {
+        justify-content: flex-start; /* Ensure left-aligned when scrolling on tablets/mobile */
+    }
 }
 
 .brand-logo-item {
@@ -1701,16 +1714,7 @@ footer {
     }
 
     .logo-band .logos {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
         padding: 0 20px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .logo-band .logos::-webkit-scrollbar {
-        display: none;
     }
 
     .brand-logo-item {
@@ -2127,7 +2131,7 @@ footer {
     display: none;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
     .packages-grid-wrapper {
         overflow-x: auto;
         padding-bottom: 20px;
@@ -2143,8 +2147,8 @@ footer {
     }
     
     .packages-grid:not(.has-active) .package-card {
-        flex: 0 0 85vw;
-        max-width: 85vw;
+        flex: 0 0 320px;
+        max-width: 320px;
     }
 
     #packages-scroll-indicator {
@@ -2161,6 +2165,13 @@ footer {
         gap: 40px;
     }
     .package-card h3 { font-size: 2rem; }
+}
+
+@media (max-width: 768px) {
+    .packages-grid:not(.has-active) .package-card {
+        flex: 0 0 85vw;
+        max-width: 85vw;
+    }
 }
 
 /* --- SERVICES MENU ENHANCEMENTS --- */
