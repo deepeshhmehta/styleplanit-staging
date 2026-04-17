@@ -136,8 +136,26 @@
     }
 
     .services-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .service-card {
+        padding: 15px;
+    }
+
+    .service-card .service-card-image img {
+        height: 120px;
+        margin-bottom: 10px;
+    }
+
+    .service-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .service-card p {
+        display: none; /* Hide description in grid view on mobile */
     }
 
     .service-card.active {
