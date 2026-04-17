@@ -348,7 +348,7 @@ nav {
 
 .logo {
     font-family: var(--font-primary);
-    font-size: clamp(3rem, 8vw, 5.5rem); /* Responsive logo sizing */
+    font-size: clamp(1.8rem, 6vw, 5.5rem); /* Reduced minimum and preferred size */
     color: var(--white);
     text-decoration: none;
     letter-spacing: 2px;
