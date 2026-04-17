@@ -1766,6 +1766,7 @@ footer {
 .packages-section {
     padding: 100px 0;
     position: relative;
+    scroll-margin-top: -10vh; /* Negative offset to scroll deeper */
 }
 
 .packages-section .container {
