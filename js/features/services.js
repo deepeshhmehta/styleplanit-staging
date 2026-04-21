@@ -172,7 +172,13 @@ const ServicesFeature = {
         $(this).addClass("active");
         
         const title = $(this).data("title");
+        Analytics.trackInteraction('service_card_click', title);
         self.showServiceDetails(title);
+    });
+
+    $(document).on("click", ".btn-ga-inquiry", function() {
+        const serviceName = $(this).closest(".active-service-details").find("h3").text();
+        Analytics.trackLead('bespoke_service_inquiry', serviceName);
     });
 
     $(document).on("click", ".btn-close-details", function() {

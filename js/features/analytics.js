@@ -6,8 +6,12 @@ const Analytics = {
      * Core event tracking wrapper
      */
     trackEvent: function(eventName, params = {}) {
-        if (window.gtag) {
+        const isProd = window.location.hostname === 'styleplanit.com';
+        if (window.gtag && isProd) {
             gtag('event', eventName, params);
+        } else if (!isProd) {
+            // Silently suppress in non-prod to keep console clean, or use console.debug
+            // console.debug(`[Analytics-Sim] Event "${eventName}":`, params);
         } else {
             console.debug(`[Analytics] gtag not found. Event "${eventName}" would have been sent:`, params);
         }

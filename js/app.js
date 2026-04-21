@@ -15,6 +15,9 @@ const App = {
     });
 
     $(document).on("click", ".nav-links a", function () {
+      const linkText = $(this).text().trim();
+      Analytics.trackInteraction('nav_click', linkText);
+
       $(".nav-links").removeClass("active");
       $(".menu-toggle").attr("aria-expanded", "false");
     });

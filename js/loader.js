@@ -112,8 +112,9 @@ async function loadComponents() {
     // 3. Load and apply site-wide configuration
     const config = await Utils.getConfig();
     
-    // Initialize GA4 if ID is present
-    if (config['GOOGLE_ANALYTICS_ID']) {
+    // Initialize GA4 only on production domain if ID is present
+    const isProd = window.location.hostname === 'styleplanit.com';
+    if (config['GOOGLE_ANALYTICS_ID'] && isProd) {
         const gaId = config['GOOGLE_ANALYTICS_ID'];
         const gaScript = document.createElement('script');
         gaScript.async = true;

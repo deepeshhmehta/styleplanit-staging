@@ -36,6 +36,10 @@ const PersonasFeature = {
                         const scrollPercent = scrollLeft / maxScroll;
                         const activeIndex = Math.round(scrollPercent * (personas.length - 1));
                         
+                        if (activeIndex === personas.length - 1) {
+                            Analytics.trackScrollEnd('personas_carousel');
+                        }
+
                         dots.removeClass("active");
                         dots.eq(activeIndex).addClass("active");
                     }
@@ -48,6 +52,9 @@ const PersonasFeature = {
         // 5. Dot Click to Scroll
         $(document).on("click", "#personas-scroll-indicator .scroll-dot", function() {
             const index = $(this).data("index");
+            const persona = personas[index];
+            Analytics.trackInteraction('persona_dot_click', persona.title);
+
             const cardWidth = cards.first().outerWidth() + 30; // 30 is gap
             
             wrapper.animate({
