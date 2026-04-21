@@ -20,10 +20,13 @@ const TeamFeature = {
       const isEven = index % 2 === 0;
       const alignmentClass = isEven ? "image-left" : "image-right";
       
-      // Try to find image matching name (e.g. "Ayushi Vyas" -> "ayushi")
-      const firstName = person.name.split(' ')[0].toLowerCase();
-      const matchedImage = images.find(img => img.toLowerCase().includes(firstName)) || images[0];
-      const imageUrl = `assets/images/meet-team-page/${matchedImage}`;
+      // Use direct imageUrl if provided, otherwise fallback to manifest logic
+      let imageUrl = person.imageUrl || "";
+      if (!imageUrl.startsWith('http') && !imageUrl.startsWith('assets/')) {
+          const firstName = person.name.split(' ')[0].toLowerCase();
+          const matchedImage = images.find(img => img.toLowerCase().includes(firstName)) || images[0];
+          imageUrl = `assets/images/meet-team-page/${matchedImage}`;
+      }
 
       container.append(`
                 <div class="profile-card ${alignmentClass}">

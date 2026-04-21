@@ -187,13 +187,18 @@
     }
     .profile-image { max-width: 100%; }
     .profile-image img { 
-        height: 400px; 
         width: 100%; 
+        aspect-ratio: 3 / 4;
         object-fit: cover;
         object-position: top center;
         border-radius: var(--standard-radius);
     }
     .profile-text h3 { font-size: 2.2rem; }
+    .profile-text .role {
+        letter-spacing: 1px;
+        font-size: 0.7rem;
+        margin-bottom: 15px;
+    }
 
     /* Value Section Mobile */
     .value-split {

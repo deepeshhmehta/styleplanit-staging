@@ -22,11 +22,15 @@ This document details the Python-based CLI tools used to manage the StylePlanIt 
 ## 2. Project Management
 
 ### `scripts/asana_tools.py` (CLI Task Manager)
-*   **Purpose:** Manage the "Style Plan-It Launch Plan" Asana project from the terminal.
+*   **Purpose:** Manage and search Asana tasks from the terminal.
 *   **Capabilities:**
-    *   `list`: View all tasks and statuses.
-    *   `create`: Create tasks with optional `--assignee` and `--due` (YYYY-MM-DD) date.
-    *   `update`: Mark tasks as complete or re-assign.
+    *   `workspaces`: List all accessible Asana workspaces.
+    *   `projects`: List projects within a workspace.
+    *   `list`: View all tasks and statuses (use `--detailed` for notes).
+    *   `get`: Retrieve full task metadata, including notes and HTML content.
+    *   `search`: Perform local keyword searches in task names and descriptions (bypasses native search limits).
+    *   `create`: Create tasks with optional `--assignee` and `--due` dates.
+    *   `update`: Modify task status or assignment.
 *   **Security:** Sources the `ASANA_PAT` from the root `.env.asana` file via subshells.
 
 ## 3. Development

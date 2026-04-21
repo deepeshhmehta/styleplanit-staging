@@ -137,13 +137,13 @@ const Utils = {
 };
 
 /**
- * Data - Centralized data provider using atomic site-data.json
+ * Data - Centralized data provider using atomic site-data.json and site-config.json
  */
 const Data = {
     masterData: null,
 
     /**
-     * Load the master JSON file
+     * Load the master JSON files
      */
     loadMasterData: async function() {
         if (this.masterData) return this.masterData;
@@ -171,21 +171,26 @@ const Data = {
     },
 
     /**
-     * Fetch fresh JSON from repository
+     * Fetch fresh JSON from repository (Atomic split)
      */
     refreshMasterData: async function() {
         try {
-            const response = await fetch(`${CONFIG.DATA_PATH}?v=${new Date().getTime()}`);
-            if (response.ok) {
-                const freshData = await response.json();
+            const timestamp = new Date().getTime();
+            const [dataRes, configRes] = await Promise.all([
+                fetch(`${CONFIG.DATA_PATH}?v=${timestamp}`),
+                fetch(`/configs/site-config.json?v=${timestamp}`)
+            ]);
+
+            if (dataRes.ok && configRes.ok) {
+                const freshData = await dataRes.json();
+                const freshConfig = await configRes.json();
                 const now = new Date().getTime();
                 
+                // Unified object
+                const unified = { ...freshData, ...freshConfig };
+                
                 // Version check logic
-                let newVersion = "0.0.0";
-                if (freshData.version && freshData.version.length > 0) {
-                    newVersion = freshData.version[0].value || freshData.version[0].version;
-                }
-
+                const newVersion = freshConfig.VERSION || "0.0.0";
                 const cachedVersion = localStorage.getItem('app_version');
                 
                 // If versions mismatch, clear cache and reload to force fresh state
@@ -195,14 +200,14 @@ const Data = {
                     localStorage.setItem('app_version', newVersion);
                     localStorage.setItem('cache_timestamp', now);
                     window.location.reload(); 
-                    return freshData;
+                    return unified;
                 }
 
                 localStorage.setItem('app_version', newVersion);
-                localStorage.setItem('site_data_cache', JSON.stringify(freshData));
+                localStorage.setItem('site_data_cache', JSON.stringify(unified));
                 localStorage.setItem('cache_timestamp', now);
-                this.masterData = freshData;
-                return freshData;
+                this.masterData = unified;
+                return unified;
             }
         } catch (e) {
             console.warn("Failed to refresh site data from server", e);
@@ -219,7 +224,15 @@ const Data = {
     },
 
     /**
-     * Backward compatibility checkVersion (logic moved to refreshMasterData)
+     * Simple config helper
+     */
+    getConfig: function(key) {
+        if (!this.masterData) return null;
+        return this.masterData[key] !== undefined ? this.masterData[key] : null;
+    },
+
+    /**
+     * Backward compatibility checkVersion
      */
     checkVersion: async function() {
         await this.loadMasterData();

@@ -27,23 +27,22 @@
 <body>
     <div id="site-loader" class="loader-overlay">
         <div class="loader-content">
-            <div class="loader-banner">Style Plan(it)</div>
+            <div class="loader-banner" text-config-key="LOADER_BANNER">Style Plan(it)</div>
             
-            <div class="loader-phrase" id="loader-phrase">Refining your style...</div>
+            <div class="loader-phrase" id="loader-phrase" text-config-key="LOADER_PHRASE">Refining your style...</div>
             <div class="loader-progress-container"><div class="loader-progress-bar" id="loader-progress"></div></div>
         </div>
     </div>
-    <nav data-component="header"></nav>
-
     <div class="site-wrapper">
+    <nav data-component="header"></nav>
     <main>
         <!-- The Menu -->
         <section id="services" class="section-padding" style="padding-top: 140px;">
             <div class="container">
                 <div class="text-center">
-                    <span class="section-subtitle">À La Carte</span>
-                    <h2 class="section-title">The Styling Menu</h2>
-                    <p class="lead-text" style="max-width: 800px; margin: 0 auto 60px;">Build your own experience. Choose from our curated selection of individual services to target your specific needs.</p>
+                    <span class="section-subtitle" text-config-key="SERVICES_SUBTITLE">À La Carte</span>
+                    <h2 class="section-title" text-config-key="SERVICES_TITLE">The Styling Menu</h2>
+                    <p class="lead-text" style="max-width: 800px; margin: 0 auto 60px;" text-config-key="SERVICES_LEAD_TEXT">Build your own experience. Choose from our curated selection of individual services to target your specific needs.</p>
                 </div>
 
                 <div class="service-content">

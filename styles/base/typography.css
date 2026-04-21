@@ -84,3 +84,13 @@
     margin: 0;
 }
 
+
+.profile-text .role {
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--primary-accent);
+    display: block;
+    margin-bottom: 30px;
+}

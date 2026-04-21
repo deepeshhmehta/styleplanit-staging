@@ -41,7 +41,7 @@ const HomeServicesFeature = {
                                 <a href="${category.booking_link || '#'}" class="btn btn-primary-accent">Schedule a call</a>
                             </div>
                             <div class="details-right">
-                                <div class="package-label" style="color: var(--primary-accent)">What's included</div>
+                                <div class="package-label">What's included</div>
                                 <ul class="inclusions-list">
                                     ${inclusionsHtml}
                                 </ul>

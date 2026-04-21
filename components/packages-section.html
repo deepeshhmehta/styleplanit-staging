@@ -2,13 +2,13 @@
     <div class="container">
         <div class="packages-header">
             <div class="text-center">
-                <span class="section-subtitle">Three tiers, one system</span>
+                <span class="section-subtitle" text-config-key="PACKAGES_SUBTITLE">Three tiers, one system</span>
                 <h2 class="dribbble-title" style="color: var(--black); margin-top: 20px;">
-                    <span class="dribbble-sans" style="font-size: 3rem; color: var(--black);">PICK A</span>
-                    <em class="dribbble-serif" style="color: var(--black); font-size: 3.5rem;">journey.</em>
+                    <span class="dribbble-sans" style="font-size: 3rem; color: var(--black);" text-config-key="PACKAGES_TITLE_SANS">PICK A</span>
+                    <em class="dribbble-serif" style="color: var(--black); font-size: 3.5rem;" text-config-key="PACKAGES_TITLE_SERIF">journey.</em>
                 </h2>
                 <button class="btn-see-all" id="btn-packages-reset" style="margin: 20px auto 0;">
-                    <i class="fas fa-arrow-left"></i> See All
+                    <i class="fas fa-arrow-left"></i> <span text-config-key="PACKAGES_RESET_BTN_TEXT">See All</span>
                 </button>
             </div>
         </div>
@@ -25,12 +25,12 @@
 
         <div class="text-center mt-xl">
             <div class="discovery-callout">
-                <span class="section-subtitle" style="margin-bottom: 5px;">Bespoke (À La Carte)</span>
-                <div class="package-price" style="color: var(--primary-accent); font-size: 1.8rem; margin-bottom: 15px;">Starting at $78</div>
-                <p style="margin-bottom: 25px; font-size: 0.95rem;">Not sure where to start? Begin with a single service. Target your specific needs without committing to a full bundle.</p>
+                <span class="section-subtitle" style="margin-bottom: 5px;"><span text-config-key="BESPOKE_TITLE">Bespoke</span> <span class="highlighter" text-config-key="BESPOKE_HIGHLIGHT">(À La Carte)</span></span>
+                <div class="package-price" style="color: var(--primary-accent); font-size: 1.8rem; margin-bottom: 15px;" text-config-key="BESPOKE_PRICE">Starting at $78</div>
+                <p style="margin-bottom: 25px; font-size: 0.95rem;" text-config-key="BESPOKE_TEXT">Not sure where to start? Begin with a single service. Target your specific needs without committing to a full bundle.</p>
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                    <a href="https://cal.com/styleplanit/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary-accent">Book Discovery Call (Free)</a>
-                    <a href="services" class="btn-secondary" style="font-size: 0.6rem; opacity: 0.6;">Or explore individual services (à la carte)</a>
+                    <a href="https://cal.com/styleplanit/15min" target="_blank" rel="noopener noreferrer" class="btn btn-primary-accent" text-config-key="BESPOKE_CTA_PRIMARY">Book Discovery Call (Free)</a>
+                    <a href="services" class="btn-secondary" style="font-size: 0.6rem; opacity: 0.6;"><span text-config-key="BESPOKE_CTA_SECONDARY_PREFIX">Or explore individual services</span> <span class="highlighter" text-config-key="BESPOKE_CTA_SECONDARY_HIGHLIGHT">(à la carte)</span></a>
                 </div>
             </div>
         </div>

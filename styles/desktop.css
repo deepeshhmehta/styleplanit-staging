@@ -39,7 +39,7 @@
 
     .profile-image img {
         width: 100%;
-        height: 500px;
+        aspect-ratio: 3 / 4; /* Professional rectangular portrait */
         object-fit: cover;
         object-position: top center;
         border-radius: var(--standard-radius);

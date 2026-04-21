@@ -21,6 +21,12 @@
     transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
+@media (max-width: 1024px) {
+    .value-image {
+        background-position: center bottom; /* Align to bottom to show feet */
+    }
+}
+
 .value-image-overlay {
     position: absolute;
     top: 0;

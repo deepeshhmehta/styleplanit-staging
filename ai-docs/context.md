@@ -27,5 +27,10 @@ This document provides the high-level project summary and critical safety mandat
     *   `develop`: Integration branch (`https://develop.styleplanit.com`).
 *   **Verification:** Mandatory `test.sh` run before PR creation.
 
-## 4. Current State (v5.1.0)
-The site has transitioned to an **Authority Platform**. The "Service Grid" has been unified into a single high-impact à-la-carte menu with fade-based state transitions. The "Package Bundle" model remains the core conversion driver on the homepage. Typography has been consolidated to two premium families for a cleaner, editorial look.
+## 4. Current State (v5.2.0)
+The site has transitioned to an **Authority Platform**. The "Service Grid" has been unified into a single high-impact à-la-carte menu with fade-based state transitions. The "Package Bundle" model remains the core conversion driver on the homepage. Typography has been consolidated to two premium families (Cormorant Garamond / DM Sans).
+
+**v5.2 Refinements:**
+*   **Asset Logic:** Hero slideshow now uses filename-based orientation detection (`-portrait` / `-landscape`) for optimized framing.
+*   **Reviews:** Added dynamic "Read more/less" toggle with auto-scroll and improved framing for laptop screens.
+*   **Architecture:** Successfully modularized CSS into base and component layers for improved maintainability.

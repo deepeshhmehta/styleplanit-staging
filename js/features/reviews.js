@@ -24,6 +24,7 @@ const ReviewsFeature = {
                 <div class="review-card">
                     <span class="review-author">${review.author}</span>
                     <p>"${review.text.replace(/"/g, "")}"</p>
+                    <span class="read-more">Read more</span>
                 </div>
             `);
     });
@@ -68,6 +69,9 @@ const ReviewsFeature = {
         const card = $(this);
         const isExpanding = !card.hasClass("expanded");
         card.toggleClass("expanded");
+        
+        // Toggle text
+        card.find(".read-more").text(isExpanding ? "Read less" : "Read more");
         
         if (isExpanding) {
             Analytics.trackInteraction('review_expansion', card.find('.review-author').text());

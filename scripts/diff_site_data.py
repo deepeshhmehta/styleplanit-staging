@@ -8,13 +8,13 @@ from collections import OrderedDict
 
 """
 📊 STYLEPLANIT INTERACTIVE DIFF ENGINE
-Optimized: Summarizes changes upfront and allows bulk resolution.
+Optimized: Handles split JSON structure (data + flat config).
 """
 
 # Configuration
 SPREADSHEET_ID = "e/2PACX-1vSfDsGSiXAvQMmO32s5qWgQaH1GDeZXqEbnMr7bQmm-7gtdoHX-pz_jNq_y3Mb_ahS1LJ99azA84HVZ"
 GIDS = {
-    "version": "2024034979",
+    "VERSION": "2024034979",
     "config": "1515187439",
     "categories": "420875592",
     "services": "439228131",
@@ -27,15 +27,27 @@ GIDS = {
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, os.pardir))
-JSON_PATH = os.path.join(PROJECT_ROOT, "configs", "site-data.json")
+DATA_JSON_PATH = os.path.join(PROJECT_ROOT, "configs", "site-data.json")
+CONFIG_JSON_PATH = os.path.join(PROJECT_ROOT, "configs", "site-config.json")
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "diff_outputs")
 
 def get_local_data():
-    if not os.path.exists(JSON_PATH):
-        print(f"Error: {JSON_PATH} not found.")
-        sys.exit(1)
-    with open(JSON_PATH, "r") as f:
-        return json.load(f, object_pairs_hook=OrderedDict)
+    full_data = {}
+    if os.path.exists(DATA_JSON_PATH):
+        with open(DATA_JSON_PATH, "r") as f:
+            full_data.update(json.load(f, object_pairs_hook=OrderedDict))
+    
+    if os.path.exists(CONFIG_JSON_PATH):
+        with open(CONFIG_JSON_PATH, "r") as f:
+            config = json.load(f, object_pairs_hook=OrderedDict)
+            # Create a virtual 'config' array for diffing
+            config_list = [{"key": k, "value": v} for k, v in config.items() if k != "VERSION"]
+            full_data["config"] = config_list
+            # Handle version separately as it's top-level usually
+            if "VERSION" in config:
+                full_data["version"] = [{"key": "VERSION", "value": config["VERSION"]}]
+    
+    return full_data
 
 def generate_assets_manifest():
     """Scan assets/images and return a structured manifest dictionary."""
@@ -82,19 +94,19 @@ def main():
             os.remove(os.path.join(OUTPUT_DIR, f))
 
     print("\n" + "="*60)
-    print("📊 STYLEPLANIT INTERACTIVE DIFF ENGINE")
+    print("📊 STYLEPLANIT INTERACTIVE DIFF ENGINE (v2 - Split Mode)")
     print("="*60)
 
     categories_to_check = {
-        "version": {"key_fields": ["key"]},
-        "config": {"key_fields": ["key"]},
-        "categories": {"key_fields": ["name"]},
-        "services": {"key_fields": ["title", "category"]},
-        "reviews": {"key_fields": ["author", "text"]}, 
-        "dialogs": {"key_fields": ["title"]}, 
-        "team": {"key_fields": ["name"]},
-        "articles": {"key_fields": ["title"]},
-        "personas": {"key_fields": ["title"]}
+        "version": {"key_fields": ["key"], "sheet_gid": GIDS["VERSION"]},
+        "config": {"key_fields": ["key"], "sheet_gid": GIDS["config"]},
+        "categories": {"key_fields": ["name"], "sheet_gid": GIDS["categories"]},
+        "services": {"key_fields": ["title", "category"], "sheet_gid": GIDS["services"]},
+        "reviews": {"key_fields": ["author", "text"], "sheet_gid": GIDS["reviews"]}, 
+        "dialogs": {"key_fields": ["title"], "sheet_gid": GIDS["dialogs"]}, 
+        "team": {"key_fields": ["name"], "sheet_gid": GIDS["team"]},
+        "articles": {"key_fields": ["id", "title"], "sheet_gid": GIDS["articles"]},
+        "personas": {"key_fields": ["title"], "sheet_gid": GIDS["personas"]}
     }
 
     all_discrepancies = []
@@ -102,7 +114,7 @@ def main():
 
     print("📡 Fetching remote data...")
     for category, settings in categories_to_check.items():
-        csv_text = data_utils.fetch_csv(SPREADSHEET_ID, GIDS[category])
+        csv_text = data_utils.fetch_csv(SPREADSHEET_ID, settings["sheet_gid"])
         if csv_text is None:
             print(f"  ❌ Failed to fetch remote data for '{category}'. Skipping.")
             continue
@@ -167,130 +179,154 @@ def main():
 
     if not all_discrepancies:
         print("\n🙌 EVERYTHING IN SYNC. No actions required.")
-        return
+    else:
+        print(f"\n🔍 FOUND {len(all_discrepancies)} DISCREPANCIES:")
+        for category, d in all_discrepancies:
+            print(f"  [{category.upper()}] {d['state']}: {d['key_str']}")
 
-    print(f"\n🔍 FOUND {len(all_discrepancies)} DISCREPANCIES:")
-    for category, d in all_discrepancies:
-        print(f"  [{category.upper()}] {d['state']}: {d['key_str']}")
-
-    print("\nHow would you like to resolve these?")
-    print("  1. [Winner: All Local] - Keep local data, generate CSVs for Sheets update.")
-    print("  2. [Winner: All Sheets] - Take all data from Google Sheets.")
-    print("  3. [Individual Loop]   - Decide for each item (default).")
-    
-    global_choice = input("\nSelect (1/2/3): ").strip()
-
-    final_csv_data = {}
-    to_delete_from_sheets = []
-    changes_to_local = False
-
-    for category, data in category_data.items():
-        local_category_updated = []
-        category_needs_sheets_update = False
+        print("\nHow would you like to resolve these?")
+        print("  1. [Winner: All Local] - Keep local data, generate CSVs for Sheets update.")
+        print("  2. [Winner: All Sheets] - Take all data from Google Sheets.")
+        print("  3. [Individual Loop]   - Decide for each item (default).")
         
-        headers = data["headers"]
-        key_fields = data["key_fields"]
-        
-        # If no discrepancies, just keep local
-        if not data["discrepancies"]:
-            updated_local_data[category] = local_full_data.get(category, [])
-            continue
+        global_choice = input("\nSelect (1/2/3): ").strip()
 
-        for ckey in data["all_keys"]:
-            local_item = data["local_map"].get(ckey)
-            remote_item = data["remote_map"].get(ckey)
+        final_csv_data = {}
+        to_delete_from_sheets = []
+        changes_to_local = False
+
+        for category, data in category_data.items():
+            local_category_updated = []
+            category_needs_sheets_update = False
             
-            # Find if this specific key has a discrepancy
-            d = next((item for item in data["discrepancies"] if item["ckey"] == ckey), None)
+            headers = data["headers"]
+            key_fields = data["key_fields"]
             
-            if not d:
-                if local_item: local_category_updated.append(local_item)
+            # If no discrepancies, just keep local
+            if not data["discrepancies"]:
+                updated_local_data[category] = local_full_data.get(category, [])
                 continue
 
-            choice = global_choice
-            if global_choice not in ["1", "2"]:
-                print(f"\n🔍 [{category.upper()}] ENTRY: {d['key_str']}")
-                print(f"   Status: {d['state']}")
-                if d['state'] == "MISMATCH":
-                    for field, (lv, rv) in d['diffs'].items():
-                        print(f"     [{field}]: Local: '{lv}' | Sheets: '{rv}'")
-                print("\n   1. [Winner: Local]  2. [Winner: Sheets]  3. [Manual]  s. [Skip]")
-                choice = input("   Select: ").strip().lower()
+            for ckey in data["all_keys"]:
+                local_item = data["local_map"].get(ckey)
+                remote_item = data["remote_map"].get(ckey)
+                
+                # Find if this specific key has a discrepancy
+                d = next((item for item in data["discrepancies"] if item["ckey"] == ckey), None)
+                
+                if not d:
+                    if local_item: local_category_updated.append(local_item)
+                    continue
 
-            if choice == "1": # Local Wins
-                if d['state'] == "SHEETS_ONLY":
-                    print(f"   ✅ {d['key_str']} -> Mark for Sheets deletion.")
-                    to_delete_from_sheets.append(f"{category} | {d['key_str']}")
-                else:
-                    if global_choice != "1": print(f"   ✅ {d['key_str']} -> Local kept. Queuing Sheets update.")
-                    local_category_updated.append(local_item)
+                choice = global_choice
+                if global_choice not in ["1", "2"]:
+                    print(f"\n🔍 [{category.upper()}] ENTRY: {d['key_str']}")
+                    print(f"   Status: {d['state']}")
+                    if d['state'] == "MISMATCH":
+                        for field, (lv, rv) in d['diffs'].items():
+                            print(f"     [{field}]: Local: '{lv}' | Sheets: '{rv}'")
+                    print("\n   1. [Winner: Local]  2. [Winner: Sheets]  3. [Manual]  s. [Skip]")
+                    choice = input("   Select: ").strip().lower()
+
+                if choice == "1": # Local Wins
+                    if d['state'] == "SHEETS_ONLY":
+                        print(f"   ✅ {d['key_str']} -> Mark for Sheets deletion.")
+                        to_delete_from_sheets.append(f"{category} | {d['key_str']}")
+                    else:
+                        if global_choice != "1": print(f"   ✅ {d['key_str']} -> Local kept. Queuing Sheets update.")
+                        local_category_updated.append(local_item)
+                        category_needs_sheets_update = True
+                
+                elif choice == "2": # Sheets Wins
+                    if d['state'] == "LOCAL_ONLY":
+                        if global_choice != "2": print(f"   ✅ {d['key_str']} -> Deleted from Local.")
+                        changes_to_local = True
+                    else:
+                        if global_choice != "2": print(f"   ✅ {d['key_str']} -> Sheets value taken.")
+                        local_category_updated.append(remote_item)
+                        changes_to_local = True
+                
+                elif choice == "3": # Manual
+                    manual_item = manual_input_entry(headers, local_item or remote_item)
+                    local_category_updated.append(manual_item)
+                    changes_to_local = True
                     category_needs_sheets_update = True
-            
-            elif choice == "2": # Sheets Wins
-                if d['state'] == "LOCAL_ONLY":
-                    if global_choice != "2": print(f"   ✅ {d['key_str']} -> Deleted from Local.")
-                    changes_to_local = True
+                    print("   ✅ Manual entry saved.")
+                
                 else:
-                    if global_choice != "2": print(f"   ✅ {d['key_str']} -> Sheets value taken.")
-                    local_category_updated.append(remote_item)
-                    changes_to_local = True
+                    print("   ⏭️ Skipped.")
+                    if local_item: local_category_updated.append(local_item)
+
+            updated_local_data[category] = local_category_updated
             
-            elif choice == "3": # Manual
-                manual_item = manual_input_entry(headers, local_item or remote_item)
-                local_category_updated.append(manual_item)
-                changes_to_local = True
-                category_needs_sheets_update = True
-                print("   ✅ Manual entry saved.")
-            
-            else:
-                print("   ⏭️ Skipped.")
-                if local_item: local_category_updated.append(local_item)
+            if category_needs_sheets_update:
+                output = io.StringIO()
+                output.write("~~".join(headers) + "\n")
+                for row in local_category_updated:
+                    line = "~~".join(str(row.get(h, "")).replace("\n", "\\n") for h in headers)
+                    output.write(line + "\n")
+                final_csv_data[category] = output.getvalue()
 
-        updated_local_data[category] = local_category_updated
-        
-        if category_needs_sheets_update:
-            output = io.StringIO()
-            output.write("~~".join(headers) + "\n")
-            for row in local_category_updated:
-                line = "~~".join(str(row.get(h, "")).replace("\n", "\\n") for h in headers)
-                output.write(line + "\n")
-            final_csv_data[category] = output.getvalue()
+        print("\n" + "="*60)
+        print("🏁 SYNC SUMMARY")
+        print("="*60)
 
-    print("\n" + "="*60)
-    print("🏁 SYNC SUMMARY")
-    print("="*60)
+        if to_delete_from_sheets:
+            print("\n🗑️  KEYS TO MANUALLY DELETE FROM SHEETS:")
+            for item in to_delete_from_sheets:
+                print(f"   ❌ {item}")
 
-    if to_delete_from_sheets:
-        print("\n🗑️  KEYS TO MANUALLY DELETE FROM SHEETS:")
-        for item in to_delete_from_sheets:
-            print(f"   ❌ {item}")
-
-    if final_csv_data:
-        print("\n📁 UPDATED CSVS GENERATED (in scripts/diff_outputs/):")
-        for cat, content in final_csv_data.items():
-            out_file = os.path.join(OUTPUT_DIR, f"{cat}_to_paste_in_sheets.csv")
-            with open(out_file, "w") as f:
-                f.write(content)
-            print(f"  ✅ {os.path.basename(out_file)}")
+        if final_csv_data:
+            print("\n📁 UPDATED CSVS GENERATED (in scripts/diff_outputs/):")
+            for cat, content in final_csv_data.items():
+                out_file = os.path.join(OUTPUT_DIR, f"{cat}_to_paste_in_sheets.csv")
+                with open(out_file, "w") as f:
+                    f.write(content)
+                print(f"  ✅ {os.path.basename(out_file)}")
     
     if manifest_changed:
         print("\n📸 Assets manifest updated (local images changed).")
         changes_to_local = True
 
     if changes_to_local:
-        if input("\n💾 Save updates to site-data.json? (y/n): ").strip().lower() == 'y':
+        if input("\n💾 Save updates to local JSON files? (y/n): ").strip().lower() == 'y':
+            # Split data back into two files
+            data_json = OrderedDict()
+            config_json = OrderedDict()
+            
+            # 1. Config & Version (Go to site-config.json)
+            # Handle version first
+            version_val = "0.0.0"
+            if "version" in updated_local_data and updated_local_data["version"]:
+                version_val = updated_local_data["version"][0].get("value", "0.0.0")
+            config_json["VERSION"] = version_val
+            
+            # Handle config array
+            if "config" in updated_local_data:
+                for item in updated_local_data["config"]:
+                    config_json[item["key"]] = item["value"]
+            
+            # 2. Main Arrays (Go to site-data.json)
+            for key in ["articles", "assets_manifest", "categories", "dialogs", "personas", "reviews", "services", "team"]:
+                if key in updated_local_data:
+                    data_json[key] = updated_local_data[key]
+            
             # Ensure assets_manifest is sorted consistently
-            if "assets_manifest" in updated_local_data:
+            if "assets_manifest" in data_json:
                 sorted_manifest = OrderedDict()
-                for key in sorted(updated_local_data["assets_manifest"].keys()):
-                    sorted_manifest[key] = sorted(updated_local_data["assets_manifest"][key])
-                updated_local_data["assets_manifest"] = sorted_manifest
+                for key in sorted(data_json["assets_manifest"].keys()):
+                    sorted_manifest[key] = sorted(data_json["assets_manifest"][key])
+                data_json["assets_manifest"] = sorted_manifest
 
-            with open(JSON_PATH, "w") as f:
-                json.dump(updated_local_data, f, indent=2, ensure_ascii=False)
-            print("✅ Local site-data.json updated.")
+            # Save Files
+            with open(DATA_JSON_PATH, "w") as f:
+                json.dump(data_json, f, indent=2, ensure_ascii=False)
+            with open(CONFIG_JSON_PATH, "w") as f:
+                json.dump(config_json, f, indent=2, ensure_ascii=False)
+                
+            print("✅ Local site-data.json and site-config.json updated.")
     else:
-        print("\nℹ️ No local site-data.json changes to save.")
+        print("\nℹ️ No local JSON changes to save.")
 
     print("\n✨ Sync Complete!")
 

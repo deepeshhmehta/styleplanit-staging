@@ -19,8 +19,9 @@ const HeroFeature = {
     // 2. Clear placeholders and inject actual images
     heroContainer.empty();
     images.forEach((img, index) => {
+        const orientationClass = img.toLowerCase().includes('portrait') ? 'hero-portrait' : 'hero-landscape';
         heroContainer.append(`
-            <div class="hero-bg ${index === 0 ? 'active' : ''}" 
+            <div class="hero-bg ${index === 0 ? 'active' : ''} ${orientationClass}" 
                  style="background-image: url('assets/images/home-page/hero-images/${img}'); 
                         opacity: ${index === 0 ? 1 : 0};">
             </div>
@@ -29,6 +30,16 @@ const HeroFeature = {
 
     const heroBgs = $(".hero-bg");
     if (heroBgs.length <= 1) return;
+
+    // 3. Inject Pills from config
+    const pillsContainer = $("#dynamic-hero-pills");
+    if (pillsContainer.length > 0) {
+        const pillsStr = Data.getConfig('HERO_PILLS') || "";
+        if (pillsStr) {
+            const pills = pillsStr.split('|');
+            pillsContainer.html(pills.map(p => `<div class="floating-pill">${p}</div>`).join(''));
+        }
+    }
 
     let current = 0;
     // Start global crossfade slideshow (for both web and mobile)
