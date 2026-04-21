@@ -1,0 +1,111 @@
+/* --- 12. HNI & SUBSCRIBE --- */
+.hni-section {
+    position: relative;
+    color: var(--white);
+    text-align: center;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--black);
+    clip-path: inset(0);
+}
+
+.hni-section::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../assets/images/services-by-category/Elevate/icon_service.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.hni-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hni-section .section-subtitle {
+    color: var(--white);
+    opacity: 0.8;
+}
+
+.hni-section h2 { color: var(--white); margin-bottom: 30px; }
+
+.hni-section p { 
+    color: var(--grey); 
+    margin-bottom: 50px; 
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hni-section .btn {
+    border-color: var(--white);
+    color: var(--white);
+}
+
+.subscribe-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subscribe-form input[type="email"],
+.subscribe-form input[type="text"] {
+    flex: 1 1 250px;
+    padding: 18px 25px;
+    border: 1px solid var(--black);
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+.subscribe-form .btn {
+    flex: 0 1 auto;
+    border-radius: var(--border-radius-pill);
+    border-left: 1px solid var(--black);
+}
+
+.legal-compliance {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--charcoal);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.legal-compliance input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border: 1px solid var(--charcoal);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+}
+
+.legal-compliance label {
+    cursor: pointer;
+    line-height: 1.5;
+}
+

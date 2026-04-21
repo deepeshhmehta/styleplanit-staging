@@ -1,0 +1,78 @@
+/* --- 10. PORTFOLIO --- */
+.portfolio-band {
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    background: var(--black);
+    -webkit-overflow-scrolling: touch;
+}
+
+.portfolio-band::-webkit-scrollbar {
+    display: none;
+}
+
+.portfolio-container {
+    display: inline-flex;
+    height: 60vh;
+    width: auto;
+}
+
+.portfolio-item {
+    height: 100%;
+    width: auto;
+    flex: 0 0 auto;
+    padding: 15px;
+    background: var(--black);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-item.transformation-pair {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; 
+    min-width: auto;
+    background: var(--black);
+    padding: 15px; 
+}
+
+.transformation-side {
+    position: relative;
+    height: 100%;
+    width: auto;
+    overflow: hidden;
+    background: var(--black);
+}
+
+.transformation-side img {
+    height: 100%;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    display: block;
+}
+
+.transformation-side .label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(var(--primary-accent-rgb), 0.8);
+    color: var(--white);
+    padding: 4px 12px;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 5;
+    border-radius: 2px;
+}
+
+.portfolio-item img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: top center;
+}
+

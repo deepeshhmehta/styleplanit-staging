@@ -1,0 +1,55 @@
+/* --- 5. LOGO BAND --- */
+.logo-band {
+    text-align: center;
+    border: none;
+    padding: 40px 0;
+    background-color: transparent;
+}
+
+.logo-band p {
+    text-transform: uppercase;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    color: var(--primary-accent);
+    opacity: 0.8;
+}
+
+.logo-band .logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 40px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.logo-band .logos::-webkit-scrollbar {
+    display: none;
+}
+
+.brand-logo-item {
+    width: 180px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: none;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.brand-logo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(var(--charcoal-rgb), 0.4)); 
+}
+
+.brand-logo-item:hover {
+    transform: scale(1.05);
+}
+

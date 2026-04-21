@@ -1,0 +1,86 @@
+/* --- 2. TYPOGRAPHY & LAYOUT UTILITIES --- */
+.container {
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.section-padding { padding: 60px 0; }
+.text-center { text-align: center; }
+.bio { text-align: justify; }
+
+.section-subtitle {
+    font-family: var(--font-secondary);
+    font-size: 0.7rem;
+    color: var(--primary-accent);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    margin-bottom: 40px;
+}
+
+.mt-xl { margin-top: 80px; }
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 18px 40px;
+    background-color: transparent;
+    color: var(--black);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    border: 1px solid var(--black);
+    transition: all 0.4s ease;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: var(--border-radius-pill);
+}
+
+.btn:hover {
+    background: var(--primary-accent-dark);
+    color: var(--white);
+}
+
+.btn-primary-accent {
+    background-color: var(--primary-accent);
+    color: var(--white);
+    border-color: var(--primary-accent);
+}
+
+.btn-primary-accent:hover {
+    background-color: var(--primary-accent-dark);
+    border-color: var(--primary-accent-dark);
+}
+
+.btn-secondary {
+    font-size: 0.7rem;
+    color: var(--primary-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    background: transparent;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    border-bottom-color: var(--primary-accent);
+    opacity: 1;
+}
+
+.section-divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 0;
+}
+

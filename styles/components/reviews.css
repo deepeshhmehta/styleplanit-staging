@@ -1,0 +1,103 @@
+/* --- 9. REVIEWS --- */
+#reviews .reviews-grid {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+}
+
+#reviews .reviews-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-hint {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.scroll-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--grey);
+    opacity: 0.3;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.scroll-dot.active {
+    opacity: 1;
+    background: var(--primary-accent);
+    transform: scale(1.2);
+}
+
+#reviews .review-card {
+    flex: 0 0 85vw;
+    background: var(--cream);
+    padding: 60px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--standard-radius);
+    position: relative;
+    max-height: 400px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: max-height 0.8s ease, box-shadow 0.3s ease;
+}
+
+#reviews .review-card.expanded {
+    max-height: 80vh;
+    overflow-y: auto;
+    background: var(--white);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+#reviews .review-card:not(.expanded)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(transparent, var(--cream));
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#reviews .review-card.expanded::after { opacity: 0; }
+
+#reviews .review-card .review-author {
+    display: block;
+    font-family: var(--font-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+#reviews .review-card p {
+    font-family: var(--font-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--charcoal);
+}
+
+#reviews .review-card.expanded p { margin-bottom: 30px; }
+
+.reviews-footer {
+    text-align: right;
+    margin-top: 40px;
+}
+

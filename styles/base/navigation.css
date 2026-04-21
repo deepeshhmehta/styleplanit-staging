@@ -1,0 +1,105 @@
+/* --- 3. NAVIGATION --- */
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 5vh 4vw;
+    z-index: var(--z-sticky);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
+}
+
+.header-split-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.logo {
+    font-family: var(--font-primary);
+    font-size: clamp(1.8rem, 6vw, 5.5rem);
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.menu-toggle {
+    display: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--white);
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 30px;
+    border-radius: 100px;
+    border: 1px solid var(--white);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links a { 
+    font-size: 0.8rem; 
+    font-weight: 700;
+    color: var(--black);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.nav-divider {
+    color: var(--black);
+    opacity: 0.1;
+    font-size: 0.8rem;
+}
+
+.nav-icon {
+    color: var(--black);
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    text-decoration: none;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--primary-accent);
+    transition: width 0.3s;
+}
+
+.nav-links a:hover::after { width: 100%; }
+

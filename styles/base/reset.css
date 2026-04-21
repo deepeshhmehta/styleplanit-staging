@@ -1,0 +1,44 @@
+/* --- 1. LUXURY RESET & THEME --- */
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 120px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+body {
+    font-family: var(--font-secondary);
+    color: var(--charcoal);
+    background-color: var(--primary-accent);
+    line-height: 1.8;
+    font-weight: 300;
+    overflow-x: hidden;
+    padding: 2vw;
+}
+
+.site-wrapper {
+    background-color: var(--white);
+    border-radius: var(--standard-radius);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    min-height: 100vh;
+}
+
+main {
+    background-color: var(--white);
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-primary);
+    font-weight: 400;
+    color: var(--black);
+    line-height: 1.1;
+}
+
