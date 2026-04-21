@@ -67,6 +67,12 @@ async function loadComponents() {
                 if (!response.ok) throw new Error(`Status ${response.status}`);
                 const html = await response.text();
                 element.innerHTML = html;
+                
+                // SURGICAL FIX: Re-apply config for the newly added HTML only
+                if (typeof Utils !== 'undefined' && Data.masterData) {
+                    Utils.applyConfig(Data.masterData, element);
+                }
+
                 await processComponents(); 
             } catch (error) {
                 console.warn(`[Loader] Failed to load component: ${componentName} (${error.message})`);

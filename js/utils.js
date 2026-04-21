@@ -47,15 +47,15 @@ const Utils = {
     },
 
     /**
-     * Applies configuration object to elements with specific data attributes
+     * Applies configuration object to elements with specific data attributes.
+     * Can be applied to a specific container for efficiency.
      */
-    applyConfig: function(config) {
+    applyConfig: function(config, container = document) {
         if (!config || Object.keys(config).length === 0) return;
 
-        document.querySelectorAll('[text-config-key]').forEach(element => {
+        container.querySelectorAll('[text-config-key]').forEach(element => {
             const key = element.getAttribute('text-config-key');
             if (config[key] !== undefined) {
-                // If it's the logo, we might want to preserve certain formatting
                 if (key === 'LOGO_TEXT') {
                     element.innerHTML = config[key];
                 } else {
@@ -64,11 +64,10 @@ const Utils = {
             }
         });
 
-        document.querySelectorAll('[href-config-key]').forEach(element => {
+        container.querySelectorAll('[href-config-key]').forEach(element => {
             const key = element.getAttribute('href-config-key');
             if (config[key] !== undefined) {
                 let value = config[key];
-                // Smart handling for WhatsApp numbers
                 if (key === 'WHATSAPP_NUMBER' && !value.startsWith('http')) {
                     value = `https://wa.me/${value.replace(/\D/g, '')}`;
                 }
@@ -76,37 +75,40 @@ const Utils = {
             }
         });
 
-        document.querySelectorAll('[placeholder-config-key]').forEach(element => {
+        container.querySelectorAll('[placeholder-config-key]').forEach(element => {
             const key = element.getAttribute('placeholder-config-key');
             if (config[key] !== undefined) element.placeholder = config[key];
         });
 
-        document.querySelectorAll('[src-config-key]').forEach(element => {
+        container.querySelectorAll('[src-config-key]').forEach(element => {
             const key = element.getAttribute('src-config-key');
             if (config[key] !== undefined) element.src = config[key];
         });
 
-        document.querySelectorAll('[property-config-key]').forEach(element => {
+        container.querySelectorAll('[property-config-key]').forEach(element => {
             const key = element.getAttribute('property-config-key');
             if (config[key] !== undefined) element.setAttribute('content', config[key]);
         });
 
-        document.querySelectorAll('[style-bg-config-key]').forEach(element => {
+        container.querySelectorAll('[style-bg-config-key]').forEach(element => {
             const key = element.getAttribute('style-bg-config-key');
             if (config[key] !== undefined) {
                 element.style.backgroundImage = 'url("' + config[key] + '")';
             }
         });
 
-        if (config['PAGE_DESCRIPTION']) {
-            this.updateMeta('description', config['PAGE_DESCRIPTION']);
-            this.updateMeta('og:description', config['PAGE_DESCRIPTION'], 'property');
-        }
-        if (config['PAGE_TITLE']) {
-            this.updateMeta('og:title', config['PAGE_TITLE'], 'property');
-        }
-        if (config['OG_IMAGE']) {
-            this.updateMeta('og:image', config['OG_IMAGE'], 'property');
+        // Meta tags only need to be updated once globally
+        if (container === document) {
+            if (config['PAGE_DESCRIPTION']) {
+                this.updateMeta('description', config['PAGE_DESCRIPTION']);
+                this.updateMeta('og:description', config['PAGE_DESCRIPTION'], 'property');
+            }
+            if (config['PAGE_TITLE']) {
+                this.updateMeta('og:title', config['PAGE_TITLE'], 'property');
+            }
+            if (config['OG_IMAGE']) {
+                this.updateMeta('og:image', config['OG_IMAGE'], 'property');
+            }
         }
     },
 
@@ -114,14 +116,9 @@ const Utils = {
      * Centralized way to fetch and apply config in one call.
      */
     getConfig: async function() {
-        const configArray = await Data.fetch('config');
-        const config = {};
-        configArray.forEach(item => {
-            if (item.key) config[item.key] = item.value;
-        });
-        
-        this.applyConfig(config);
-        return config;
+        const master = await Data.loadMasterData();
+        this.applyConfig(master);
+        return master;
     },
 
     updateMeta: function(name, content, attr = 'name') {
