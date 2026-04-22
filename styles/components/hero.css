@@ -41,12 +41,17 @@
     opacity: 1;
 }
 
-.hero-bg.hero-portrait {
+.hero-bg.portrait {
     background-position: center 20%;
 }
 
-.hero-bg.hero-landscape {
+.hero-bg.landscape {
     background-position: center;
+}
+
+/* Specific traits override base orientations */
+.hero-bg.anchor.top {
+    background-position: top center;
 }
 
 .hero-content-float {

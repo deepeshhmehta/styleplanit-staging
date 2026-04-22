@@ -129,6 +129,29 @@
 .wiki-content.dark-mode {
     background: #121212 !important;
     color: #e0e0e0 !important;
+    border-color: #333;
+}
+
+.wiki-content.dark-mode h1,
+.wiki-content.dark-mode h2,
+.wiki-content.dark-mode h3,
+.wiki-content.dark-mode h4,
+.wiki-content.dark-mode .article-title {
+    color: var(--white) !important;
+}
+
+.wiki-content.dark-mode .article-body,
+.wiki-content.dark-mode .article-body p {
+    color: #ccc !important;
+}
+
+.wiki-content.dark-mode .article-cta {
+    background: #1a1a1a;
+}
+
+.wiki-content.dark-mode .style-tip-box {
+    background: #0c4524; /* primary-accent but slightly darker/solid */
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .article-title {

@@ -18,14 +18,19 @@ const HeroFeature = {
 
     // 2. Clear placeholders and inject actual images
     heroContainer.empty();
+    const bgElements = [];
     images.forEach((img, index) => {
-        const orientationClass = img.toLowerCase().includes('portrait') ? 'hero-portrait' : 'hero-landscape';
-        heroContainer.append(`
-            <div class="hero-bg ${index === 0 ? 'active' : ''} ${orientationClass}" 
+        // Turn entire filename into classes (e.g. hero-1-portrait.jpg -> hero 1 portrait)
+        const traitClasses = img.split('.')[0].replace(/-/g, ' ');
+        
+        const el = $(`
+            <div class="hero-bg ${index === 0 ? 'active' : ''} ${traitClasses}" 
                  style="background-image: url('assets/images/home-page/hero-images/${img}'); 
                         opacity: ${index === 0 ? 1 : 0};">
             </div>
         `);
+        heroContainer.append(el);
+        bgElements.push({ el, traits: traitClasses });
     });
 
     const heroBgs = $(".hero-bg");
@@ -41,12 +46,22 @@ const HeroFeature = {
         }
     }
 
+    const heroWrapper = $(".hero-modern");
     let current = 0;
+
+    // Initial trait tracking for the first image
+    if (bgElements[0]) {
+        heroWrapper.attr('data-active-traits', bgElements[0].traits);
+    }
+
     // Start global crossfade slideshow (for both web and mobile)
     setInterval(() => {
         heroBgs.eq(current).removeClass("active").css("opacity", 0);
         current = (current + 1) % heroBgs.length;
         heroBgs.eq(current).addClass("active").css("opacity", 1);
+        
+        // Update container with active image traits for overlay styling
+        heroWrapper.attr('data-active-traits', bgElements[current].traits);
     }, 4000);
 
     // Hero CTA Tracking
