@@ -93,6 +93,7 @@ def main():
         if f.endswith(".csv"):
             os.remove(os.path.join(OUTPUT_DIR, f))
 
+    changes_to_local = False # Initialize to prevent UnboundLocalError
     print("\n" + "="*60)
     print("📊 STYLEPLANIT INTERACTIVE DIFF ENGINE (v2 - Split Mode)")
     print("="*60)

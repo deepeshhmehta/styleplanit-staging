@@ -8,6 +8,8 @@ const App = {
   },
 
   initNavigation: function () {
+    const self = this;
+
     $(document).on("click", ".menu-toggle", function () {
       var expanded = $(this).attr("aria-expanded") === "true";
       $(this).attr("aria-expanded", String(!expanded));
@@ -20,6 +22,47 @@ const App = {
 
       $(".nav-links").removeClass("active");
       $(".menu-toggle").attr("aria-expanded", "false");
+      
+      // Update active state immediately on click (for hash links)
+      self.updateActiveNavLink();
+    });
+
+    // Handle initial state and hash changes
+    this.updateActiveNavLink();
+    $(window).on('hashchange', () => this.updateActiveNavLink());
+  },
+
+  updateActiveNavLink: function() {
+    const currentPath = window.location.pathname.replace(/^\/|\/$/g, '');
+    const currentHash = window.location.hash;
+    const isHome = currentPath === '' || currentPath === 'index.html';
+
+    $(".nav-links a").each(function() {
+        const href = $(this).attr('href');
+        const linkPath = href.split('#')[0].replace(/^\/|\/$/g, '');
+        const linkHash = href.includes('#') ? '#' + href.split('#')[1] : '';
+        
+        let isActive = false;
+
+        if (linkHash) {
+            // Anchor link logic
+            if (isHome && currentHash === linkHash) {
+                isActive = true;
+            }
+        } else {
+            // Page link logic
+            if (currentPath === linkPath || (isHome && (linkPath === '' || linkPath === 'index.html'))) {
+                // If it's a page link but we are currently on a hash, don't mark as active 
+                // if there is another specific anchor link in the nav for this hash.
+                if (currentHash && $(".nav-links a[href*='" + currentHash + "']").length > 0) {
+                    isActive = false;
+                } else {
+                    isActive = true;
+                }
+            }
+        }
+
+        $(this).toggleClass('active', isActive);
     });
   },
 

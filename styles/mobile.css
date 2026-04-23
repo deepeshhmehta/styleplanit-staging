@@ -41,6 +41,13 @@
         text-align: left;
     }
 
+    .availability-badge {
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
     .nav-divider { display: none; }
     .nav-container { background: none; border: none; box-shadow: none; padding: 0; }
 
