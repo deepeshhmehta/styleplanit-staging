@@ -61,6 +61,14 @@ const Utils = {
                 } else {
                     element.textContent = config[key];
                 }
+                
+                // Toggle entire badge visibility if status is empty
+                if (key === 'AVAILABILITY_STATUS') {
+                    const badge = element.closest('.availability-badge');
+                    if (badge) {
+                        badge.style.display = config[key].trim() ? 'flex' : 'none';
+                    }
+                }
             }
         });
 

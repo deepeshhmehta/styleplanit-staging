@@ -68,6 +68,7 @@ nav {
 
 .nav-links a { 
     font-size: 0.8rem; 
+...
     font-weight: 700;
     color: var(--black);
     text-decoration: none;
@@ -101,5 +102,8 @@ nav {
     transition: width 0.3s;
 }
 
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover::after,
+.nav-links a.active::after { 
+    width: 100%; 
+}
 
