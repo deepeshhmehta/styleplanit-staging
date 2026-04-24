@@ -83,6 +83,11 @@ const Utils = {
             }
         });
 
+        container.querySelectorAll('[action-config-key]').forEach(element => {
+            const key = element.getAttribute('action-config-key');
+            if (config[key] !== undefined) element.action = config[key];
+        });
+
         container.querySelectorAll('[placeholder-config-key]').forEach(element => {
             const key = element.getAttribute('placeholder-config-key');
             if (config[key] !== undefined) element.placeholder = config[key];
