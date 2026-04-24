@@ -20,7 +20,8 @@ This document provides the high-level project summary and critical safety mandat
 
 ## 3. Safety & Governance
 
-*   **CRITICAL: UNLESS EXPLICITLY INSTRUCTED TO PUSH, NEVER PUSH CODE.**
+*   **CRITICAL: THE AGENT IS FORBIDDEN FROM PUSHING DIRECTLY TO `main`, `staging`, OR `develop`.**
+*   **Workflow Requirement:** All changes must be pushed to a feature/fix branch and merged via Pull Request.
 *   **Branching Strategy:**
     *   `main`: Production (Locked).
     *   `staging`: Pre-release testing (`https://staging.styleplanit.com`).
