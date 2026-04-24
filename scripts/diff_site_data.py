@@ -102,7 +102,7 @@ def main():
         "version": {"key_fields": ["key"], "sheet_gid": GIDS["VERSION"]},
         "config": {"key_fields": ["key"], "sheet_gid": GIDS["config"]},
         "categories": {"key_fields": ["name"], "sheet_gid": GIDS["categories"]},
-        "services": {"key_fields": ["title", "category"], "sheet_gid": GIDS["services"]},
+        "services": {"key_fields": ["title", "category", "booking_link"], "sheet_gid": GIDS["services"]},
         "reviews": {"key_fields": ["author", "text"], "sheet_gid": GIDS["reviews"]}, 
         "dialogs": {"key_fields": ["title"], "sheet_gid": GIDS["dialogs"]}, 
         "team": {"key_fields": ["name"], "sheet_gid": GIDS["team"]},

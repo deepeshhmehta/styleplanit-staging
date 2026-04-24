@@ -4,19 +4,43 @@
         <p text-config-key="SUBSCRIBE_TEXT">[SUBSCRIBE_TEXT]</p>
         
         <div id="mc_embed_signup">
-            <form action="https://gmail.us5.list-manage.com/subscribe/post?u=d3996d16165f3bbbc8e8ae321&amp;id=62ce8ea2f1&amp;f_id=005abcedf0" 
+            <form action="#" 
                   method="post" 
                   id="mc-embedded-subscribe-form" 
                   name="mc-embedded-subscribe-form" 
                   class="subscribe-form validate" 
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                  action-config-key="MAILCHIMP_FORM_ACTION">
                 
                 <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" 
                        placeholder-config-key="SUBSCRIBE_EMAIL_PLACEHOLDER" placeholder="[EMAIL_PLACEHOLDER]">
                 
-                <input type="text" name="NAME" class="required text" id="mce-NAME" required="" 
-                       placeholder-config-key="MAILCHIMP_NAME_PLACEHOLDER" placeholder="[NAME_PLACEHOLDER]">
+                <input type="text" name="FNAME" class="required text" id="mce-FNAME" required="" 
+                       placeholder-config-key="MAILCHIMP_FNAME_PLACEHOLDER" placeholder="[FIRSTNAME_PLACEHOLDER]">
+
+                <input type="text" name="LNAME" class="text" id="mce-LNAME" 
+                       placeholder-config-key="MAILCHIMP_LNAME_PLACEHOLDER" placeholder="[LASTNAME_PLACEHOLDER]">
+
+                <input type="text" name="PHONE" class="text" id="mce-PHONE" 
+                       placeholder-config-key="MAILCHIMP_PHONE_PLACEHOLDER" placeholder="[PHONE_PLACEHOLDER]">
+
+                <div class="birthday-row">
+                    <select id="birthday-month" class="text">
+                        <option value="" disabled selected>Birth Month</option>
+                        <option value="01">January</option><option value="02">February</option>
+                        <option value="03">March</option><option value="04">April</option>
+                        <option value="05">May</option><option value="06">June</option>
+                        <option value="07">July</option><option value="08">August</option>
+                        <option value="09">September</option><option value="10">October</option>
+                        <option value="11">November</option><option value="12">December</option>
+                    </select>
+                    <select id="birthday-day" class="text">
+                        <option value="" disabled selected>Birth Day</option>
+                    </select>
+                </div>
+                <!-- Hidden consolidated field for Mailchimp -->
+                <input type="hidden" name="BIRTHDAY" id="mce-BIRTHDAY">
                 
                 <div id="mce-responses" class="clear foot">
                     <div class="response" id="mce-error-response" style="display: none;"></div>
@@ -24,7 +48,7 @@
                 </div>
                 
                 <div aria-hidden="true" style="position: absolute; left: -5000px;">
-                    <input type="text" name="b_d3996d16165f3bbbc8e8ae321_62ce8ea2f1" tabindex="-1" value="">
+                    <input type="text" name="b_37ca9b76709b0b1f54743c09b_f0396fbdf1" tabindex="-1" value="" id="mce-honeypot">
                 </div>
                 
                 <button type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn" text-config-key="SUBSCRIBE_BUTTON_TEXT">[SUBSCRIBE_BTN]</button>

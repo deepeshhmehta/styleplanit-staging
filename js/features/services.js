@@ -117,6 +117,14 @@ const ServicesFeature = {
 
     const inclusionsHtml = this.renderInclusionsList(service.footer);
 
+    // Determine booking link: priority to service-specific link, fallback to config with notes
+    let bookingUrl = service.booking_link;
+    if (!bookingUrl) {
+        const baseHref = Data.getConfig('STEP_2_BUTTON_HREF') || 'https://cal.com/styleplanit/15min';
+        const separator = baseHref.includes('?') ? '&' : '?';
+        bookingUrl = `${baseHref}${separator}notes=Interested in ${encodeURIComponent(service.title)}`;
+    }
+
     // Fade out grid, then show details
     gridContainer.fadeOut(300, function() {
         detailsContainer.html(`
@@ -142,7 +150,7 @@ const ServicesFeature = {
                     
                     <div class="details-footer">
                         <div class="cta-row">
-                            <a href="${Data.getConfig('STEP_2_BUTTON_HREF') || 'https://cal.com/styleplanit/15min'}" 
+                            <a href="${bookingUrl}" 
                                target="_blank" 
                                rel="noopener noreferrer"
                                class="btn btn-primary-accent btn-ga-inquiry"

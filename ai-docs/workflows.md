@@ -4,25 +4,27 @@ This document details the procedures for managing site content and environments.
 
 ## 1. Tiered Promotion Lifecycle
 
-The project follows a strict tiered promotion model to ensure environment stability and data integrity.
+The project follows a strict tiered promotion model to ensure environment stability and a clean, readable commit history.
 
 ### Phase 1: Integration (Develop)
 *   **Targeting:** ALL Pull Requests from feature or fix branches MUST target the `develop` branch.
-*   **Preview:** Merging to `develop` triggers the `develop-sync.yml` action, deploying to `https://develop.styleplanit.com`.
-*   **Verification:** Principal Engineer performs visual and functional sign-off in the develop environment.
+*   **Merge Strategy:** **Squash and Merge**. This collapses granular feature development into a single semantic commit on `develop`.
+*   **Preview:** Merging triggers the `develop-sync.yml` action, deploying to `https://develop.styleplanit.com`.
+*   **Verification:** Visual and functional sign-off in the develop environment.
 
 ### Phase 2: Synchronization (Data Fix)
-*   Before promoting to Staging, ensure the Google Sheets "Master Data" is synchronized.
-*   **Process:** Run `python3 scripts/diff_site_data.py`. If local changes exist (Local Winner), create a "Data Fix" PR to capture the `site-data.json` changes.
-*   **Action:** Update the Google Sheet by pasting the generated CSV into the appropriate tab.
+*   Before promotion, ensure Google Sheets "Master Data" is synchronized.
+*   **Process:** Run `python3 scripts/diff_site_data.py`. If local changes exist, reconcile them and update the Google Sheet via CSV paste.
 
 ### Phase 3: Validation (Staging)
-*   **Promotion:** Open a PR from `develop` to `staging`.
+*   **Promotion:** **Direct Merge / Fast-Forward** from `develop` to `staging`.
+*   **PR Requirement:** A Pull Request MUST be opened from `develop` to `staging` for visibility.
+*   **Merge Strategy:** **Standard Merge Commit** (or Fast-Forward). DO NOT squash.
 *   **Preview:** Merging triggers `staging-sync.yml`, deploying to `https://staging.styleplanit.com`.
-*   **Retest:** Full regression test on Staging to ensure production-readiness.
 
 ### Phase 4: Release (Main)
-*   **Promotion:** Open a PR from `staging` to `main`.
+*   **Promotion:** **Direct Merge / Fast-Forward** from `staging` to `main`.
+*   **Merge Strategy:** **Standard Merge Commit**. DO NOT squash.
 *   **Production:** Merging deploys to the live production site `https://styleplanit.com`.
 
 ## 2. Content Updates (Bespoke Services)
