@@ -17,14 +17,15 @@ The project follows a strict tiered promotion model to ensure environment stabil
 *   **Process:** Run `python3 scripts/diff_site_data.py`. If local changes exist, reconcile them and update the Google Sheet via CSV paste.
 
 ### Phase 3: Validation (Staging)
-*   **Promotion:** **Direct Merge / Fast-Forward** from `develop` to `staging`.
-*   **PR Requirement:** A Pull Request MUST be opened from `develop` to `staging` for visibility.
-*   **Merge Strategy:** **Standard Merge Commit** (or Fast-Forward). DO NOT squash.
+*   **Promotion:** **Direct Fast-Forward** from `develop` to `staging`.
+*   **PR Requirement:** A Pull Request MUST be opened from `develop` to `staging` for visibility and audit trail.
+*   **Merge Strategy:** **Fast-Forward Merge** (No Squash).
 *   **Preview:** Merging triggers `staging-sync.yml`, deploying to `https://staging.styleplanit.com`.
 
 ### Phase 4: Release (Main)
-*   **Promotion:** **Direct Merge / Fast-Forward** from `staging` to `main`.
-*   **Merge Strategy:** **Standard Merge Commit**. DO NOT squash.
+*   **Promotion:** **Direct Fast-Forward** from `staging` to `main`.
+*   **PR Requirement:** A Pull Request MUST be opened from `staging` to `main` for final sign-off.
+*   **Merge Strategy:** **Fast-Forward Merge** (No Squash).
 *   **Production:** Merging deploys to the live production site `https://styleplanit.com`.
 
 ## 2. Content Updates (Bespoke Services)
