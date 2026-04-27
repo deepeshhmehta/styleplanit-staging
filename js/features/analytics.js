@@ -1,72 +1,93 @@
 /**
- * analytics.js - Centralized Google Analytics tracking logic
+ * analytics.js - Enhanced centralized Google Analytics tracking logic
+ * Provides detailed telemetry for UI/UX improvements and business decisions.
  */
 const Analytics = {
     /**
-     * Core event tracking wrapper
+     * Core event tracking wrapper with local debug support
      */
     trackEvent: function(eventName, params = {}) {
         const isProd = window.location.hostname === 'styleplanit.com';
+        
+        // Enrich params with global context
+        const enrichedParams = {
+            page_path: window.location.pathname,
+            page_title: document.title,
+            timestamp: new Date().toISOString(),
+            ...params
+        };
+
         if (window.gtag && isProd) {
-            gtag('event', eventName, params);
-        } else if (!isProd) {
-            // Silently suppress in non-prod to keep console clean, or use console.debug
-            // console.debug(`[Analytics-Sim] Event "${eventName}":`, params);
+            gtag('event', eventName, enrichedParams);
         } else {
-            console.debug(`[Analytics] gtag not found. Event "${eventName}" would have been sent:`, params);
+            // Detailed local logging for validation during development
+            console.debug(`[Analytics-Debug] Event: "${eventName}"`, enrichedParams);
         }
     },
 
     /**
-     * Track user switching between service categories
+     * Specialized: Track UI Interaction (Clicks, Toggles, etc.)
+     * Used for building click "heatmaps" and understanding UI flow.
      */
-    trackCategorySwitch: function(categoryName, slug) {
-        this.trackEvent('select_content', {
-            content_type: 'service_category',
-            item_id: slug,
-            category_name: categoryName
+    trackUI: function(action, section, label, extra = {}) {
+        this.trackEvent('ui_interaction', {
+            action: action,      // click, toggle, hover, etc.
+            section: section,    // hero, packages, footer, etc.
+            label: label,        // Button text or element identifier
+            ...extra
         });
     },
 
     /**
-     * Track user viewing specific service details
+     * Specialized: Track Content Engagement (Views, Scrolls, Reads)
+     * Helps identify which services or articles are being consumed.
      */
-    trackServiceView: function(serviceTitle, serviceSlug, categoryName) {
-        this.trackEvent('view_item', {
-            item_id: serviceSlug,
-            item_name: serviceTitle,
-            item_category: categoryName
+    trackEngagement: function(type, contentName, contentCategory, extra = {}) {
+        this.trackEvent('content_engagement', {
+            engagement_type: type,   // view, scroll_to_end, read_complete
+            content_name: contentName,
+            content_category: contentCategory,
+            ...extra
         });
     },
 
     /**
-     * Track lead generation events (Inquiry, Booking, WhatsApp, Newsletter)
+     * Specialized: Track Conversion & Leads
+     * Measures business-critical outcomes.
      */
-    trackLead: function(method, type, extraParams = {}) {
+    trackConversion: function(type, source, value = 0, extra = {}) {
         this.trackEvent('generate_lead', {
-            method: method,
-            content_type: type,
-            ...extraParams
+            lead_type: type,   // booking, whatsapp, inquiry, subscribe
+            source: source,    // hero, services_grid, floating_cta
+            value: value,      // Optional monetary value or weight
+            ...extra
         });
     },
 
-    /**
-     * Track general content interactions
-     */
+    /* --- Legacy Compatibility Wrappers (Mapped to new system) --- */
+    
+    trackCategorySwitch: function(categoryName, slug) {
+        this.trackEngagement('filter', categoryName, 'service_category', { item_id: slug });
+    },
+
+    trackServiceView: function(serviceTitle, serviceSlug, categoryName) {
+        this.trackEngagement('view', serviceTitle, categoryName, { item_id: serviceSlug });
+    },
+
+    trackLead: function(method, type, extraParams = {}) {
+        this.trackConversion(type, method, 0, extraParams);
+    },
+
     trackInteraction: function(type, id, extraParams = {}) {
-        this.trackEvent('select_content', {
-            content_type: type,
-            item_id: id,
-            ...extraParams
-        });
+        // Map old interaction calls to UI or Engagement based on context
+        if (type.includes('click') || type.includes('expand')) {
+            this.trackUI(type, 'legacy', id, extraParams);
+        } else {
+            this.trackEngagement(type, id, 'legacy', extraParams);
+        }
     },
 
-    /**
-     * Track when a user reaches a specific depth or end of a carousel
-     */
     trackScrollEnd: function(carouselName) {
-        this.trackEvent('scroll_to_end', {
-            content_type: carouselName
-        });
+        this.trackEngagement('scroll_to_end', carouselName, 'carousel');
     }
 };

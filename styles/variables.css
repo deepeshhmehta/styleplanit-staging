@@ -29,4 +29,18 @@
     /* Anchors */
     --anchor-color: #24301B;
     --anchor-color-rgb: 36, 48, 27;
+
+    /* Spacing Scale */
+    --space-xs: 5px;
+    --space-sm: 10px;
+    --space-md: 20px;
+    --space-lg: 30px;
+    --space-xl: 40px;
+    --space-xxl: 60px;
+    --space-section: 100px;
+
+    /* Transition Patterns */
+    --transition-fast: 0.3s ease;
+    --transition-standard: 0.4s ease;
+    --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }

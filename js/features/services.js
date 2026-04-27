@@ -3,6 +3,8 @@
  */
 const ServicesFeature = {
   allServices: [],
+  originalServices: [],
+  seenServices: new Set(),
 
   init: async function (options = {}) {
     // Fetch only services
@@ -19,6 +21,8 @@ const ServicesFeature = {
         // Default à-la-carte filter
         this.allServices = services.filter(s => s.category.toLowerCase().trim() !== "icon service");
     }
+
+    this.originalServices = [...this.allServices];
 
     if (this.allServices.length === 0) {
       $(".service-content").html('<p class="text-center section-padding">Service menu is temporarily unavailable.</p>');
@@ -48,12 +52,15 @@ const ServicesFeature = {
     services.forEach((service) => {
         const chipsHtml = this.renderServiceChips(service.footer);
         const serviceSlug = this.slugify(service.title);
+        const isSeen = this.seenServices.has(service.title) ? "seen" : "";
+
         grid.append(`
-            <div class="service-card" data-title="${service.title}" data-ga-service="${serviceSlug}">
+            <div class="service-card ${isSeen}" data-title="${service.title}" data-ga-service="${serviceSlug}">
                 <div class="service-card-image">
                     <img src="${service.image_url}" alt="${service.title}">
                 </div>
                 <div class="service-card-content">
+                    <div class="service-price">${service.price || ''}</div>
                     <h3>${service.title}</h3>
                     <p class="short-desc">${service.short_description}</p>
                     <div class="service-chips">${chipsHtml}</div>
@@ -86,9 +93,11 @@ const ServicesFeature = {
       "Virtual Shopping": "fa-laptop",
       "Lookbook Curation": "fa-book-open",
       "Shopping List": "fa-list-ul",
+      "In-Person Color Analysis": "fa-palette",
       "In-Person Shopping": "fa-shopping-bag",
       "Event Styling": "fa-magic",
       "Moodboard curation": "fa-images",
+      "Moodboard": "fa-images",
       "Luxury charge": "fa-gem",
     };
     return map[item] || "fa-check-circle";
@@ -107,6 +116,13 @@ const ServicesFeature = {
     if (!service) return;
 
     const serviceSlug = this.slugify(service.title);
+    
+    // Track detailed view
+    Analytics.trackEngagement('view', service.title, service.category, { 
+        item_id: serviceSlug,
+        price: service.price 
+    });
+
     const detailsContainer = $("#service-details-container");
     const gridContainer = $(".service-content");
     
@@ -125,8 +141,16 @@ const ServicesFeature = {
         bookingUrl = `${baseHref}${separator}notes=Interested in ${encodeURIComponent(service.title)}`;
     }
 
+    // Hide sorting controls using central timing
+    $(".services-controls").fadeOut(CONFIG.THEME.ANIMATION.DURATION_FAST);
+
+    // Track as seen
+    this.seenServices.add(serviceTitle);
+
+    const self = this;
+
     // Fade out grid, then show details
-    gridContainer.fadeOut(300, function() {
+    gridContainer.fadeOut(CONFIG.THEME.ANIMATION.DURATION_FAST, function() {
         detailsContainer.html(`
             <div class="active-service-details">
                 <div class="details-content-inner">
@@ -160,54 +184,135 @@ const ServicesFeature = {
                     </div>
                 </div>
             </div>
-        `).fadeIn(400);
+        `).fadeIn(CONFIG.THEME.ANIMATION.DURATION_STANDARD);
 
         // Scroll so the opened card content is at the top
         const navHeight = $("nav").outerHeight() || 0;
         $("html, body").animate({
             scrollTop: detailsContainer.offset().top - navHeight
-        }, 400);
+        }, CONFIG.THEME.ANIMATION.DURATION_STANDARD);
     });
   },
 
   bindEvents: function () {
     const self = this;
+    const gridContainer = $(".service-content");
 
-    $(document).on("click", ".service-card", function(e) {
+    gridContainer.off("click", ".service-card").on("click", ".service-card", function(e) {
         if ($(e.target).closest('.service-chips').length > 0) return;
         
         $(".service-card").removeClass("active");
         $(this).addClass("active");
         
         const title = $(this).data("title");
-        Analytics.trackInteraction('service_card_click', title);
+        Analytics.trackUI('click', 'services_grid', title);
         self.showServiceDetails(title);
     });
 
-    $(document).on("click", ".btn-ga-inquiry", function() {
-        const serviceName = $(this).closest(".active-service-details").find("h3").text();
-        Analytics.trackLead('bespoke_service_inquiry', serviceName);
+    $(".services-controls").off("click", ".sort-label").on("click", ".sort-label", function(e) {
+        e.stopPropagation();
+        $("#luxury-sort").toggleClass("active");
+        Analytics.trackUI('toggle', 'services_sort', 'sort_menu');
     });
 
-    $(document).on("click", ".btn-close-details", function() {
+    $(".services-controls").off("click", ".sort-menu li").on("click", ".sort-menu li", function(e) {
+        const val = $(this).data("value");
+        const label = $(this).text();
+        
+        // Update UI
+        $("#current-sort").text(label);
+        $(".sort-menu li").removeClass("active");
+        $(this).addClass("active");
+        $("#luxury-sort").removeClass("active");
+
+        // Mobile: Hide "Arrange By" prefix if not default
+        if (window.innerWidth <= CONFIG.THEME.BREAKPOINTS.MOBILE) {
+            if (val !== 'default') {
+                $(".label-prefix").hide();
+            } else {
+                $(".label-prefix").show();
+            }
+        }
+        
+        Analytics.trackUI('select', 'services_sort', label, { sort_value: val });
+        self.sortServices(val);
+    });
+
+    // Close dropdown when clicking outside
+    $(document).on("click", function() {
+        if ($("#luxury-sort").hasClass("active")) {
+            $("#luxury-sort").removeClass("active");
+        }
+    });
+
+    $(document).off("click", ".btn-ga-inquiry").on("click", ".btn-ga-inquiry", function() {
+        const serviceName = $(this).closest(".active-service-details").find("h3").text();
+        Analytics.trackConversion('service_inquiry', 'service_details', 10, { service_name: serviceName });
+    });
+
+    $(document).off("click", ".btn-close-details").on("click", ".btn-close-details", function() {
         const gridContainer = $(".service-content");
         const detailsContainer = $("#service-details-container");
         
-        detailsContainer.fadeOut(300, function() {
+        detailsContainer.fadeOut(CONFIG.THEME.ANIMATION.DURATION_FAST, function() {
             $(this).empty();
+            
+            // Apply seen class to all cards that have been viewed
+            $(".service-card").each(function() {
+                const title = $(this).data("title");
+                if (self.seenServices.has(title)) {
+                    $(this).addClass("seen");
+                }
+            });
+
             $(".service-card").removeClass("active");
-            gridContainer.fadeIn(400);
+            gridContainer.fadeIn(CONFIG.THEME.ANIMATION.DURATION_STANDARD);
+            
+            // Show sorting controls again
+            $(".services-controls").fadeIn(CONFIG.THEME.ANIMATION.DURATION_STANDARD);
 
             // Scroll back to top of services section
             const navHeight = $("nav").outerHeight() || 0;
             $('html, body').animate({
                 scrollTop: $("#services").offset().top - navHeight
-            }, 400);
+            }, CONFIG.THEME.ANIMATION.DURATION_STANDARD);
         });
     });
   },
 
   slugify: function(text) {
     return text.trim().replace(/\s+/g, "-").toLowerCase();
+  },
+
+  sortServices: function(criteria) {
+    let sorted = [...this.allServices];
+
+    switch(criteria) {
+        case 'investment':
+            sorted.sort((a, b) => this.parsePrice(b.price) - this.parsePrice(a.price));
+            break;
+        case 'entry':
+            sorted.sort((a, b) => this.parsePrice(a.price) - this.parsePrice(b.price));
+            break;
+        case 'journey':
+            const order = { "Establish": 1, "Reclaim": 2, "Elevate": 3 };
+            sorted.sort((a, b) => (order[a.category] || 99) - (order[b.category] || 99));
+            break;
+        case 'alphabetical':
+            sorted.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        default:
+            sorted = [...this.originalServices];
+    }
+
+    this.allServices = sorted;
+    this.renderServicesGrid(this.allServices);
+  },
+
+  parsePrice: function(priceStr) {
+    if (!priceStr) return 0;
+    // Remove "$", ",", and any non-numeric characters except "."
+    const num = parseFloat(priceStr.replace(/[^\d.]/g, ''));
+    return isNaN(num) ? 0 : num;
   }
 };

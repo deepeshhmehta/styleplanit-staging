@@ -18,7 +18,8 @@ const App = {
 
     $(document).on("click", ".nav-links a", function () {
       const linkText = $(this).text().trim();
-      Analytics.trackInteraction('nav_click', linkText);
+      const href = $(this).attr('href');
+      Analytics.trackUI('click', 'navigation', linkText, { destination: href });
 
       $(".nav-links").removeClass("active");
       $(".menu-toggle").attr("aria-expanded", "false");
@@ -129,12 +130,28 @@ const App = {
     }
 
     // 8. Global Lead Tracking
-    $(document).on("click", ".btn-ga-whatsapp", function() {
-        Analytics.trackLead('whatsapp_floating', 'social_inquiry');
+    $(".whatsapp-floating").on("click", function() {
+        Analytics.trackConversion('whatsapp_inquiry', 'floating_cta', 0, { platform: 'whatsapp' });
     });
 
-    $(document).on("click", ".btn-ga-book", function() {
-        Analytics.trackLead('schedule_consultation_floating', 'appointment_booking');
+    $(".book-now-floating").on("click", function() {
+        Analytics.trackConversion('appointment_booking', 'floating_cta', 10, { platform: 'cal_com' });
+    });
+
+    // 8b. Value Section Tracking
+    $(document).on("click", "#why-styling .btn", function() {
+        Analytics.trackUI('click', 'value_section', 'start_journey');
+    });
+
+    // 8c. Footer Tracking
+    $(document).on("click", "footer .footer-links a", function() {
+        const text = $(this).text().trim();
+        Analytics.trackUI('click', 'footer_links', text);
+    });
+
+    $(document).on("click", "footer .social-icons a", function() {
+        const platform = $(this).find('i').attr('class');
+        Analytics.trackUI('click', 'footer_social', platform);
     });
 
     // 9. Handle deep links/hash scroll after dynamic components settle

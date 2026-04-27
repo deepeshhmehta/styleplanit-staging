@@ -65,8 +65,11 @@ const HeroFeature = {
     }, 4000);
 
     // Hero CTA Tracking
-    $(document).on("click", ".btn-ga-hero", function() {
-        Analytics.trackInteraction('hero_cta', 'hero_main_button');
+    $(document).on("click", ".dribbble-cta-btn", function() {
+        const text = $(this).text().trim();
+        Analytics.trackUI('click', 'hero', text, { location: 'home_hero' });
+        Analytics.trackConversion('hero_click', 'hero', 2);
     });
+
   }
 };
