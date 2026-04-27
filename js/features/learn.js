@@ -10,7 +10,7 @@ const LearnFeature = {
         if (container.length === 0) return;
 
         // Default sidebar state based on screen width
-        if (window.innerWidth < 1024) {
+        if (window.innerWidth < CONFIG.THEME.BREAKPOINTS.TABLET) {
             $(".wiki-layout-wrapper").addClass("sidebar-collapsed");
         }
 
@@ -58,7 +58,10 @@ const LearnFeature = {
         $(".wiki-nav-link").removeClass("active");
         $(`.wiki-nav-link[data-title="${title}"]`).addClass("active");
 
-        Analytics.trackInteraction('wiki_view', slug);
+        Analytics.trackEngagement('view', article.title, article.category || 'Article', { 
+            item_id: slug,
+            read_time: article.read_time 
+        });
 
         // Keep dark mode state if already active
         const isDarkMode = container.hasClass("dark-mode");
@@ -84,18 +87,18 @@ const LearnFeature = {
         `);
 
         if (isDarkMode) container.addClass("dark-mode");
-        container.fadeIn(400);
+        container.fadeIn(CONFIG.THEME.ANIMATION.DURATION_STANDARD);
 
         // Scroll to top of article
-        const scrollTarget = window.innerWidth < 768 ? container.offset().top - 100 : 0;
+        const scrollTarget = window.innerWidth < CONFIG.THEME.BREAKPOINTS.MOBILE ? container.offset().top - CONFIG.THEME.SCROLL.PADDING_MOBILE : 0;
         if (scrollTarget > 0) {
-            $("html, body").animate({ scrollTop: scrollTarget }, 500);
+            $("html, body").animate({ scrollTop: scrollTarget }, CONFIG.THEME.ANIMATION.DURATION_STANDARD + 100);
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Close sidebar on mobile after selection
-        if (window.innerWidth < 1024) {
+        if (window.innerWidth < CONFIG.THEME.BREAKPOINTS.TABLET) {
             $(".wiki-layout-wrapper").addClass("sidebar-collapsed");
         }
     },

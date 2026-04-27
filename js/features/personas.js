@@ -37,7 +37,7 @@ const PersonasFeature = {
                         const activeIndex = Math.round(scrollPercent * (personas.length - 1));
                         
                         if (activeIndex === personas.length - 1) {
-                            Analytics.trackScrollEnd('personas_carousel');
+                            Analytics.trackEngagement('scroll_to_end', 'personas', 'carousel');
                         }
 
                         dots.removeClass("active");
@@ -50,16 +50,16 @@ const PersonasFeature = {
         });
 
         // 5. Dot Click to Scroll
-        $(document).on("click", "#personas-scroll-indicator .scroll-dot", function() {
+        indicator.on("click", ".scroll-dot", function() {
             const index = $(this).data("index");
             const persona = personas[index];
-            Analytics.trackInteraction('persona_dot_click', persona.title);
+            Analytics.trackUI('click', 'personas_carousel', persona.title, { index: index });
 
             const cardWidth = cards.first().outerWidth() + 30; // 30 is gap
             
             wrapper.animate({
                 scrollLeft: index * cardWidth
-            }, 500);
+            }, CONFIG.THEME.ANIMATION.DURATION_STANDARD);
         });
     },
 

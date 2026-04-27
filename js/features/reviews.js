@@ -59,7 +59,7 @@ const ReviewsFeature = {
         // Track when user reaches the end of reviews
         if (progress > 0.95 && !hasTrackedEnd) {
             hasTrackedEnd = true;
-            Analytics.trackScrollEnd('reviews_carousel');
+            Analytics.trackEngagement('scroll_to_end', 'reviews', 'carousel');
         }
     });
   },
@@ -74,23 +74,23 @@ const ReviewsFeature = {
         card.find(".read-more").text(isExpanding ? "Read less" : "Read more");
         
         if (isExpanding) {
-            Analytics.trackInteraction('review_expansion', card.find('.review-author').text());
+            Analytics.trackUI('expand', 'reviews', card.find('.review-author').text());
         }
         
         const navHeight = $("nav").outerHeight() || 0;
-        const extraPadding = CONFIG.SETTINGS.SCROLL_OFFSET;
+        const extraPadding = CONFIG.THEME.SCROLL.GLOBAL_OFFSET;
 
         if (isExpanding) {
             setTimeout(() => {
                 $("html, body").animate({
                     scrollTop: card.offset().top - navHeight - extraPadding
-                }, 400);
+                }, CONFIG.THEME.ANIMATION.DURATION_STANDARD);
             }, 100);
         } else {
             card.scrollTop(0);
             $("html, body").animate({
                 scrollTop: card.offset().top - navHeight - extraPadding
-            }, 200);
+            }, CONFIG.THEME.ANIMATION.DURATION_FAST);
         }
     });
   }

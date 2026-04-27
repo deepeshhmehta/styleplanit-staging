@@ -17,6 +17,9 @@ const TeamFeature = {
 
     container.empty();
     team.forEach((person, index) => {
+      // Track profile view engagement
+      Analytics.trackEngagement('view', person.name, 'team_profile');
+      
       const isEven = index % 2 === 0;
       const alignmentClass = isEven ? "image-left" : "image-right";
       

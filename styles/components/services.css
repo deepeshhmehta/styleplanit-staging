@@ -1,9 +1,9 @@
 /* --- 8. SERVICES / EXPERIENCE --- */
 .service-card {
     border: 1px solid var(--border-color);
-    padding: 30px;
+    padding: var(--space-lg);
     text-align: center;
-    transition: all 0.4s ease;
+    transition: all var(--transition-standard);
     background: var(--cream);
     display: flex;
     flex-direction: column;
@@ -28,16 +28,37 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.07);
 }
 
+.service-card.seen {
+    opacity: 0.7;
+    background: #fdfdfd;
+}
+
+.service-card.seen .service-card-image img {
+    filter: grayscale(0.5);
+    opacity: 0.8;
+}
+
+.service-card.seen:hover {
+    opacity: 1;
+    background: var(--cream);
+}
+
+.service-card.seen:hover .service-card-image img {
+    filter: grayscale(0);
+    opacity: 1;
+}
+
 .service-card .service-card-image img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-md);
     border-radius: var(--standard-radius);
 }
 
-.service-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-.service-card p { font-size: 0.85rem; margin-bottom: 15px; }
+.service-card h3 { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+.service-card .service-price { margin-bottom: 8px; display: block; }
+.service-card p { font-size: 0.85rem; margin-bottom: var(--space-md); }
 
 .service-card .long-desc { display: none; }
 
@@ -200,6 +221,150 @@
 }
 
 .services-grid.active { display: grid; }
+
+/* Sorting Controls */
+.services-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+    padding: 0 10px;
+}
+
+.luxury-sort {
+    position: relative;
+    user-select: none;
+    z-index: 100;
+}
+
+.sort-label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 25px;
+    border-radius: 100px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sort-label:hover {
+    border-color: var(--primary-accent);
+    box-shadow: 0 4px 20px rgba(var(--primary-accent-rgb), 0.1);
+}
+
+.label-prefix {
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--primary-accent);
+    opacity: 0.8;
+}
+
+.active-sort {
+    font-family: var(--font-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.sort-label i {
+    font-size: 0.7rem;
+    color: var(--primary-accent);
+    transition: transform 0.3s ease;
+}
+
+.luxury-sort.active .sort-label i {
+    transform: rotate(180deg);
+}
+
+.sort-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-sort.active .sort-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sort-menu li {
+    padding: 12px 20px;
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    color: var(--charcoal);
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.sort-menu li:hover {
+    background: var(--logo-band-bg);
+    color: var(--primary-accent);
+    padding-left: 25px;
+}
+
+.sort-menu li.active {
+    background: var(--primary-accent);
+    color: var(--white);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .services-controls {
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+    
+    .sort-label {
+        padding: 10px 20px;
+        width: auto;
+        min-width: 200px;
+        justify-content: center;
+    }
+
+    .active-sort {
+        font-size: 0.75rem;
+    }
+
+    .luxury-sort {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .sort-menu {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: 280px; /* Slightly wider for longer mobile text */
+    }
+    .luxury-sort.active .sort-menu {
+        transform: translateX(-50%) translateY(0);
+    }
+}
 
 .icon-service-page {
     position: relative;

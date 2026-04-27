@@ -48,7 +48,7 @@ const SubscribeFeature = {
         return false;
       }
 
-      Analytics.trackLead('newsletter_signup', 'footer_subscribe');
+      Analytics.trackConversion('newsletter_signup', 'footer', 1);
 
       setTimeout(() => {
         container.fadeOut(600, function() {

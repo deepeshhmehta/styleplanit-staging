@@ -19,10 +19,15 @@ const LogosFeature = {
     container.empty();
     logos.forEach(logo => {
         container.append(`
-            <div class="brand-logo-item">
+            <div class="brand-logo-item" data-logo="${logo}">
                 <img src="assets/images/home-page/logos/${logo}" alt="${logo}">
             </div>
         `);
+    });
+
+    $(document).on("click", ".brand-logo-item", function() {
+        const logo = $(this).data('logo');
+        Analytics.trackUI('click', 'trust_logos', logo);
     });
   }
 };
