@@ -124,9 +124,9 @@ const App = {
         SubscribeFeature.init(config);
     }
 
-    // 7. Dialog Popups
-    if (typeof DialogsFeature !== 'undefined') {
-        DialogsFeature.init();
+    // 7. Promotion System (Inline & Floating)
+    if (typeof PromosFeature !== 'undefined') {
+        PromosFeature.init();
     }
 
     // 8. Global Lead Tracking

@@ -99,7 +99,7 @@ async function loadComponents() {
     if ($("#services").length > 0 || $("#experience-intro").length > 0 || $("#icon-service-container").length > 0) features.push('services');
     if ($("#icon-service-container").length > 0) features.push('icon-service');
     if ($("#wiki-article-container").length > 0) features.push('learn');
-    features.push('dialogs'); 
+    features.push('promos'); 
 
     const featurePromises = features.map((feature) => {
         return new Promise((resolve) => {

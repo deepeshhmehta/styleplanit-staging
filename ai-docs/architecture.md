@@ -1,75 +1,60 @@
 # StylePlanIt Technical Architecture
 
-This document details the core logic and orchestration patterns of the StylePlanIt website for the **v1.0.0 Production Baseline**.
+This document details the core logic and orchestration patterns of the StylePlanIt website for the **v1.1.1 Production Baseline**.
 
 ## 1. Orchestration Philosophy
 StylePlanIt uses a **Single-Page Initialization (SPI)** pattern. While the site has multiple HTML files, the logic is unified through a central loader and orchestrator. 
 
-### Modular CSS Architecture
-Following the v1.0.0 stabilization, the project transitioned from a monolith `common.css` to a modular, component-based system:
+### Modular CSS & Design Tokens
+The project utilizes a modular, component-based system driven by **Design Tokens**:
 *   **`styles/base/`**: Global resets, typography, and core navigation.
-*   **`styles/components/`**: Isolated styles for specific UI modules (Hero, Packages, Services, etc.).
+*   **`styles/variables.css`**: The "Source of Truth" for the visual system. Includes a granular **Spacing Scale** (`--space-sm` to `--space-section`) and **Transition Tokens**.
+*   **`styles/components/`**: Isolated styles for specific UI modules.
 *   **`styles/styles.css`**: Central orchestrator for all CSS modules.
 
-### The "Site Wrapper" Pattern
-Every page is wrapped in a `.site-wrapper` div. This achieves the "White Box on Green Backdrop" luxury card effect.
-*   **Backdrop:** The `body` carries the `var(--primary-accent)` (Green) color and padding.
-*   **Main Container:** `.site-wrapper` provides the white background, shadow, and `var(--standard-radius)` (40px) rounding.
+### Pattern-Driven Engineering
+We minimize "Magic Numbers" by centralizing logic-critical constants:
+*   **Global JS Config**: `js/config.js` houses site-wide infrastructure tokens (Breakpoints, Animation Timings, Scroll Offsets).
+*   **Feature Config**: Individual features (e.g., `promos.js`) use local `CONFIG` or `LAYOUT` objects derived from global tokens.
 
 ## 2. Core Components
 
 ### `js/loader.js` (The Engine)
-The loader is the first script executed. It handles:
-*   **Split-Atom Data Ingestion:** Fetches `site-data.json` (content) and `site-config.json` (metadata) in parallel via `Promise.all`.
-*   **Surgical Configuration:** Uses `Utils.applyConfig(config, container)` to apply data-binding ONLY to newly injected components, ensuring high performance.
-*   **Recursive Component Loading:** Scans the DOM for `[data-component]` attributes, fetches the corresponding `.html` from `/components/`, and injects it.
-*   **Dynamic Feature Detection:** Dynamically injects feature scripts (e.g., `js/features/hero.js`).
-*   **Deep Link Anchoring:** Post-load smooth scroll once all dynamic components are rendered.
-*   **Visual Stability:** Preloads critical background images before hiding the loading overlay.
+The loader handles the dynamic hydration of the platform:
+*   **Dynamic Feature Injection**: Scans the DOM and only loads the JS features required for the current page view (e.g., `learn.js` only loads on the wiki page).
+*   **Visual Stability**: Preloads critical background images before hiding the loading overlay.
+*   **Recursive Component Loading**: Injects reusable HTML blocks from `/components/`.
 
 ### `js/app.js` (The Orchestrator)
-The orchestrator initializes global UI behaviors:
-*   **Navigation:** Mobile menu translucent toggles and unified header behavior.
-*   **Feature Lifecycle:** Calls `.init()` on all detected features (e.g., `HomeServicesFeature.init()`).
-*   **Z-Index Management:** Standardized UI layering using variables:
-    *   `--z-ui: 10` (Basic UI elements)
-    *   `--z-sticky: 100` (Header/Nav)
-    *   `--z-overlay: 500` (Floating buttons, overlays)
-    *   `--z-modal: 1000` (Popups, focused states)
-    *   `--z-loader: 9999` (Loading screen)
+Initializes global UI behaviors and handles **Efficient Event Delegation**. We prefer delegating events to stable parent containers rather than the global `document` to minimize listener overhead.
 
-## 3. Anchor Scroll Lifecycle
-Because components are loaded dynamically, standard browser anchor links (`#id`) often fail on initial load.
-1.  **Loader Detection:** `loader.js` detects the hash in the URL.
-2.  **App Init:** `app.js` waits for the feature grids (Packages, Personas) to initialize and render.
-3.  **Deferred Scroll:** A 500ms `setTimeout` is triggered to calculate the final `offsetTop` of the dynamic component and perform a smooth scroll.
+### `js/features/analytics.js` (Telemetry 2.0)
+A structured event schema capturing high-fidelity intent data:
+*   **`ui_interaction`**: Clicks, toggles, and UI resets.
+*   **`content_engagement`**: Views, scroll-depth tracking, and read completions.
+*   **`generate_lead`**: Source-attributed lead generation events.
+*   **Debug Layer**: Includes a local `Analytics-Debug` logger for non-production verification.
 
-## 3. Key Feature Patterns
+## 3. High-Impact Feature Patterns
 
-### "Pick A Journey" (Service Bundles)
-Located in `js/features/home-services.js`, this uses a **State-Based Expansion** logic:
-*   **Default State:** Centered flex-row cards showing `short_description`.
-*   **Active State:** The section receives a `.has-active` class. The active card expands full-width (`order: -1`) and reveals `long_description`, `inclusions`, and a CTA. Minimized cards stack as cream-colored buttons.
+### "Pick A Journey" (Horizontal Interface)
+Located in `js/features/home-services.js`:
+*   **Horizontal Carousel**: Transitioned from vertical expansion to a high-fidelity horizontal model.
+*   **Index-Based Centering**: Uses mathematical positioning for pixel-perfect alignment across all breakpoints (Mobile, Tablet fixed 550px, Desktop).
+*   **Context-Aware Anchoring**: Factors in `scroll-padding` and `scroll-margin` to maintain vertical context during expansion/contraction cycles.
 
-### "Bespoke Services" (Unified Grid)
-Located in `js/features/services.js`, this uses a **Fade-Based Transition** pattern:
-*   **Single Grid:** All services (excluding "Icon Service") are rendered into a single responsive grid (140px min-width on mobile for 2-column layout).
-*   **Expansion:** Clicking a card triggers a `fadeOut` of the grid followed by a `fadeIn` of the detailed service card.
-*   **Navigation:** The details view is a centered vertical card using `var(--logo-band-bg)` for visual distinction.
+### Unified Promotion System (Promos 1.0)
+Located in `js/features/promos.js`:
+*   **Multi-Mode Engine**: Supports `Inline` cards, `Floating` toasts, and full-screen `Modal` takeovers.
+*   **Persistence Pattern**: Dismissed modals can convert to a persistent "trigger icon" in the CTA stack, maintaining conversion opportunities without friction.
+*   **Automated Lifecycle**: Includes an `expiryDate` logic layer for zero-maintenance campaign deactivation.
 
-### "Recognize Yourself" (Personas)
-Located in `js/features/personas.js`, this uses **Horizontal Scroll Tracking**:
-*   Calculates scroll percentage of the container to sync with a dot-indicator system.
-*   Uses `var(--standard-radius)` for cards to match the global design system.
+### "Bespoke Services" (Intelligent Discovery)
+Located in `js/features/services.js`:
+*   **Seen State Tracking**: Utilizes a high-performance `Set` to track viewed services, providing visual grayscale/opacity feedback.
+*   **Luxury Sorting**: A custom glassmorphic component replacing standard OS selects.
 
-## 4. Initialization Lifecycle
-1.  **DOM Content Loaded:** `loader.js` starts.
-2.  **Phase 1 (Data):** Fetch `site-data.json` and check version.
-3.  **Phase 2 (Components):** Recursively fetch and inject HTML components.
-4.  **Phase 3 (Features):** Inject feature JS files.
-5.  **Phase 4 (App Init):** Call `App.init()` for event listeners.
-6.  **Phase 5 (Finalize):** Hide loader and execute **Scroll-to-Hash** callback.
-
-## 5. Stability Best Practices
-*   **Absolute Paths:** Always use `/` prefixes for deep-linked routes.
-*   **Design Tokens:** Use `var(--standard-radius)` and `var(--charcoal-rgb)` instead of hardcoded values to ensure site-wide unity.
+## 4. Stability & Security Best Practices
+*   **Safe State Management**: URI-encoded Base64 key generation for Unicode/Emoji support in session storage.
+*   **Hardware Acceleration**: Use of `backface-visibility: hidden` to prevent sub-pixel rendering glitches in complex transforms.
+*   **Secure Links**: Mandatory `rel="noopener noreferrer"` for all `target="_blank"` integrations.

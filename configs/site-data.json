@@ -51,6 +51,9 @@
       "sanjeev_after.jpg",
       "sanjeev_before.jpg"
     ],
+    "promos": [
+      "mothers-day-bg.jpg"
+    ],
     "services-by-category/Elevate": [
       "30_min_style_revamp.jpeg",
       "build_your_signature_self.jpg",
@@ -112,11 +115,30 @@
   ],
   "dialogs": [
     {
+      "action": "https://cal.com/styleplanit/15min",
+      "cta": "Celebrate Her ✨",
+      "description": "She pours her heart into everyone else. This Mother's Day, give her the ultimate luxury: the gift of being truly seen and celebrated for the woman she is.<br><br><span class=\"highlighter-red\">Special Mother's Day Offer: $114</span><br><br><strong>What's Included:</strong><div class=\"promo-list\">✔️ Body & Style Analysis<br>✔️ 1 Show-Stopping Event Look<br>✔️ Style Snap</div><strong>🎁 Bonus:</strong> Add a professional Color Analysis for 50% off",
+      "id": "mothers-day",
+      "imageUrl": "assets/images/promos/mothers-day-bg.jpg",
+      "persist": "TRUE",
+      "subtitle": "Mother's Day offer",
+      "timeInSeconds": "5",
+      "title": "To the woman beneath the title of Mom",
+      "type": "modal",
+      "expiryDate": "2026-05-11"
+      },
+
+    {
       "action": "https://wa.me/16479678953",
       "cta": "Get Help Now",
       "description": "WhatsApp us on 647-XO-STYLE. Get that look stylist approved.",
-      "timeInSeconds": "20",
-      "title": "Free Style Helpline"
+      "id": "free-helpline",
+      "imageUrl": "",
+      "persist": "",
+      "subtitle": "",
+      "timeInSeconds": "30",
+      "title": "Free Style Helpline",
+      "type": "toast"
     }
   ],
   "personas": [

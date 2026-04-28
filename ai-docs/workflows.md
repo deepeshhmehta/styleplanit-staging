@@ -32,36 +32,25 @@ The project follows a strict tiered promotion model to ensure environment stabil
 
 To update the individual services on the Experience page:
 1.  Edit `services` array in `configs/site-data.json`.
-2.  **Category Mapping:** Use "Establish" or "Elevate" to group internal logic, though they appear in a unified grid.
-3.  **Footer Icons:** Use comma-separated strings for inclusions (e.g., "Wardrobing, Shopping List"). The UI automatically maps these to FontAwesome icons.
+2.  **Price Display:** Prices added here automatically appear on grid cards and detail takeovers.
+3.  **Footer Icons:** Use comma-separated strings. Mapping is defined in `js/features/services.js`.
 4.  **Sync:** Run `python3 scripts/diff_site_data.py` to push changes to the Google Sheet.
 
-## 3. Service Bundle Updates (Pick A Journey)
+## 3. Marketing Campaigns (Promos 1.0)
 
-To update the main packages (Establish, Reclaim, Elevate):
-1.  Edit `categories` array in `configs/site-data.json`.
-2.  **Price Formatting:** Use raw strings (e.g., "$330") as the code automatically handles prefix stripping.
-3.  **Inclusions:** Use `|` to separate items (e.g., "Item 1|Item 2").
-4.  **Sync:** Run `python3 scripts/diff_site_data.py` to push changes to the Google Sheet.
+To launch a new promotion (e.g., Father's Day):
+1.  **Image:** Upload background to `assets/images/promos/`.
+2.  **Config:** Update `dialogs` array in `site-data.json`.
+    *   Set `type` to `modal` for high impact.
+    *   Set `persist` to `TRUE` to keep a gift icon visible after dismissal.
+    *   Set `expiryDate` to automate deactivation.
+3.  **Telemetry:** Monitor `promo_click` and `reopen` events in GA4 for performance analysis.
 
-## 3. Article Publication (Style Wiki)
+## 4. Technical Audit Protocol (Principal Engineer Mode)
 
-1.  **Conversion:** Paste draft text into Gemini CLI: *"Convert this to a Style Wiki article. Use semantic HTML."*
-2.  **Local Integration:** Append entry to `site-data.json` and increment `VERSION`.
-3.  **Sheets Sync:** Run `python3 scripts/diff_site_data.py`, select Local Winner, and paste CSV into the **articles** tab.
+Before concluding any refactor, perform **Surgical Scrutiny**:
 
-## 4. Image Asset Pipeline
-
-1.  **Add:** Drop new images into subfolders (e.g., `assets/images/services-by-category/Reclaim/`).
-2.  **Manifest Update:** Run `python3 scripts/diff_site_data.py`. The script scans and updates `assets_manifest` in `site-data.json`.
-3.  **Config:** Update the `image_url` field in `site-data.json` to point to the new path.
-
-## 5. Agent Review Protocol (Principal Engineer Mode)
-
-Before concluding any major refactor or feature, the agent must perform a **Surgical Scrutiny** across these categories:
-
-1.  **High Risk:** Scan for race conditions in `loader.js` and `app.js`. Ensure async operations (fetching JSON) don't block UI renders.
-2.  **Blockers:** Verify DOM IDs match between HTML and JS (e.g., `#packages-grid-container`).
-3.  **Security Check:** Run `grep -rn "target=\"_blank\""` and ensure every match has `rel="noopener noreferrer"`.
-4.  **Design Tokens:** Verify no hardcoded colors (`#FFF`) or spacing (`20px`) exist where `var(--white)` or `var(--standard-radius)` should be used.
-5.  **State Cleanup:** Ensure `.has-active` or `.active` classes are correctly toggled and removed during resets.
+1.  **Security Hardening:** Every `target="_blank"` link MUST have `rel="noopener noreferrer"`.
+2.  **Token Integrity:** Ensure all new spacing uses `--space-*` variables and all timings use `CONFIG.THEME.ANIMATION`.
+3.  **Memory Leak Audit:** Scrutinize event delegation. Prefer parent-level container listeners over global `document` listeners.
+4.  **Responsiveness:** Verify iPad fixed-width constraints and mobile internal-scroll modal logic.

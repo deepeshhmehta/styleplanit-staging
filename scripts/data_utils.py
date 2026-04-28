@@ -38,6 +38,8 @@ def parse_csv_to_list(csv_text):
     for row in reader:
         processed_row = {}
         for k, v in row.items():
+            if k is None or str(k).strip() == "":
+                continue
             val = normalize_value(v)
             # Extra cleanup for numerical strings with .00
             if val.endswith(".00"):
@@ -52,7 +54,7 @@ def normalize_dataset(data_list, headers=None):
     """Normalizes a list of dicts for comparison by ensuring consistent keys and values."""
     normalized_list = []
     for item in data_list:
-        normalized_item = {k: normalize_value(v) for k, v in item.items()}
+        normalized_item = {k: normalize_value(v) for k, v in item.items() if k and str(k).strip() != ""}
         if headers:
             for h in headers:
                 if h not in normalized_item:
@@ -63,6 +65,8 @@ def normalize_dataset(data_list, headers=None):
 
 def get_all_headers(local_list, remote_list):
     headers = set()
-    for item in local_list: headers.update(item.keys())
-    for item in remote_list: headers.update(item.keys())
+    for item in local_list: 
+        headers.update(k for k in item.keys() if k and str(k).strip() != "")
+    for item in remote_list: 
+        headers.update(k for k in item.keys() if k and str(k).strip() != "")
     return sorted(list(headers))

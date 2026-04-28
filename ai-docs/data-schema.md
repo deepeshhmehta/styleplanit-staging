@@ -4,44 +4,35 @@ The platform uses a **Split-Atom** data model to separate UI metadata from struc
 
 ## 1. `configs/site-config.json` (Flat Metadata)
 
-This file contains all flattened Key-Value pairs for UI strings, URLs, and environment settings.
-*   **`VERSION`**: Core production baseline (e.g., "1.0.0").
-*   **`LOADER_*`**: Text and progress settings for the loading sequence.
-*   **`HERO_*`**: High-impact titles, mantra, and button text.
-*   **`VALUE_*`**: Storytelling pillars for the "Why Styling" section.
-*   **`NAV_*`**: Navigation text and destination anchors (e.g., `/#services`).
-*   **`ICON_*`**: Metadata for the invitation-only collection.
+Contains flattened Key-Value pairs for UI strings and infrastructure.
+*   **`VERSION`**: Platform version (v1.1.1).
+*   **`ACCESS_*`**: Credentials for remote data syncing.
+*   **`STEP_2_BUTTON_*`**: Primary lead generation configurations.
 
 ## 2. `configs/site-data.json` (Structured Content)
 
-This file houses high-volume data arrays managed via Google Sheets.
+### `dialogs` (Promos 1.0)
+This array powers the **Unified Promotion System**.
+*   `type`: `inline`, `floating`, or `modal`.
+*   `imageUrl`: Optional background for themed promos.
+*   `persist`: `"TRUE"` converts dismissed modals into floating triggers.
+*   `expiryDate`: `YYYY-MM-DD` for automated deactivation.
+*   `action`: Target URL (automatically appends subtitle as `notes`).
 
-### `categories` (Array)
-Defines the **Service Bundles** shown in "Pick A Journey."
-*   `name`: Display title (Establish, Reclaim, Elevate).
-*   `short_description`: Minimized state teaser.
-*   `description`: Full expanded copy.
-*   `price`: Formatted string (e.g., "$330").
-*   `inclusions`: Pipe-separated string (`|`) for list generation.
-*   `booking_link`: Direct Cal.com path.
+### `categories` (Journey Bundles)
+*   `showOnHomePage`: `"TRUE"` triggers horizontal carousel rendering.
+*   `inclusions`: Pipe-separated (`|`) for list generation.
 
-### `services` (Array)
-Individual **À La Carte** offerings.
-*   `footer`: Comma-separated tags for icon generation.
+### `services` (À La Carte)
+*   `price`: Formatted string (displayed in grid and details).
+*   `footer`: Comma-separated tags mapped to FontAwesome icons.
 
-### `team` (Array)
-Profiles for "The Collective."
-*   `imageUrl`: Precise path to the optimized team photo.
+### `assets_manifest`
+Automatically indexed inventory of site images.
 
-### `articles` (Array)
-Style Wiki content.
-*   `id`: Immutable routing key (e.g., `privacy-policy`).
-*   `content`: Semantic HTML block.
+## 3. Configuration Tokens (`js/config.js`)
 
-### `assets_manifest` (Object)
-Automatically generated index of all site images, grouped by page context.
-
-## 3. Synchronization Logic
-Data flow: **Google Sheets** → **CSV** → **Local JSON** → **Website UI**.
-
-*   Use `scripts/diff_site_data.py` to reconcile both local JSON files with their respective Google Sheet tabs.
+Centralized JavaScript object for logic infrastructure:
+*   **`THEME.BREAKPOINTS`**: 1024 (Tablet), 768 (Mobile).
+*   **`THEME.ANIMATION`**: Standardized durations (Fast: 300ms, Standard: 400ms, Slow: 600ms).
+*   **`THEME.SCROLL`**: Global offsets and centering parameters.
