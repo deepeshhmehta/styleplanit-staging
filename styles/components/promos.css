@@ -1,0 +1,336 @@
+/**
+ * promos.css - Unified Promotion Styles
+ */
+.promo-card {
+    position: relative;
+    border-radius: var(--standard-radius);
+    overflow: hidden;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    border: 1px solid var(--border-color);
+}
+
+/* 1. Floating Mode (Toast) */
+.promo-card.floating {
+    position: fixed;
+    width: 350px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    z-index: var(--z-modal);
+    transform: translateY(100px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.promo-card.floating.visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 2. Inline Mode */
+.promo-card.inline {
+    width: 90%;
+    max-width: 1000px;
+    margin: var(--space-xxl) auto;
+    min-height: 350px;
+    padding: 60px 4vw;
+}
+
+/* 3. Modal Mode (Centered Takeover) */
+.promo-card.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    max-width: 650px;
+    max-height: 90vh; /* Prevent screen overflow */
+    overflow-y: auto; /* Enable internal scrolling if needed */
+    padding: 80px var(--space-xxl);
+    z-index: calc(var(--z-modal) + 100);
+    transform: translate(-50%, -45%) scale(0.95);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.45);
+    border: 1px solid #d4af37; /* Subtle Gold Border */
+}
+
+/* Custom Scrollbar for Luxury Feel */
+.promo-card.modal::-webkit-scrollbar {
+    width: 4px;
+}
+.promo-card.modal::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 10px;
+}
+
+.promo-card.modal.visible {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+.promo-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15,15,15,0.7); /* Darker, more dramatic */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.7s ease;
+}
+
+.promo-backdrop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Background & Overlay System */
+.promo-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transition: transform 0.6s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.promo-card.has-bg .promo-bg-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.85) 100%);
+}
+
+.promo-card:not(.has-bg) .promo-bg-overlay {
+    background: var(--white);
+}
+
+.promo-card:not(.has-bg) .promo-content {
+    color: var(--black);
+}
+
+.promo-card:not(.has-bg) .promo-title {
+    color: var(--black);
+}
+
+.promo-card:not(.has-bg) .promo-desc {
+    color: var(--charcoal);
+}
+
+.promo-card:not(.has-bg) .promo-close {
+    color: var(--black);
+    opacity: 0.5;
+}
+
+.promo-card:not(.has-bg) .promo-close:hover {
+    opacity: 1;
+}
+
+.promo-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    color: var(--white); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.promo-card.has-bg .promo-subtitle {
+    color: #f0eee6;
+    opacity: 0.8;
+}
+
+.promo-card.has-bg .promo-title {
+    color: #f0eee6; /* Elegant cream */
+}
+
+.promo-card.has-bg .promo-desc {
+    color: rgba(255,255,255,0.9);
+}
+
+.promo-subtitle {
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+    color: var(--primary-accent-dark);
+    margin-bottom: var(--space-sm);
+    display: block;
+}
+
+.promo-title {
+    font-family: var(--font-primary);
+    font-size: 2.8rem;
+    font-style: italic;
+    margin-bottom: var(--space-xl);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.promo-desc {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    opacity: 0.9;
+    margin: 0 auto;
+    max-width: 550px;
+}
+
+.promo-desc strong {
+    color: #d4af37; /* Gold emphasis */
+    font-family: var(--font-secondary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.promo-content .promo-cta {
+    margin-top: var(--space-md);
+    padding: 18px 45px;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+}
+
+.highlighter-red {
+    background-color: #c0392b; /* Sophisticated deep red */
+    color: var(--white);
+    padding: 2px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    transform: rotate(-1deg);
+    font-weight: 700;
+}
+
+.promo-list {
+    display: inline-block;
+    text-align: left;
+    margin: var(--space-sm) 0;
+}
+
+.promo-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--white);
+    opacity: 0.6;
+    z-index: 10;
+    line-height: 1;
+    transition: opacity 0.3s ease;
+}
+
+.promo-close:hover {
+    opacity: 1;
+}
+
+/* Desktop Hover Effects */
+@media (min-width: 1025px) {
+    .promo-card.has-bg:not(.modal):hover .promo-bg-overlay {
+        transform: scale(1.05);
+    }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .promo-card.modal {
+        padding: 50px 25px;
+    }
+
+    .promo-card.floating {
+        width: calc(100% - 40px);
+        left: 20px !important;
+        bottom: 20px !important;
+    }
+    .promo-title { font-size: 2.2rem; }
+}
+
+/* 4. Persistent Trigger */
+.promo-trigger-floating {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: #d4af37; /* Gold theme */
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+    z-index: var(--z-sticky);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.5);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Fallback for when CTA container is missing */
+body > .promo-trigger-floating {
+    position: fixed;
+    right: 30px;
+    bottom: 170px;
+}
+
+.promo-trigger-floating.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.promo-trigger-floating i {
+    font-size: 1.2rem;
+}
+
+.trigger-ping {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #d4af37;
+    border-radius: 50%;
+    opacity: 0.6;
+    z-index: -1;
+    animation: trigger-ping-animation 2s infinite;
+}
+
+@keyframes trigger-ping-animation {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+    .promo-trigger-floating {
+        width: 50px;
+        height: 50px;
+    }
+    
+    body > .promo-trigger-floating {
+        right: 20px;
+        bottom: 160px;
+    }
+}
