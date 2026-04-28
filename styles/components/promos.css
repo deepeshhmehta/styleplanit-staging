@@ -259,32 +259,29 @@
 /* Mobile Adjustments */
 @media (max-width: 768px) {
     .promo-card.modal {
-        width: 88%;
-        max-height: 80vh;
-        max-height: 80dvh;
-        padding: 35px 20px;
-        padding-bottom: calc(35px + env(safe-area-inset-bottom));
-        overflow-y: hidden;
+        width: 82vw;
+        max-height: 75vh;
+        padding: 40px var(--space-md);
+        overflow-y: auto;
     }
 
     .promo-title { 
-        font-size: 1.6rem; 
-        margin-bottom: var(--space-md);
+        font-size: 1.5rem; 
+        margin-bottom: var(--space-lg);
     }
     
     .promo-desc {
         font-size: 0.9rem;
         line-height: 1.5;
-        margin-bottom: var(--space-md);
     }
 
     .promo-list {
-        margin: var(--space-sm) 0;
         font-size: 0.85rem;
+        margin: var(--space-sm) 0;
     }
 
     .promo-content .promo-cta {
-        margin-top: var(--space-sm);
+        margin-top: var(--space-md);
         padding: 12px 30px;
         font-size: 0.75rem;
     }
@@ -293,6 +290,20 @@
         width: calc(100% - 40px);
         left: 20px !important;
         bottom: 20px !important;
+    }
+}
+
+/* Tall Mobile Device Optimization (e.g. Pixel 10 Pro) */
+@media (max-width: 768px) and (min-height: 850px) {
+    .promo-card.modal {
+        max-height: 80vh;
+        padding: 60px var(--space-lg);
+    }
+    .promo-title {
+        font-size: 2rem;
+    }
+    .promo-desc {
+        font-size: 1.05rem;
     }
 }
 
