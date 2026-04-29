@@ -40,6 +40,33 @@ This document details the Python-based CLI tools used to manage the StylePlanIt 
 *   **Feature:** Automatically finds an open port if `8000` is busy. Serves the project root.
 
 ### `test.sh`
-*   **Purpose:** Health check suite.
-*   **Logic:** Starts the dev server and pings every critical HTML, JS, and CSS endpoint to ensure no 404s or script failures.
-*   **Requirement:** Must be run and passed before every PR.
+*   **Purpose:** Rapid health check suite.
+*   **Logic:** Pings every critical endpoint to ensure no 404s.
+
+### `qa.sh` (StylePlanIt QA Engine)
+*   **Purpose:** High-fidelity E2E Testing Suite.
+*   **Logic:** Uses Playwright (Python) to simulate real user interactions across different environments and viewports.
+*   **Capabilities:** 
+    *   **Network Mocking**: Intercepts `site-data.json` to test edge cases (expiry, persistence).
+    *   **Environment Aware**: Targets `local`, `develop`, `staging`, or `prod`.
+*   **Workflow:** Run `./qa.sh local` to perform system-level verification before every commit.
+
+### How to Add a Test Case
+1.  **File Placement**: Create a new file in `tests/` named `test_[feature].py`.
+2.  **Boilerplate**:
+    ```python
+    from playwright.sync_api import Page, expect
+    import re
+    
+    def test_my_new_feature(page: Page, base_url):
+        page.goto(base_url)
+        # Your assertions here
+        expect(page.locator("#my-id")).to_be_visible()
+    ```
+3.  **Mocking Content**: To test logic without real data, use the route interception pattern:
+    ```python
+    def mock_my_data(page, custom_array):
+        page.route("**/configs/site-data.json*", lambda route: route.fulfill(
+            json={"dialogs": [], "categories": custom_array, ...}
+        ))
+    ```

@@ -48,9 +48,12 @@ To launch a new promotion (e.g., Father's Day):
 
 ## 4. Technical Audit Protocol (Principal Engineer Mode)
 
-Before concluding any refactor, perform **Surgical Scrutiny**:
+Before concluding any refactor, the agent MUST perform a **Surgical Scrutiny** and pass the **QA Engine**:
 
-1.  **Security Hardening:** Every `target="_blank"` link MUST have `rel="noopener noreferrer"`.
-2.  **Token Integrity:** Ensure all new spacing uses `--space-*` variables and all timings use `CONFIG.THEME.ANIMATION`.
-3.  **Memory Leak Audit:** Scrutinize event delegation. Prefer parent-level container listeners over global `document` listeners.
-4.  **Responsiveness:** Verify iPad fixed-width constraints and mobile internal-scroll modal logic.
+1.  **Automated Validation**: Run `./qa.sh local`. ALL tests must pass.
+    *   This verifies system-level logic (Promos, Journeys, Hydration) independently of content.
+2.  **Security Hardening**: Every `target="_blank"` link MUST have `rel="noopener noreferrer"`.
+3.  **Token Integrity**: Ensure all new spacing uses `--space-*` variables and all timings use `CONFIG.THEME.ANIMATION`.
+4.  **Memory Leak Audit**: Scrutinize event delegation. Prefer parent-level container listeners over global `document` listeners.
+5.  **Responsiveness**: Verify iPad fixed-width constraints and mobile internal-scroll modal logic.
+

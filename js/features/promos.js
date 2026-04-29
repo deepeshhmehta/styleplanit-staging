@@ -35,8 +35,16 @@ const PromosFeature = {
         // Fix: Use URI encoding + btoa to support emojis/Unicode in storage keys
         const safeTitle = encodeURIComponent(config.title || promoId);
         const storageKey = `dismissed_promo_${btoa(safeTitle).substring(0, 10)}`;
+        const isPersistable = String(config.persist).toUpperCase() === 'TRUE';
 
-        if (sessionStorage.getItem(storageKey)) return;
+        // Check if user has already dismissed this specific promo
+        if (sessionStorage.getItem(storageKey)) {
+            // If dismissed but persistable, show the trigger icon immediately instead of the modal
+            if (isPersistable && type === 'modal') {
+                this.showPromoTrigger(config);
+            }
+            return;
+        }
 
         const inlineContainer = $(`[data-promo-container="${promoId}"]`);
         
@@ -164,11 +172,14 @@ const PromosFeature = {
             if (backdrop) backdrop.removeClass('visible');
             $('body').css('overflow', ''); 
             
+            // Save dismissal immediately
+            if (storageKey) {
+                sessionStorage.setItem(storageKey, 'true');
+            }
+
             // If it's a modal and persistable, show the floating trigger instead of permanent dismissal
             if (isModal && isPersistable && !permanent) {
                 self.showPromoTrigger(config);
-            } else if (storageKey) {
-                sessionStorage.setItem(storageKey, 'true');
             }
 
             setTimeout(() => {
