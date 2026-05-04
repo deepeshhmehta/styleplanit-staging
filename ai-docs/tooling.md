@@ -14,12 +14,15 @@ This document details the Python-based CLI tools used to manage the StylePlanIt 
     3.  Select `1` (Winner: Local).
     4.  Copy the generated CSV from `diff_outputs/` and paste it into the relevant Google Sheet tab.
 
-### `scripts/sync_engine.py` (The One-Way Deployer)
-*   **Purpose:** Overwrite local data with Google Sheets content.
-*   **Logic:** Assumes Google Sheets is the source of truth. Downloads all tabs and rebuilds `site-data.json`.
-*   **Usage:** Typically triggered via `sync-styleplanit.command` for non-technical updates.
+## 2. Feature-Specific Tools
 
-## 2. Project Management
+### Alternating Category Images
+The "Pick Your Journey" cards support rotating background images to showcase diverse demographics (e.g., male and female targets).
+*   **Data Key**: `image_urls` in `site-data.json` (pipe-separated).
+*   **Timing**: Controlled via `CATEGORY_IMAGE_ROTATION_INTERVAL` in `site-config.json`.
+*   **Transition**: 1.2s CSS opacity cross-fade.
+
+## 3. Project Management
 
 ### `scripts/asana_tools.py` (CLI Task Manager)
 *   **Purpose:** Manage and search Asana tasks from the terminal.

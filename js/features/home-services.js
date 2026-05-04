@@ -48,9 +48,15 @@ const HomeServicesFeature = {
             
             const cleanPrice = category.price ? category.price.replace('From ', '') : '';
 
+            // Handle multiple background layers for alternating imagery
+            const imageUrls = (category.image_urls || category.image_url || "").split('|').filter(url => url.trim());
+            const layersHtml = imageUrls.map((url, i) => `
+                <div class="package-card-layer ${i === 0 ? 'active' : ''}" style="background-image: url('${url}')"></div>
+            `).join('');
+
             container.append(`
                 <div class="package-card" data-tier="${category.name.toLowerCase()}">
-                    <div class="package-card-bg" style="background-image: url('${category.image_url}')"></div>
+                    ${layersHtml}
                     <div class="package-card-overlay"></div>
                     <div class="package-card-content">
                         <div class="package-label">Tier 0${index + 1}</div>
@@ -74,6 +80,33 @@ const HomeServicesFeature = {
                 </div>
             `);
         });
+
+        // Initialize rotation if multiple images exist
+        this.initImageRotation();
+    },
+
+    initImageRotation: async function() {
+        const masterConfig = await Data.loadMasterData();
+        const interval = parseInt(masterConfig.CATEGORY_IMAGE_ROTATION_INTERVAL) || 5000;
+
+        if (this.rotationInterval) clearInterval(this.rotationInterval);
+
+        this.rotationInterval = setInterval(() => {
+            $(".package-card").each(function() {
+                const layers = $(this).find(".package-card-layer");
+                if (layers.length <= 1) return;
+
+                const activeLayer = layers.filter(".active");
+                let nextLayer = activeLayer.next(".package-card-layer");
+                
+                if (nextLayer.length === 0) {
+                    nextLayer = layers.first();
+                }
+
+                activeLayer.removeClass("active");
+                nextLayer.addClass("active");
+            });
+        }, interval);
     },
 
     initScrollDots: function(count) {

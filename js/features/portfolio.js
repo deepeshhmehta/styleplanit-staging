@@ -15,7 +15,7 @@ const PortfolioFeature = {
         const images = assets['portfolio'] || [];
 
         if (images.length === 0) {
-            console.warn("Portfolio manifest empty. Run sync_engine.py to update.");
+            console.warn("Portfolio manifest empty. Run scripts/diff_site_data.py to verify state.");
             return;
         }
 
