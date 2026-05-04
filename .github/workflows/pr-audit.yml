@@ -1,0 +1,36 @@
+name: PR Audit & Governance
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - main
+
+jobs:
+  audit:
+    name: Release Governance Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Essential for version diffing
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Verify Version Jump
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: |
+          chmod +x scripts/verify_version_jump.py
+          python3 scripts/verify_version_jump.py
+
+      - name: Run QA Engine (Sanity Check)
+        run: |
+          pip install -r scripts/qa_requirements.txt
+          python3 -m playwright install chromium
+          # Run a subset of tests or full suite
+          ./qa.sh local

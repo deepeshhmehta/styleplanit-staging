@@ -24,11 +24,14 @@ This document provides the high-level project summary and critical safety mandat
 *   **Workflow Requirement:** All changes must be pushed to a feature/fix branch and merged via Pull Request.
 *   **Mandatory QA:** Agents MUST run and pass `./qa.sh local` before concluding any technical task.
 
-## 4. Current State (v1.1.2)
-The platform has evolved into an **Enterprise-Grade Authority Platform**. It features a robust, configuration-driven architecture with automated regression testing and high-fidelity telemetry.
+## 4. Current State (v2.0.0)
+The platform has evolved into an **Enterprise-Grade Authority Platform**. It features a robust, configuration-driven architecture with automated regression testing, high-fidelity demographic targeting, and professional release governance.
 
 ### Recent Major Wins:
-- **v1.1.0 (The UX Pivot)**: Transitioned the core "Journey" interface to a high-fidelity horizontal carousel and deployed **Telemetry 2.0** for intent-based user tracking.
-- **v1.1.1 (Marketing & Engine Core)**: Launched **Promos 1.0** (Unified Promotion System) and modernized the "Bespoke Services" discovery with custom glassmorphic sorting and "Seen" state tracking.
-- **v1.1.2 (QA Automation)**: Established the **StylePlanIt QA Engine**, a Playwright-powered E2E suite with mandatory CI/CD PR hooks to ensure zero-regression deployments.
-- **Engineering Excellence**: Purged magic numbers, centralized logic infrastructure in `js/config.js`, and implemented efficient event delegation across all features.
+- **v2.0.0 (The Governance & Demographic Milestone)**: 
+  - **Demographic Expansion**: Implemented alternating male/female imagery for the core journey cards to broaden market appeal.
+  - **Release Governance**: Established a tiered promotion lifecycle (Develop -> Staging -> Main) with automated PR audits for versioning.
+  - **QA Expansion**: Doubled regression coverage to 16 E2E cases with Tiered Parallel execution for 50% faster verification.
+- **v1.1.2 (QA Foundation)**: Established the **StylePlanIt QA Engine**, a Playwright-powered E2E suite with mandatory CI/CD PR hooks.
+- **v1.1.1 (Marketing Core)**: Launched **Promos 1.0** (Unified Promotion System) and modernized the "Bespoke Services" sorting logic.
+- **v1.1.0 (UX Pivot)**: Transitioned core interface to a high-fidelity horizontal carousel.

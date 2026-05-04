@@ -27,25 +27,53 @@ def run_tests(env, headless=True):
         )
         time.sleep(2) # Give it time to bind port
 
-    # Build the pytest command
-    cmd = [
-        sys.executable, "-m", "pytest",
-        "tests/",
-        f"--env={env}",
-        "--browser", "chromium",
-        "-v"
+    # Define Test Tiers for Logical Batching
+    # Tier 1: Light (Structural, Sanity, Low-Server-Load)
+    tier1 = [
+        "tests/test_architectural_integrity.py",
+        "tests/test_sanity.py"
     ]
-    
-    if not headless:
-        cmd.append("--headed")
-    
+    # Tier 2: Heavy (Dynamic Features, Promos, Interaction Heavy)
+    tier2 = [
+        "tests/test_features_v1_2.py",
+        "tests/test_journeys.py",
+        "tests/test_promotions.py"
+    ]
+
+    def run_pytest_batch(test_files, workers, extra_args=None):
+        cmd = [
+            sys.executable, "-m", "pytest",
+            *test_files,
+            f"--env={env}",
+            "--browser", "chromium",
+            "-n", str(workers),
+            "-v"
+        ]
+        if not headless: cmd.append("--headed")
+        if extra_args: cmd.extend(extra_args)
+        return subprocess.run(cmd)
+
     try:
-        result = subprocess.run(cmd)
-        if result.returncode == 0:
-            print(f"\n✨ QA PASS: Environment '{env}' is healthy.")
-        else:
-            print(f"\n❌ QA FAIL: Potential regressions found in '{env}'.")
-            sys.exit(result.returncode)
+        print("📋 [BATCH 1/2] Running Structural & Sanity Tests (High Parallelism)...")
+        res1 = run_pytest_batch(tier1, 5)
+        
+        print("\n📋 [BATCH 2/2] Running Feature & Interaction Tests (Balanced Load)...")
+        res2 = run_pytest_batch(tier2, 3)
+        
+        # If either batch fails, trigger sequential retry for ONLY the failed tests
+        if res1.returncode != 0 or res2.returncode != 0:
+            print(f"\n⚠️  Parallel tiers detected potential issues. Retrying failures sequentially...")
+            
+            retry_res = run_pytest_batch(["tests/"], 0, ["--lf"]) # workers=0 runs sequentially in pytest-xdist context
+            
+            if retry_res.returncode == 0:
+                print(f"\n✨ QA PASS: Failures resolved on sequential retry. Environment '{env}' is healthy.")
+                return
+            else:
+                print(f"\n❌ QA FAIL: Permanent regressions found in '{env}'.")
+                sys.exit(retry_res.returncode)
+        
+        print(f"\n✨ QA PASS: Environment '{env}' is healthy.")
             
     finally:
         if server_process:

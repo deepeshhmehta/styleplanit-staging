@@ -19,11 +19,15 @@ def normalize_value(v):
     # Also handle literal '\n' strings that might come from Sheets
     val = str(v).strip().replace('\r\n', '\n').replace('\r', '\n').replace('\\n', '\n')
     
-    # Strip .00 or .0 from numerical strings (e.g., "$348.00" -> "$348")
-    if val.endswith(".00"):
-        val = val[:-3]
-    elif val.endswith(".0"):
-        val = val[:-2]
+    # Recursively strip .00 or .0 from numerical/version strings 
+    # (e.g., "2.0.0" -> "2.0" -> "2") to match Google Sheets auto-formatting
+    while True:
+        if val.endswith(".00"):
+            val = val[:-3]
+        elif val.endswith(".0") and (len(val) > 2 or val.isdigit()):
+            val = val[:-2]
+        else:
+            break
     
     # Consolidate multiple spaces and newlines for comparison
     import re
@@ -40,13 +44,7 @@ def parse_csv_to_list(csv_text):
         for k, v in row.items():
             if k is None or str(k).strip() == "":
                 continue
-            val = normalize_value(v)
-            # Extra cleanup for numerical strings with .00
-            if val.endswith(".00"):
-                val = val[:-3]
-            elif val.endswith(".0"):
-                val = val[:-2]
-            processed_row[k.strip()] = val
+            processed_row[k.strip()] = normalize_value(v)
         processed_list.append(processed_row)
     return processed_list
 
