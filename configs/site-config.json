@@ -1,5 +1,5 @@
 {
-  "VERSION": "1.1.1",
+  "VERSION": "1.2",
   "ACCESS_GID": "819294434",
   "ACCESS_SPREADSHEET_ID": "e/2PACX-1vSfDsGSiXAvQMmO32s5qWgQaH1GDeZXqEbnMr7bQmm-7gtdoHX-pz_jNq_y3Mb_ahS1LJ99azA84HVZ",
   "FOOTER_COPYRIGHT": "© 2026 Style Plan(it). Toronto.",
@@ -78,6 +78,7 @@
   "BESPOKE_CTA_PRIMARY": "Explore Individual Services",
   "BESPOKE_CTA_SECONDARY_PREFIX": "Or book a free",
   "BESPOKE_CTA_SECONDARY_HIGHLIGHT": "Discovery Call",
+  "CATEGORY_IMAGE_ROTATION_INTERVAL": "5000",
   "PERSONAS_SUBTITLE": "Who is this for?",
   "PERSONAS_TITLE_SANS": "YOU'LL RECOGNIZE YOURSELF",
   "PERSONAS_TITLE_SERIF": "in one of these.",

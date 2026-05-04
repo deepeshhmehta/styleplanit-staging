@@ -82,7 +82,7 @@
     transition: transform var(--transition-standard), opacity var(--transition-standard), flex var(--transition-slow), max-width var(--transition-slow);
 }
 
-.package-card-bg {
+.package-card-layer {
     position: absolute;
     top: 0;
     left: 0;
@@ -90,8 +90,13 @@
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: transform var(--transition-slow);
+    transition: opacity 1.2s ease-in-out, transform var(--transition-slow);
     z-index: 1;
+    opacity: 0;
+}
+
+.package-card-layer.active {
+    opacity: 1;
 }
 
 .package-card-overlay {

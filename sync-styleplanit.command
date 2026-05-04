@@ -30,9 +30,9 @@ if ! command -v python3 &> /dev/null; then
     brew install python
 fi
 
-# 3. Run the content engine
-echo "🔄  Fetching latest content from Google Sheets..."
-python3 scripts/sync_engine.py --no-push
+# 3. Run the data auditor
+echo "🔄 Checking for content discrepancies with Google Sheets..."
+python3 scripts/diff_site_data.py
 
 # 4. Success / Error Feedback
 if [ $? -eq 0 ]; then
