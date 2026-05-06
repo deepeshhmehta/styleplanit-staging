@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-05-05
+### Added
+- **ShopMy Integration**: Added a dedicated shopping cart icon to the navigation bar, providing direct access to Ayushi Vyas's curated ShopMy storefront.
+- **Security Enhancements**: Implemented `rel="noopener noreferrer"` for all external storefront redirects.
+
 ## [2.0.0] - 2026-05-03 (Milestone: Platform Governance & v2 Architecture)
 ### Added
 - **Self-Healing QA Engine**: Implemented tiered parallel execution (50% faster) and automatic sequential retries to eliminate environmental flakiness.

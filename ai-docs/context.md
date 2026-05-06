@@ -24,10 +24,12 @@ This document provides the high-level project summary and critical safety mandat
 *   **Workflow Requirement:** All changes must be pushed to a feature/fix branch and merged via Pull Request.
 *   **Mandatory QA:** Agents MUST run and pass `./qa.sh local` before concluding any technical task.
 
-## 4. Current State (v2.0.0)
+## 4. Current State (v2.0.1)
 The platform has evolved into an **Enterprise-Grade Authority Platform**. It features a robust, configuration-driven architecture with automated regression testing, high-fidelity demographic targeting, and professional release governance.
 
 ### Recent Major Wins:
+- **v2.0.1 (Storefront Integration)**:
+  - **ShopMy Redirect**: Integrated a persistent shopping cart CTA in the primary navigation for high-conversion affiliate access.
 - **v2.0.0 (The Governance & Demographic Milestone)**: 
   - **Demographic Expansion**: Implemented alternating male/female imagery for the core journey cards to broaden market appeal.
   - **Release Governance**: Established a tiered promotion lifecycle (Develop -> Staging -> Main) with automated PR audits for versioning.

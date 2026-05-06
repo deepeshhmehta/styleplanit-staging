@@ -1,5 +1,5 @@
 {
-  "VERSION": "2.0.0",
+  "VERSION": "2.0.1",
   "ACCESS_GID": "819294434",
   "ACCESS_SPREADSHEET_ID": "e/2PACX-1vSfDsGSiXAvQMmO32s5qWgQaH1GDeZXqEbnMr7bQmm-7gtdoHX-pz_jNq_y3Mb_ahS1LJ99azA84HVZ",
   "FOOTER_COPYRIGHT": "© 2026 Style Plan(it). Toronto.",
@@ -57,6 +57,7 @@
   "NAV_LINK_3_TEXT": "Experience",
   "NAV_LINK_4_HREF": "icon-service",
   "NAV_LINK_4_TEXT": "Icon Service",
+  "NAV_LINK_SHOP_HREF": "https://shopmy.us/ayushivyas",
   "NAV_LINK_TEAM_HREF": "meet-the-team",
   "NAV_LINK_TEAM_TEXT": "Our Team",
   "NAV_LINK_LEARN_HREF": "/learn",

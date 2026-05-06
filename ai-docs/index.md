@@ -22,6 +22,6 @@ After completing a Directive (Feature, Fix, or Refactor), you **MUST** follow th
 4.  **Update Current State:** Always update the `Current State` and `Recent Wins` sections in `context.md`.
 
 ## 3. High-Level Project Metadata
-*   **Version:** v1.0.0 (Production)
+*   **Version:** v2.0.1 (Production)
 *   **Aesthetic:** Luxury Minimalist / Modern Bold
 *   **Tech Stack:** Vanilla HTML/CSS, jQuery, Python (Automation)

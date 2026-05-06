@@ -28,6 +28,12 @@ const App = {
       self.updateActiveNavLink();
     });
 
+    // ShopMy Link Analytics
+    $(document).on("click", "a[href-config-key='NAV_LINK_SHOP_HREF']", function() {
+        Analytics.trackUI('click', 'navigation', 'shopmy_store');
+        Analytics.trackConversion('storefront_click', 'nav_cart', 1);
+    });
+
     // Handle initial state and hash changes
     this.updateActiveNavLink();
     $(window).on('hashchange', () => this.updateActiveNavLink());
