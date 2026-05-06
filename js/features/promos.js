@@ -159,10 +159,11 @@ const PromosFeature = {
         const self = this;
         const isModal = el.hasClass('modal');
         const isPersistable = String(config.persist).toUpperCase() === 'TRUE';
-
         // CTA Click
         el.find('.promo-cta').on('click', function() {
+            Analytics.setAttribution(config.title);
             Analytics.trackConversion('promo_click', config.title, 5, { type: isModal ? 'modal' : 'inline' });
+            
             if (backdrop) closeCleanup(false); // Persistent or not, CTA usually closes modal
         });
 
