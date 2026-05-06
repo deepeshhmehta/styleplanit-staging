@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.2] - 2026-05-06
+### Added
+- **Analytics Architecture v2**: Transitioned from basic click tracking to high-fidelity business intelligence.
+- **Funnel Progression Tracking**: Implemented `funnel_step` events to measure conversion health (Journey Selection -> Service View -> Lead Initiation).
+- **Outbound Link Monitoring**: Centralized tracking for all external redirects (ShopMy, Cal.com, WhatsApp, Socials) with domain-level attribution.
+- **Session Attribution**: Implemented a persistence layer to attribute leads to the last interacted marketing promotion.
+
+## [2.0.1] - 2026-05-05
+### Added
+- **ShopMy Integration**: Added a dedicated shopping cart icon to the navigation bar, providing direct access to Ayushi Vyas's curated ShopMy storefront.
+- **Security Enhancements**: Implemented `rel="noopener noreferrer"` for all external storefront redirects.
+
 ## [2.0.0] - 2026-05-03 (Milestone: Platform Governance & v2 Architecture)
 ### Added
 - **Self-Healing QA Engine**: Implemented tiered parallel execution (50% faster) and automatic sequential retries to eliminate environmental flakiness.

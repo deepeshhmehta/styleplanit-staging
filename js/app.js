@@ -19,13 +19,24 @@ const App = {
     $(document).on("click", ".nav-links a", function () {
       const linkText = $(this).text().trim();
       const href = $(this).attr('href');
-      Analytics.trackUI('click', 'navigation', linkText, { destination: href });
+      
+      if (href && (href.startsWith('http') || href.includes('mailto:') || href.includes('tel:'))) {
+          Analytics.trackOutbound('navigation', linkText, href);
+      } else {
+          Analytics.trackUI('click', 'navigation', linkText, { destination: href });
+      }
 
       $(".nav-links").removeClass("active");
       $(".menu-toggle").attr("aria-expanded", "false");
       
       // Update active state immediately on click (for hash links)
       self.updateActiveNavLink();
+    });
+
+    // ShopMy Link Analytics
+    $(document).on("click", "a[href-config-key='NAV_LINK_SHOP_HREF']", function() {
+        Analytics.trackOutbound('shop', 'shopmy_store', $(this).attr('href'));
+        Analytics.trackConversion('storefront_click', 'nav_cart', 1);
     });
 
     // Handle initial state and hash changes
@@ -131,27 +142,34 @@ const App = {
 
     // 8. Global Lead Tracking
     $(".whatsapp-floating").on("click", function() {
+        const href = $(this).attr('href');
+        Analytics.trackOutbound('whatsapp', 'floating_whatsapp', href);
         Analytics.trackConversion('whatsapp_inquiry', 'floating_cta', 0, { platform: 'whatsapp' });
     });
 
     $(".book-now-floating").on("click", function() {
+        const href = $(this).attr('href');
+        Analytics.trackOutbound('booking', 'floating_booking', href);
         Analytics.trackConversion('appointment_booking', 'floating_cta', 10, { platform: 'cal_com' });
     });
 
     // 8b. Value Section Tracking
     $(document).on("click", "#why-styling .btn", function() {
         Analytics.trackUI('click', 'value_section', 'start_journey');
+        Analytics.trackFunnel(1, 'journey_start', 'value_section_cta');
     });
 
     // 8c. Footer Tracking
     $(document).on("click", "footer .footer-links a", function() {
         const text = $(this).text().trim();
-        Analytics.trackUI('click', 'footer_links', text);
+        const href = $(this).attr('href');
+        Analytics.trackOutbound('footer_link', text, href);
     });
 
     $(document).on("click", "footer .social-icons a", function() {
         const platform = $(this).find('i').attr('class');
-        Analytics.trackUI('click', 'footer_social', platform);
+        const href = $(this).attr('href');
+        Analytics.trackOutbound('social', platform, href);
     });
 
     // 9. Handle deep links/hash scroll after dynamic components settle

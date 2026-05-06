@@ -141,6 +141,7 @@ const HomeServicesFeature = {
             const packageName = $(this).find("h3").text();
             
             Analytics.trackUI('expand', 'packages', packageName, { tier: tier });
+            Analytics.trackFunnel(1, 'journey_select', packageName, { tier: tier });
 
             $(".package-card").removeClass("active");
             $(this).addClass("active");

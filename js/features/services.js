@@ -122,6 +122,7 @@ const ServicesFeature = {
         item_id: serviceSlug,
         price: service.price 
     });
+    Analytics.trackFunnel(2, 'service_view', service.title, { category: service.category });
 
     const detailsContainer = $("#service-details-container");
     const gridContainer = $(".service-content");
@@ -246,8 +247,9 @@ const ServicesFeature = {
     });
 
     $(document).off("click", ".btn-ga-inquiry").on("click", ".btn-ga-inquiry", function() {
-        const serviceName = $(this).closest(".active-service-details").find("h3").text();
+        const serviceName = $(this).closest("#service-details-container").find("h2").text();
         Analytics.trackConversion('service_inquiry', 'service_details', 10, { service_name: serviceName });
+        Analytics.trackFunnel(3, 'lead_initiate', serviceName, { source: 'service_details' });
     });
 
     $(document).off("click", ".btn-close-details").on("click", ".btn-close-details", function() {
